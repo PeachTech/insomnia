@@ -1,6 +1,6 @@
 # Insomnia for Peach API Security
 
-[![Travis](https://api.travis-ci.org/getinsomnia/insomnia.svg)](https://travis-ci.org/getinsomnia/insomnia)
+[![Travis](https://travis-ci.org/PeachTech/insomnia.svg?branch=develop)](https://travis-ci.org/PeachTech/insomnia.svg?branch=develop)
 
 This is a fork of the Insomnia REST Client.  The tool has been lightly extended to allow use with Peach API Security during trials.  We do't recommend this for daily use as it will lag behind the official Insomnia development.
 
