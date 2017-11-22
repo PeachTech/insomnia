@@ -12,6 +12,7 @@ import General from '../settings/general';
 import ImportExport from '../settings/import-export';
 import Account from '../settings/account';
 import Plugins from '../settings/plugins';
+import PeachSettings from '../settings/peach';
 import Theme from '../settings/theme';
 import * as models from '../../../models/index';
 import {Curl} from 'insomnia-node-libcurl';
@@ -135,6 +136,11 @@ class SettingsModal extends PureComponent {
                 </Button>
               </Tab>
               <Tab>
+                <Button value="PeachSettings">
+                Peach
+                </Button>
+              </Tab>
+              <Tab>
                 <Button value="About">
                   About
                 </Button>
@@ -165,6 +171,7 @@ class SettingsModal extends PureComponent {
               className="react-tabs__tab-panel pad scrollable"><SettingsShortcuts/></TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable"><Account/></TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable"><Plugins/></TabPanel>
+            <TabPanel className="react-tabs__tab-panel pad scrollable"><PeachSettings/></TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable"><About/></TabPanel>
           </Tabs>
         </ModalBody>
