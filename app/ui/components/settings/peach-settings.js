@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import HelpTooltip from '../help-tooltip';
-import {isMac} from '../../../common/constants';
 
 @autobind
 class PeachSettings extends PureComponent {
@@ -38,7 +37,7 @@ class PeachSettings extends PureComponent {
             </HelpTooltip>
             <input type="text"
                    name="PeachAPI"
-                   defaultValue=''
+                   defaultValue={settings.peachApiUrl}
                    onChange={this._handleUpdateSetting}/>
           </label>
         </div>
@@ -50,7 +49,7 @@ class PeachSettings extends PureComponent {
             </HelpTooltip>
             <input type="text"
                    name="PeachApiToken"
-                   defaultValue=''
+                   defaultValue={settings.peachApiToken}
                    onChange={this._handleUpdateSetting}/>
           </label>
         </div>
