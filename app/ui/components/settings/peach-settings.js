@@ -1,10 +1,28 @@
+// @flow
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import HelpTooltip from '../help-tooltip';
+import PeachApiSec from 'peachapisec';
+
+type State = {
+  error: string,
+  isValid: boolean,
+  hasRunTest: boolean,
+  hasChanged: boolean
+};
 
 @autobind
-class PeachSettings extends PureComponent {
+class PeachSettings extends PureComponent<void, State> {
+  constructor (props: any) {
+    super(props);
+    this.state = {
+      error: '',
+      isValid: false,
+      hasRunTest: false,
+      hasChanged: false
+    };
+  }
   _handleUpdateSetting (e) {
     let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
 
@@ -13,15 +31,36 @@ class PeachSettings extends PureComponent {
     }
 
     this.props.updateSetting(e.target.name, value);
+    this.setState({hasChanged: true});
   }
-
   _handleToggleMenuBar (e) {
     this._handleUpdateSetting(e);
     this.props.handleToggleMenuBar(e.target.checked);
   }
+  async _testPeachConnection (url: string, token: string) {
+    let isGood = false;
+    let err = 'OK';
+    let api = new PeachApiSec(url, token);
+    try {
+      let projects = await api.GetProjects();
+      if (projects) {
+        isGood = true;
+      }
+    } catch (ex) {
+      if (ex.name === 'StatusCodeError') {
+        err = JSON.parse(ex.error).Message;
+      } else {
+        err = ex.message;
+      }
+      isGood = false;      
+    }
+    this.setState({isValid: isGood, error: err, hasRunTest: true, hasChanged: false});
+    return isGood;
+  }
 
   render () {
     const {settings} = this.props;
+    const {error, isValid, hasRunTest, hasChanged} = this.state;
     return (
       <div>
           <h2>
@@ -52,6 +91,20 @@ class PeachSettings extends PureComponent {
                    defaultValue={settings.peachApiToken}
                    onChange={this._handleUpdateSetting}/>
           </label>
+        </div>
+        <div className="form-control form-control--outlined">
+          <label>Test Connection to Peach API
+            <HelpTooltip className="space-left">
+              Test your connection using the supplied URL and API token
+            </HelpTooltip>
+          </label>
+          <button className="btn btn--clicky"
+                onClick={() => this._testPeachConnection(settings.peachApiUrl, settings.peachApiToken)} >
+                Test
+              </button>
+          <br/>
+          {hasRunTest && !hasChanged && (
+          <label >{isValid ? 'OK' : error}</label>)}
         </div>
         <hr className="pad-top"/>
         <br/>
