@@ -37,6 +37,15 @@ export const prefix = 'set';
 export const canDuplicate = false;
 
 export function init (): BaseSettings {
+  let pUrl = '';
+  if (process.env.PEACH_API) {
+    pUrl = process.env.PEACH_API;
+  }
+  let pApiToken = '';
+  if (process.env.PEACH_API_TOKEN) {
+    pApiToken = process.env.PEACH_API_TOKEN;
+  }
+
   return {
     showPasswords: false,
     useBulkHeaderEditor: false,
@@ -58,8 +67,8 @@ export function init (): BaseSettings {
     disableAnalyticsTracking: false,
     pluginPath: '',
     nunjucksPowerUserMode: false,
-    peachApiUrl: '',
-    peachApiToken: '',
+    peachApiUrl: pUrl,
+    peachApiToken: pApiToken,
     peachProject: 'Default',
     peachProfile: 'Quick'
   };

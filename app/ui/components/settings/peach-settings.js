@@ -37,7 +37,7 @@ class PeachSettings extends PureComponent {
             </HelpTooltip>
             <input type="text"
                    name="peachApiUrl"
-                   defaultValue=''
+                   defaultValue={settings.peachApiUrl}
                    onChange={this._handleUpdateSetting}/>
           </label>
         </div>
