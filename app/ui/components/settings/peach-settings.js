@@ -36,8 +36,8 @@ class PeachSettings extends PureComponent {
               (URL for Peach API instance)
             </HelpTooltip>
             <input type="text"
-                   name="PeachAPI"
-                   defaultValue={settings.peachApiUrl}
+                   name="peachApiUrl"
+                   defaultValue=''
                    onChange={this._handleUpdateSetting}/>
           </label>
         </div>
@@ -48,13 +48,39 @@ class PeachSettings extends PureComponent {
               Peach API Token
             </HelpTooltip>
             <input type="text"
-                   name="PeachApiToken"
+                   name="peachApiToken"
                    defaultValue={settings.peachApiToken}
                    onChange={this._handleUpdateSetting}/>
           </label>
         </div>
         <hr className="pad-top"/>
         <br/>
+        <div className="form-control form-control--outlined">
+          <label>Project name
+            <HelpTooltip className="space-left">
+              Peach Project to run tests
+            </HelpTooltip>
+            <input type="text"
+                   name="peachProject"
+                   defaultValue={settings.peachProject}
+                   onChange={this._handleUpdateSetting}/>
+          </label>
+        </div>
+        <div className="form-control form-control--outlined">
+          <label>Project Profile
+            <HelpTooltip className="space-left">
+              Profile to use for running tests
+            </HelpTooltip>
+            <select defaultValue={settings.peachProfile}
+                      name="peachProfile"
+                      onChange={this._handleUpdateSetting}>
+                <option value="Quick">Quick</option>
+                <option value="Nightly">Nightly</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Full">Full</option>
+              </select>
+          </label>
+        </div>
       </div>
     );
   }

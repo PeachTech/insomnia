@@ -22,7 +22,11 @@ type BaseSettings = {
   maxRedirects: number,
   disableAnalyticsTracking: boolean,
   pluginPath: string,
-  nunjucksPowerUserMode: boolean
+  nunjucksPowerUserMode: boolean,
+  peachApiUrl: string,
+  peachApiToken: string,
+  peachProject: string,
+  peachProfile: string
 };
 
 export type Settings = BaseModel & Settings;
@@ -53,7 +57,11 @@ export function init (): BaseSettings {
     theme: 'default',
     disableAnalyticsTracking: false,
     pluginPath: '',
-    nunjucksPowerUserMode: false
+    nunjucksPowerUserMode: false,
+    peachApiUrl: '',
+    peachApiToken: '',
+    peachProject: 'Default',
+    peachProfile: 'Quick'
   };
 }
 
