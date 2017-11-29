@@ -77,6 +77,9 @@ class RequestGroupActionsDropdown extends PureComponent {
           <DropdownHint hotkey={hotkeys.CREATE_FOLDER}/>
         </DropdownItem>
         <DropdownDivider />
+        <DropdownItem onClick={this._runTests}>
+          <i className="fa fa-bomb"/> Test All Requests
+        </DropdownItem>
         <DropdownItem onClick={this._handleRequestGroupDuplicate}>
           <i className="fa fa-copy"/> Duplicate
         </DropdownItem>

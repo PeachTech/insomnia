@@ -23,22 +23,22 @@ class PeachSettings extends PureComponent<void, State> {
       hasChanged: false
     };
   }
-  _handleUpdateSetting (e) {
-    let value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+  _handleUpdateSetting (e: Event) {
+    let value = e.target.type === 'checkbox' ? (e.target: any).checked : (e.target: any).value;
 
     if (e.target.type === 'number') {
       value = parseInt(value, 10);
     }
 
-    this.props.updateSetting(e.target.name, value);
+    this.props.updateSetting((e.target: any).name, value);
     this.setState({hasChanged: true});
   }
-  _handleToggleMenuBar (e) {
+  _handleToggleMenuBar (e: Event) {
     this._handleUpdateSetting(e);
-    this.props.handleToggleMenuBar(e.target.checked);
+    this.props.handleToggleMenuBar((e.target: any).checked);
   }
   async _testPeachConnection (url: string, token: string) {
-    let isGood = false;
+    let isGood: boolean = false;
     let err = 'OK';
     let api = new PeachApiSec(url, token);
     try {
@@ -52,10 +52,9 @@ class PeachSettings extends PureComponent<void, State> {
       } else {
         err = ex.message;
       }
-      isGood = false;      
+      isGood = false;
     }
     this.setState({isValid: isGood, error: err, hasRunTest: true, hasChanged: false});
-    return isGood;
   }
 
   render () {

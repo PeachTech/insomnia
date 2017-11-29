@@ -36,6 +36,9 @@ class RequestActionsDropdown extends PureComponent {
     trackEvent('Request', 'Delete', 'Action');
   }
 
+  _handleRunTest () {
+  }
+
   show () {
     this._dropdown.show();
   }
@@ -68,6 +71,10 @@ class RequestActionsDropdown extends PureComponent {
         </DropdownItem>
         <DropdownItem buttonClass={PromptButton} onClick={this._handleRemove} addIcon>
           <i className="fa fa-trash-o"/> Delete
+        </DropdownItem>
+        <DropdownItem onClick={this._handleRunTest}>
+          <i className="fa fa-bomb"/> Run Test
+          <DropdownHint hotkey={hotkeys.DUPLICATE_REQUEST}/>
         </DropdownItem>
 
         <DropdownDivider/>
