@@ -105,6 +105,7 @@ class SidebarRequestGroupRow extends PureComponent {
               handleDuplicateRequest={misc.nullFn}
               handleGenerateCode={misc.nullFn}
               handleCopyAsCurl={misc.nullFn}
+              handleRunTest={misc.nullFn}
               moveDoc={moveDoc}
               isActive={false}
               request={null}

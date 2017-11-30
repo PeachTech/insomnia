@@ -111,6 +111,11 @@ class SettingsModal extends PureComponent {
                 </Button>
               </Tab>
               <Tab>
+                <Button value="PeachSettings">
+                Peach
+                </Button>
+              </Tab>
+              <Tab>
                 <Button value="Import/Export">
                   Data
                 </Button>
@@ -134,12 +139,7 @@ class SettingsModal extends PureComponent {
                 <Button value="Plugins">
                   Plugins
                 </Button>
-              </Tab>
-              <Tab>
-                <Button value="PeachSettings">
-                Peach
-                </Button>
-              </Tab>
+              </Tab>              
               <Tab>
                 <Button value="About">
                   About
@@ -152,6 +152,13 @@ class SettingsModal extends PureComponent {
                 handleToggleMenuBar={this.props.handleToggleMenuBar}
                 updateSetting={this._handleUpdateSetting}
               />
+            </TabPanel>
+            <TabPanel className="react-tabs__tab-panel pad scrollable">
+              <PeachSettings
+                settings={settings}
+                handleToggleMenuBar={this.props.handleToggleMenuBar}
+                updateSetting={this._handleUpdateSetting}
+                />
             </TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable">
               <ImportExport
@@ -170,14 +177,7 @@ class SettingsModal extends PureComponent {
             <TabPanel
               className="react-tabs__tab-panel pad scrollable"><SettingsShortcuts/></TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable"><Account/></TabPanel>
-            <TabPanel className="react-tabs__tab-panel pad scrollable"><Plugins/></TabPanel>
-            <TabPanel className="react-tabs__tab-panel pad scrollable">
-              <PeachSettings
-                settings={settings}
-                handleToggleMenuBar={this.props.handleToggleMenuBar}
-                updateSetting={this._handleUpdateSetting}
-                />
-            </TabPanel>
+            <TabPanel className="react-tabs__tab-panel pad scrollable"><Plugins/></TabPanel>            
             <TabPanel className="react-tabs__tab-panel pad scrollable"><About/></TabPanel>
           </Tabs>
         </ModalBody>

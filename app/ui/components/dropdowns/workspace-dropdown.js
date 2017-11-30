@@ -63,6 +63,10 @@ class WorkspaceDropdown extends PureComponent {
     showModal(SettingsModal);
   }
 
+  _handleShowPeachSettings () {
+    showModal(SettingsModal, 1);
+  }
+
   _handleShowWorkspaceSettings () {
     showModal(WorkspaceSettingsModal, {
       workspace: this.props.activeWorkspace
@@ -156,6 +160,13 @@ class WorkspaceDropdown extends PureComponent {
             <i className="fa fa-globe"/> Share <strong>{activeWorkspace.name}</strong>
           </DropdownItem>
 
+          <DropdownDivider>Peach API Security</DropdownDivider>
+          <DropdownItem onClick={this._handleShowPeachSettings}>
+            <i className="fa fa-cog"/> Peach Preferences
+          </DropdownItem>
+          <DropdownItem onClick={this._handleShowExport}>
+            <i className="fa fa-bomb"/> Test All Requests
+          </DropdownItem>
           <DropdownDivider>Switch Workspace</DropdownDivider>
 
           {nonActiveWorkspaces.map(w => {

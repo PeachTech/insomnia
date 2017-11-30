@@ -37,6 +37,7 @@ class RequestActionsDropdown extends PureComponent {
   }
 
   _handleRunTest () {
+    this.props.handleRunTest(this.props.request);
   }
 
   show () {
@@ -93,6 +94,7 @@ RequestActionsDropdown.propTypes = {
   handleGenerateCode: PropTypes.func.isRequired,
   handleCopyAsCurl: PropTypes.func.isRequired,
   handleShowSettings: PropTypes.func.isRequired,
+  handleRunTest: PropTypes.func.isRequired,
   request: PropTypes.object.isRequired
 };
 

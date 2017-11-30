@@ -42,6 +42,7 @@ import ErrorBoundary from '../components/error-boundary';
 import * as plugins from '../../plugins';
 import * as templating from '../../templating/index';
 import AskModal from '../components/modals/ask-modal';
+import PeachApiSec from 'peachapisec';
 
 @autobind
 class App extends PureComponent {
@@ -257,6 +258,13 @@ class App extends PureComponent {
     const snippet = new HTTPSnippet(har);
     const cmd = snippet.convert('shell', 'curl');
     clipboard.writeText(cmd);
+  }
+
+  async _handleRunTest (request) {
+    await showAlert({
+      title: 'Running test',
+      message: 'I am a test'
+    });
   }
 
   async _updateRequestGroupMetaByParentId (requestGroupId, patch) {
@@ -803,10 +811,12 @@ class App extends PureComponent {
               handleDuplicateRequest={this._requestDuplicate}
               handleDuplicateRequestGroup={this._requestGroupDuplicate}
               handleDuplicateWorkspace={this._workspaceDuplicate}
+              handleRunTest={this._handleRunTest}
               handleCreateRequestGroup={this._requestGroupCreate}
               handleGenerateCode={this._handleGenerateCode}
               handleGenerateCodeForActiveRequest={this._handleGenerateCodeForActiveRequest}
               handleCopyAsCurl={this._handleCopyAsCurl}
+              handleRuntest={this._handleRunTest}
               handleSetResponsePreviewMode={this._handleSetResponsePreviewMode}
               handleSetResponseFilter={this._handleSetResponseFilter}
               handleSendRequestWithEnvironment={this._handleSendRequestWithEnvironment}

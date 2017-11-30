@@ -65,6 +65,7 @@ type Props = {
   handleGenerateCodeForActiveRequest: Function,
   handleGenerateCode: Function,
   handleCopyAsCurl: Function,
+  handleRunTest: Function,
   handleCreateRequestForWorkspace: Function,
   handleSetRequestPaneRef: Function,
   handleSetResponsePaneRef: Function,
@@ -106,6 +107,9 @@ type Props = {
   activeCookieJar: CookieJar,
   activeEnvironment: Environment | null,
   activeWorkspaceClientCertificates: Array<ClientCertificate>,
+
+  // Peach API Properties
+  testRunning: boolean, // is a test or group of tests running?
 
   // Optional
   oAuth2Token: ?OAuth2Token,
@@ -376,6 +380,7 @@ class Wrapper extends React.PureComponent<Props, State> {
       handleGenerateCodeForActiveRequest,
       handleGenerateCode,
       handleCopyAsCurl,
+      handleRunTest,
       isLoading,
       loadStartTime,
       paneWidth,
@@ -554,6 +559,7 @@ class Wrapper extends React.PureComponent<Props, State> {
             handleDuplicateRequest={handleDuplicateRequest}
             handleGenerateCode={handleGenerateCode}
             handleCopyAsCurl={handleCopyAsCurl}
+            handleRunTest={handleRunTest}
             handleDuplicateRequestGroup={handleDuplicateRequestGroup}
             handleSetActiveEnvironment={handleSetActiveEnvironment}
             moveDoc={handleMoveDoc}
