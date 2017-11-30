@@ -690,10 +690,6 @@ export async function sendWithSettings (
   return await _actuallySend(renderedRequest, workspace, settings);
 }
 
-export async function sendRequest(request: Object, environment: Object, settings: Object) {
-
-}
-
 export async function send (requestId: string, environmentId: string) {
   // HACK: wait for all debounces to finish
   /*

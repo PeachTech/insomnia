@@ -139,7 +139,7 @@ class SettingsModal extends PureComponent {
                 <Button value="Plugins">
                   Plugins
                 </Button>
-              </Tab>              
+              </Tab>
               <Tab>
                 <Button value="About">
                   About
@@ -177,7 +177,7 @@ class SettingsModal extends PureComponent {
             <TabPanel
               className="react-tabs__tab-panel pad scrollable"><SettingsShortcuts/></TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable"><Account/></TabPanel>
-            <TabPanel className="react-tabs__tab-panel pad scrollable"><Plugins/></TabPanel>            
+            <TabPanel className="react-tabs__tab-panel pad scrollable"><Plugins/></TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable"><About/></TabPanel>
           </Tabs>
         </ModalBody>

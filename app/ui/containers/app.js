@@ -43,7 +43,6 @@ import * as plugins from '../../plugins';
 import * as templating from '../../templating/index';
 import AskModal from '../components/modals/ask-modal';
 import PeachApiSec from 'peachapisec';
-import type {RenderedRequest} from '../../common/render';
 import {getRenderContext, getRenderedRequest} from '../../common/render';
 
 @autobind
