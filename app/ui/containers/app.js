@@ -43,6 +43,8 @@ import * as plugins from '../../plugins';
 import * as templating from '../../templating/index';
 import AskModal from '../components/modals/ask-modal';
 import PeachApiSec from 'peachapisec';
+import type {RenderedRequest} from '../../common/render';
+import {getRenderContext, getRenderedRequest} from '../../common/render';
 
 @autobind
 class App extends PureComponent {
@@ -263,6 +265,48 @@ class App extends PureComponent {
   async _handleRunTest (request) {
     await showAlert({
       title: 'Running test',
+      message: 'I am a test'
+    });
+
+    const {activeEnvironment} = this.props;
+
+    // fix up request and stuff
+    const settings = await models.settings.getOrCreate();
+    const ancestors = await db.withAncestors(request, [
+      models.requestGroup.type,
+      models.workspace.type
+    ]);
+
+    const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
+    const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
+
+    let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
+    let nextState = 'Continue';
+    try {
+      await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
+      settings.proxyEnabled = true;
+      settings.httpProxy = api.ProxyUrl();
+      do {
+        await api.Setup();
+        await api.TestCase(request.Name);
+        const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment._id);
+        const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment._id, ancestors);
+
+        let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
+        await network._actuallySend(renderedRequest, workspace, settings);
+        nextState = await api.Teardown();
+      } while (nextState === 'Continue');
+      await api.SuiteTeardown();
+      await api.SessionTeardown();
+    } catch (ex) {
+      await showAlert({
+        title: 'Error',
+        message: ex
+      });
+    }
+
+    await showAlert({
+      title: 'Finished test',
       message: 'I am a test'
     });
   }
