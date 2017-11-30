@@ -76,10 +76,11 @@ class RequestGroupActionsDropdown extends PureComponent {
           <i className="fa fa-folder"/> New Folder
           <DropdownHint hotkey={hotkeys.CREATE_FOLDER}/>
         </DropdownItem>
-        <DropdownDivider />
+        <DropdownDivider>Peach API Security</DropdownDivider>
         <DropdownItem onClick={this._runTests}>
           <i className="fa fa-bomb"/> Test All Requests
         </DropdownItem>
+        <DropdownDivider/>
         <DropdownItem onClick={this._handleRequestGroupDuplicate}>
           <i className="fa fa-copy"/> Duplicate
         </DropdownItem>
