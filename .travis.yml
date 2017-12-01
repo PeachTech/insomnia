@@ -15,6 +15,13 @@ matrix:
         - CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD
 
 addons:
+  artifacts: true
+    s3_region: "us-west-1"
+  paths:
+    - dist/**/*.zip
+    - dist/**/*.dmg
+    - dist/**/*.deb
+    - dist/**/*.AppImage
   apt:
     packages:
     - libcurl4-openssl-dev
