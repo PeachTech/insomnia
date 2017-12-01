@@ -50,6 +50,7 @@ class Sidebar extends PureComponent {
       handleCopyAsCurl,
       handleRunTest,
       handleCreateRequestGroup,
+      handleRunTests,
       handleSetRequestGroupCollapsed,
       moveDoc,
       handleActivateRequest,
@@ -99,6 +100,7 @@ class Sidebar extends PureComponent {
           handleActivateRequest={handleActivateRequest}
           handleCreateRequest={handleCreateRequest}
           handleCreateRequestGroup={handleCreateRequestGroup}
+          handleRunTests={handleRunTests}
           handleSetRequestGroupCollapsed={handleSetRequestGroupCollapsed}
           handleDuplicateRequest={handleDuplicateRequest}
           handleDuplicateRequestGroup={handleDuplicateRequestGroup}
@@ -139,6 +141,7 @@ Sidebar.propTypes = {
   handleRunTest: PropTypes.func.isRequired,
   showEnvironmentsModal: PropTypes.func.isRequired,
   showCookiesModal: PropTypes.func.isRequired,
+  handleRunTests: PropTypes.func.isRequired,
 
   // Other
   hidden: PropTypes.bool.isRequired,

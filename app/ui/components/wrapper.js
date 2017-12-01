@@ -66,6 +66,7 @@ type Props = {
   handleGenerateCode: Function,
   handleCopyAsCurl: Function,
   handleRunTest: Function,
+  handleRunTests: Function,
   handleCreateRequestForWorkspace: Function,
   handleSetRequestPaneRef: Function,
   handleSetResponsePaneRef: Function,
@@ -381,6 +382,7 @@ class Wrapper extends React.PureComponent<Props, State> {
       handleGenerateCode,
       handleCopyAsCurl,
       handleRunTest,
+      handleRunTests,
       isLoading,
       loadStartTime,
       paneWidth,
@@ -560,6 +562,7 @@ class Wrapper extends React.PureComponent<Props, State> {
             handleGenerateCode={handleGenerateCode}
             handleCopyAsCurl={handleCopyAsCurl}
             handleRunTest={handleRunTest}
+            handleRunTests={handleRunTests}
             handleDuplicateRequestGroup={handleDuplicateRequestGroup}
             handleSetActiveEnvironment={handleSetActiveEnvironment}
             moveDoc={handleMoveDoc}

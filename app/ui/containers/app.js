@@ -261,6 +261,60 @@ class App extends PureComponent {
     clipboard.writeText(cmd);
   }
 
+  async _handleRunTests (requestGroup) {
+    let requests = await models.request.findByParentId(requestGroup._id);
+    if (requests.length === 0) {
+      return;
+    }
+
+    await showAlert({
+      title: 'Running All Tests in Group',
+      message: 'Going to run tests now'
+    });
+
+    const {activeEnvironment} = this.props;
+        // fix up request and stuff
+    const settings = await models.settings.getOrCreate();
+    let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
+    await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
+    settings.proxyEnabled = true;
+    settings.httpProxy = api.ProxyUrl();
+
+    for (const request of requests) {
+      const ancestors = await db.withAncestors(request, [
+        models.requestGroup.type,
+        models.workspace.type
+      ]);
+      const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
+      const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
+
+      let nextState = 'Continue';
+      try {
+        do {
+          await api.Setup();
+          await api.TestCase(request.name);
+          const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment._id);
+          const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment._id, ancestors);
+
+          let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
+          await network._actuallySend(renderedRequest, workspace, settings);
+          nextState = await api.Teardown();
+        } while (nextState === 'Continue');
+      } catch (ex) {
+        await showAlert({
+          title: 'Error',
+          message: ex.message
+        });
+      }
+    }
+    await api.SuiteTeardown();
+    let result = await api.SessionTeardown();
+    await showAlert({
+      title: result.State,
+      message: result.Reason
+    });
+  }
+
   async _handleRunTest (request) {
     await showAlert({
       title: 'Running test',
@@ -281,13 +335,15 @@ class App extends PureComponent {
 
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
     let nextState = 'Continue';
+    let result;
     try {
       await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
+
       settings.proxyEnabled = true;
       settings.httpProxy = api.ProxyUrl();
       do {
         await api.Setup();
-        await api.TestCase(request.Name);
+        await api.TestCase(request.name);
         const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment._id);
         const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment._id, ancestors);
 
@@ -295,18 +351,18 @@ class App extends PureComponent {
         await network._actuallySend(renderedRequest, workspace, settings);
         nextState = await api.Teardown();
       } while (nextState === 'Continue');
-      await api.SuiteTeardown();
-      await api.SessionTeardown();
     } catch (ex) {
       await showAlert({
         title: 'Error',
-        message: ex
+        message: ex.message
       });
     }
+    await api.SuiteTeardown();
+    result = await api.SessionTeardown();
 
     await showAlert({
-      title: 'Finished test',
-      message: 'I am a test'
+      title: result.State,
+      message: result.Reason
     });
   }
 
@@ -855,11 +911,11 @@ class App extends PureComponent {
               handleDuplicateRequestGroup={this._requestGroupDuplicate}
               handleDuplicateWorkspace={this._workspaceDuplicate}
               handleRunTest={this._handleRunTest}
+              handleRunTests={this._handleRunTests}
               handleCreateRequestGroup={this._requestGroupCreate}
               handleGenerateCode={this._handleGenerateCode}
               handleGenerateCodeForActiveRequest={this._handleGenerateCodeForActiveRequest}
               handleCopyAsCurl={this._handleCopyAsCurl}
-              handleRuntest={this._handleRunTest}
               handleSetResponsePreviewMode={this._handleSetResponsePreviewMode}
               handleSetResponseFilter={this._handleSetResponseFilter}
               handleSendRequestWithEnvironment={this._handleSendRequestWithEnvironment}
