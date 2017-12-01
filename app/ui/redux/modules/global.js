@@ -22,6 +22,8 @@ const LOAD_START = 'global/load-start';
 const LOAD_STOP = 'global/load-stop';
 const LOAD_REQUEST_START = 'global/load-request-start';
 const LOAD_REQUEST_STOP = 'global/load-request-stop';
+const START_TEST = 'global/start-test';
+const STOP_TEST = 'global/stop-test';
 const REQUEST_GROUP_TOGGLE_COLLAPSE = 'global/request-group-toggle';
 const SET_ACTIVE_WORKSPACE = 'global/activate-workspace';
 const COMMAND_ALERT = 'app/alert';
@@ -64,10 +66,22 @@ function loadingRequestsReducer (state = {}, action) {
   }
 }
 
+function testingReducer (state = false, action) {
+  switch (action.type) {
+    case START_TEST:
+      return true;
+    case STOP_TEST:
+      return false;
+    default:
+      return state;
+  }
+}
+
 export const reducer = combineReducers({
   isLoading: loadingReducer,
   loadingRequestIds: loadingRequestsReducer,
-  activeWorkspaceId: activeWorkspaceReducer
+  activeWorkspaceId: activeWorkspaceReducer,
+  isTesting: testingReducer
 });
 
 // ~~~~~~~ //
@@ -112,6 +126,14 @@ export function loadRequestStart (requestId) {
 
 export function loadRequestStop (requestId) {
   return {type: LOAD_REQUEST_STOP, requestId};
+}
+
+export function testStart () {
+  return {type: START_TEST, time: Date.now()};
+}
+
+export function testStop () {
+  return {type: STOP_TEST, time: Date.now()};
 }
 
 export function setActiveWorkspace (workspaceId) {

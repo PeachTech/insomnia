@@ -275,6 +275,9 @@ class App extends PureComponent {
       message: 'Going to run tests now'
     });
 
+    this.setState({isTesting: true});
+    setTimeout(() => this._wrapper._forceRequestPaneRefresh(), 500);
+
     const {activeEnvironment} = this.props;
         // fix up request and stuff
     const settings = await models.settings.getOrCreate();
@@ -316,6 +319,7 @@ class App extends PureComponent {
       title: result.State,
       message: result.Reason
     });
+    this.setState({isTesting: false});
   }
 
   async _handleRunTest (request) {
@@ -324,6 +328,8 @@ class App extends PureComponent {
       message: 'I am a test'
     });
 
+    this.props.handleStartTesting();
+    // setTimeout(() => this._wrapper._forceRequestPaneRefresh(), 500);
     const {activeEnvironment} = this.props;
 
     // fix up request and stuff
@@ -367,6 +373,7 @@ class App extends PureComponent {
       title: result.State,
       message: result.Reason
     });
+    this.props.handleStopTesting();
   }
 
   async _updateRequestGroupMetaByParentId (requestGroupId, patch) {
@@ -970,7 +977,8 @@ function mapStateToProps (state, props) {
 
   const {
     isLoading,
-    loadingRequestIds
+    loadingRequestIds,
+    isTesting
   } = global;
 
   // Entities
@@ -1047,7 +1055,8 @@ function mapStateToProps (state, props) {
     sidebarChildren,
     environments,
     activeEnvironment,
-    workspaceChildren
+    workspaceChildren,
+    isTesting
   });
 }
 
@@ -1057,6 +1066,8 @@ function mapDispatchToProps (dispatch) {
   return {
     handleStartLoading: global.loadRequestStart,
     handleStopLoading: global.loadRequestStop,
+    handleStartTesting: global.testStart,
+    handleStopTesting: global.testStop,
 
     handleSetActiveWorkspace: global.setActiveWorkspace,
     handleImportFileToWorkspace: global.importFile,
