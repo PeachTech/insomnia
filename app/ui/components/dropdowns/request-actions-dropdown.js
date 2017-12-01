@@ -37,6 +37,7 @@ class RequestActionsDropdown extends PureComponent {
   }
 
   _handleRunTest () {
+    trackEvent('Request', 'Run Test', 'Request Action');
     this.props.handleRunTest(this.props.request);
   }
 
@@ -76,7 +77,7 @@ class RequestActionsDropdown extends PureComponent {
         <DropdownDivider>Peach API Security</DropdownDivider>
         <DropdownItem onClick={this._handleRunTest}>
           <i className="fa fa-bomb"/> Run Test
-          <DropdownHint hotkey={hotkeys.DUPLICATE_REQUEST}/>
+          <DropdownHint hotkey={hotkeys.RUN_TEST}/>
         </DropdownItem>
 
         <DropdownDivider/>

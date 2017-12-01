@@ -127,6 +127,9 @@ class App extends PureComponent {
       }],
       [hotkeys.DUPLICATE_REQUEST, async () => {
         await this._requestDuplicate(this.props.activeRequest);
+      }],
+      [hotkeys.RUN_TEST, async() => {
+        await this._handleRunTest(this.props.activeRequest);
       }]
     ];
   }

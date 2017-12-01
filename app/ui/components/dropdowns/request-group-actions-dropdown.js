@@ -83,6 +83,7 @@ class RequestGroupActionsDropdown extends PureComponent {
         <DropdownDivider>Peach API Security</DropdownDivider>
         <DropdownItem onClick={this._handleRunTests}>
           <i className="fa fa-bomb"/> Test All Requests
+          <DropdownHint hotkey={hotkeys.RUN_ALL_TESTS}/>
         </DropdownItem>
         <DropdownDivider/>
         <DropdownItem onClick={this._handleRequestGroupDuplicate}>
