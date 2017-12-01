@@ -18,10 +18,7 @@ addons:
   artifacts:
     s3_region: "us-west-1"
     paths:
-    - dist/**/*.zip
-    - dist/**/*.dmg
-    - dist/**/*.deb
-    - dist/**/*.AppImage
+    - dist
   
   apt:
     packages:
