@@ -3,6 +3,7 @@ language: node_js
 matrix:
   include:
     - os: linux
+      sudo: required
       dist: trusty
       env: CC=clang CXX=clang++ npm_config_clang=1
       compiler: clang
@@ -25,12 +26,18 @@ matrix:
         - CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD
 
 before_install:
+  # Wine
   - sudo dpkg --add-architecture i386
   - wget https://dl.winehq.org/wine-builds/Release.key
   - sudo apt-key add Release.key
   - sudo apt-add-repository "https://dl.winehq.org/wine-builds/ubuntu/" -y
   - sudo apt-get update -q
-  - sudo apt-get install winehq-stable -y
+  - sudo apt-get install --no-install-recommends winehq-stable -y
+  # Mono
+  - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+  - echo "deb http://download.mono-project.com/repo/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/mono-official.list
+  - sudo apt-get update -q
+  - sudo apt-get install --no-install-recommends mono-devel ca-certificates-mono -y
 
 addons:
   artifacts:
@@ -46,6 +53,7 @@ addons:
     - icnsutils
     - graphicsmagick
     - xz-utils
+    - mono
 
 cache:
   directories:
