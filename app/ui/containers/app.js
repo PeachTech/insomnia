@@ -270,6 +270,13 @@ class App extends PureComponent {
       return;
     }
 
+    if (this.props.settings.peachApiUrl === '' || this.props.settings.peachApiToken === '' ||
+        this.props.settings.peachProject === '') {
+      await showAlert({title: 'Error', message: 'Peach API Security has not been configured.'});
+      showModal(SettingsModal, 1);
+      return;
+    }
+
     await showAlert({
       title: 'Running All Tests in Group',
       message: 'Going to run tests now'
@@ -327,6 +334,13 @@ class App extends PureComponent {
       title: 'Running test',
       message: 'I am a test'
     });
+
+    if (this.props.settings.peachApiUrl === '' || this.props.settings.peachApiToken === '' ||
+    this.props.settings.peachProject === '') {
+      await showAlert({title: 'Error', message: 'Peach API Security has not been configured.'});
+      showModal(SettingsModal, 1);
+      return;
+    }
 
     this.props.handleStartTesting();
     // setTimeout(() => this._wrapper._forceRequestPaneRefresh(), 500);
