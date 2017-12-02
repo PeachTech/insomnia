@@ -39,13 +39,14 @@ class TestTimer extends PureComponent {
 
   render () {
     const {handleCancel, testInfo} = this.props;
+    const reqGroup = testInfo.workspace === '' ? '' : <div>Request Group: {testInfo.workspace}</div>;
     return (
       <div className={classnames('overlay theme--overlay', {'overlay--hidden': false})}>
         <h2>Testing...</h2>
         {!testInfo ? <span>Unknown</span> : (
           <div>
-          <div>Request Group: {testInfo.workspace}</div>
-          <div>Test Case: {testInfo.test}</div>
+            {reqGroup}
+            <div>Test Case: {testInfo.test}</div>
           </div>
         )}
         <div className="pad">

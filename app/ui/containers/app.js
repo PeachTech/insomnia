@@ -350,7 +350,8 @@ class App extends PureComponent {
     const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
     const requestGroupDoc = ancestors.find(doc => doc.type === models.requestGroup.type);
     const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
-    this.props.handleTestInfo(requestGroupDoc.name, request.name);
+    const rgName = requestGroupDoc ? requestGroupDoc.name : '';
+    this.props.handleTestInfo(rgName, request.name);
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
     let nextState = 'Continue';
     let result;
@@ -362,7 +363,7 @@ class App extends PureComponent {
       settings.httpProxy = api.ProxyUrl();
       do {
         await api.Setup();
-        await api.TestCase(requestGroupDoc.name + '_' + request.name);
+        await api.TestCase(rgName + '_' + request.name);
         const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment._id);
         const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment._id, ancestors);
 
