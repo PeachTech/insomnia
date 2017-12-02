@@ -2,7 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import classnames from 'classnames';
-// import {REQUEST_TIME_TO_SHOW_COUNTER} from '../../common/constants';
 
 @autobind
 class TestTimer extends PureComponent {
@@ -40,18 +39,12 @@ class TestTimer extends PureComponent {
 
   render () {
     const {handleCancel, testInfo} = this.props;
-    // const {elapsedTime} = this.state;
-    let derp = 'derp';
-    // const show = loadStartTime > 0;
-    if (testInfo == null) {
-      derp = 'testInfo is null';
-    }
     return (
       <div className={classnames('overlay theme--overlay', {'overlay--hidden': false})}>
         <h2>Testing...</h2>
         {!testInfo ? <span>Unknown</span> : (
           <div>
-          <div>Workspace: {testInfo.workspace}</div>
+          <div>Request Group: {testInfo.workspace}</div>
           <div>Test Case: {testInfo.test}</div>
           </div>
         )}

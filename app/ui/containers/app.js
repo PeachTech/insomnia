@@ -11,7 +11,6 @@ import {bindActionCreators} from 'redux';
 import {showModal} from '../components/modals';
 import Wrapper from '../components/wrapper';
 import WorkspaceEnvironmentsEditModal from '../components/modals/workspace-environments-edit-modal';
-import Toast from '../components/toast';
 import CookiesModal from '../components/modals/cookies-modal';
 import RequestSwitcherModal from '../components/modals/request-switcher-modal';
 import ChangelogModal from '../components/modals/changelog-modal';
@@ -298,14 +297,15 @@ class App extends PureComponent {
         models.workspace.type
       ]);
       const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
+      const requestGroupDoc = ancestors.find(doc => doc.type === models.requestGroup.type);
       const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
-      this.props.handleTestInfo(workspace.name, request.name);
+      this.props.handleTestInfo(requestGroupDoc.name, request.name);
 
       let nextState = 'Continue';
       try {
         do {
           await api.Setup();
-          await api.TestCase(request.name);
+          await api.TestCase(requestGroupDoc.name + '_' + request.name);
           const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment._id);
           const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment._id, ancestors);
 
@@ -322,19 +322,14 @@ class App extends PureComponent {
     }
     await api.SuiteTeardown();
     let result = await api.SessionTeardown();
+    this.props.handleStopTesting();
     await showAlert({
       title: result.State,
       message: result.Reason
     });
-    this.props.handleStopTesting();
   }
 
   async _handleRunTest (request) {
-    await showAlert({
-      title: 'Running test',
-      message: 'I am a test'
-    });
-
     if (this.props.settings.peachApiUrl === '' || this.props.settings.peachApiToken === '' ||
     this.props.settings.peachProject === '') {
       await showAlert({title: 'Error', message: 'Peach API Security has not been configured.'});
@@ -343,7 +338,6 @@ class App extends PureComponent {
     }
 
     this.props.handleStartTesting();
-    // setTimeout(() => this._wrapper._forceRequestPaneRefresh(), 500);
     const {activeEnvironment} = this.props;
 
     // fix up request and stuff
@@ -354,8 +348,9 @@ class App extends PureComponent {
     ]);
 
     const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
+    const requestGroupDoc = ancestors.find(doc => doc.type === models.requestGroup.type);
     const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
-    this.props.handleTestInfo(workspace.name, request.name);
+    this.props.handleTestInfo(requestGroupDoc.name, request.name);
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
     let nextState = 'Continue';
     let result;
@@ -367,7 +362,7 @@ class App extends PureComponent {
       settings.httpProxy = api.ProxyUrl();
       do {
         await api.Setup();
-        await api.TestCase(request.name);
+        await api.TestCase(requestGroupDoc.name + '_' + request.name);
         const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment._id);
         const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment._id, ancestors);
 
@@ -383,12 +378,11 @@ class App extends PureComponent {
     }
     await api.SuiteTeardown();
     result = await api.SessionTeardown();
-
+    this.props.handleStopTesting();
     await showAlert({
       title: result.State,
       message: result.Reason
     });
-    this.props.handleStopTesting();
   }
 
   async _updateRequestGroupMetaByParentId (requestGroupId, patch) {
@@ -952,11 +946,6 @@ class App extends PureComponent {
               handleToggleMenuBar={this._handleToggleMenuBar}
             />
           </ErrorBoundary>
-
-          <ErrorBoundary showAlert>
-            <Toast/>
-          </ErrorBoundary>
-
           {/* Block all mouse activity by showing an overlay while dragging */}
           {this.state.showDragOverlay ? <div className="blocker-overlay"></div> : null}
         </div>
