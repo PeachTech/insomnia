@@ -399,7 +399,8 @@ class Wrapper extends React.PureComponent<Props, State> {
       workspaceChildren,
       workspaces,
       unseenWorkspaces,
-      isTesting
+      isTesting,
+      testInfo
     } = this.props;
 
     const realSidebarWidth = sidebarHidden ? 0 : sidebarWidth;
@@ -663,6 +664,7 @@ class Wrapper extends React.PureComponent<Props, State> {
             handleDeleteResponse={this._handleDeleteResponse}
             handleSetFilter={this._handleSetResponseFilter}
             isTesting={isTesting}
+            testInfo={testInfo}
           />
         </ErrorBoundary>
       </div>

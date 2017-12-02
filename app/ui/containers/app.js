@@ -275,8 +275,7 @@ class App extends PureComponent {
       message: 'Going to run tests now'
     });
 
-    this.setState({isTesting: true});
-    setTimeout(() => this._wrapper._forceRequestPaneRefresh(), 500);
+    this.props.handleStartTesting();
 
     const {activeEnvironment} = this.props;
         // fix up request and stuff
@@ -293,6 +292,7 @@ class App extends PureComponent {
       ]);
       const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
       const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
+      this.props.handleTestInfo(workspace.name, request.name);
 
       let nextState = 'Continue';
       try {
@@ -319,7 +319,7 @@ class App extends PureComponent {
       title: result.State,
       message: result.Reason
     });
-    this.setState({isTesting: false});
+    this.props.handleStopTesting();
   }
 
   async _handleRunTest (request) {
@@ -341,10 +341,11 @@ class App extends PureComponent {
 
     const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
     const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
-
+    this.props.handleTestInfo(workspace.name, request.name);
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
     let nextState = 'Continue';
     let result;
+
     try {
       await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
 
@@ -978,7 +979,8 @@ function mapStateToProps (state, props) {
   const {
     isLoading,
     loadingRequestIds,
-    isTesting
+    isTesting,
+    testInfo
   } = global;
 
   // Entities
@@ -1056,7 +1058,8 @@ function mapStateToProps (state, props) {
     environments,
     activeEnvironment,
     workspaceChildren,
-    isTesting
+    isTesting,
+    testInfo
   });
 }
 
@@ -1068,6 +1071,7 @@ function mapDispatchToProps (dispatch) {
     handleStopLoading: global.loadRequestStop,
     handleStartTesting: global.testStart,
     handleStopTesting: global.testStop,
+    handleTestInfo: global.testSetInfo,
 
     handleSetActiveWorkspace: global.setActiveWorkspace,
     handleImportFileToWorkspace: global.importFile,

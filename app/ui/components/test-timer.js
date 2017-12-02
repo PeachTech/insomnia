@@ -39,14 +39,22 @@ class TestTimer extends PureComponent {
   }
 
   render () {
-    const {handleCancel} = this.props;
+    const {handleCancel, testInfo} = this.props;
     // const {elapsedTime} = this.state;
-
+    let derp = 'derp';
     // const show = loadStartTime > 0;
-
+    if (testInfo == null) {
+      derp = 'testInfo is null';
+    }
     return (
       <div className={classnames('overlay theme--overlay', {'overlay--hidden': false})}>
         <h2>Testing...</h2>
+        {!testInfo ? <span>Unknown</span> : (
+          <div>
+          <div>Workspace: {testInfo.workspace}</div>
+          <div>Test Case: {testInfo.test}</div>
+          </div>
+        )}
         <div className="pad">
           <i className="fa fa-refresh fa-spin"/>
         </div>
@@ -62,7 +70,8 @@ class TestTimer extends PureComponent {
 
 TestTimer.propTypes = {
   handleCancel: PropTypes.func.isRequired,
-  loadStartTime: PropTypes.number.isRequired
+  loadStartTime: PropTypes.number.isRequired,
+  testInfo: PropTypes.object
 };
 
 export default TestTimer;

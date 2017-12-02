@@ -53,7 +53,8 @@ type Props = {
   // Other
   request: ?Request,
   response: ?Response,
-  isTesting: boolean
+  isTesting: boolean,
+  testInfo: ?Object
 };
 
 @autobind
@@ -168,7 +169,8 @@ class ResponsePane extends React.PureComponent<Props> {
       editorKeyMap,
       filter,
       filterHistory,
-      showCookiesModal
+      showCookiesModal,
+      testInfo
     } = this.props;
 
     if (!request) {
@@ -220,6 +222,7 @@ class ResponsePane extends React.PureComponent<Props> {
           <TestTimer
             handleCancel={cancelCurrentRequest}
             loadStartTime={loadStartTime}
+            testInfo={testInfo}
           />
         </section>
       );
