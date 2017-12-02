@@ -24,6 +24,14 @@ matrix:
         - CSC_LINK=$MAC_CSC_LINK
         - CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD
 
+before_install:
+  - sudo dpkg --add-architecture i386
+  - wget https://dl.winehq.org/wine-builds/Release.key
+  - sudo apt-key add Release.key
+  - sudo apt-add-repository "https://dl.winehq.org/wine-builds/ubuntu/" -y
+  - sudo apt-get update -q
+  - sudo apt-get install-recommends winehq-stable -y
+
 addons:
   artifacts:
     s3_region: "us-west-1"
@@ -38,7 +46,6 @@ addons:
     - icnsutils
     - graphicsmagick
     - xz-utils
-    - wine
 
 cache:
   directories:
