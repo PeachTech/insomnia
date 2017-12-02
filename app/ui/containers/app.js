@@ -263,9 +263,27 @@ class App extends PureComponent {
     clipboard.writeText(cmd);
   }
 
+  async _handleCancelTests (sessionid) {
+    if (sessionid && sessionid !== '') {
+      const settings = await models.settings.getOrCreate();
+      let api = new PeachApiSec(settings.peachApiUrl, settings.peachApiToken);
+      await api.StopJob(sessionid);
+    }
+  }
+
   async _handleRunTests (requestGroup) {
-    let requests = await models.request.findByParentId(requestGroup._id);
+    let requests;
+    if (requestGroup && requestGroup.type === models.requestGroup.type) {
+      let objs = await db.withDescendants(requestGroup, models.request.type);
+      requests = objs.filter(doc => doc.type === models.request.type);
+    } else {
+      let objs = await db.withDescendants(this.props.activeWorkspace, models.request.type);
+      requests = objs.filter(doc => doc.type === models.request.type);
+    }
+
     if (requests.length === 0) {
+      await showAlert({title: 'Error - no requests found',
+        message: 'Unable to find any requests in your workspace.  Ensure you have an active workspace and that it contains at least one request.'});
       return;
     }
 
@@ -287,7 +305,7 @@ class App extends PureComponent {
         // fix up request and stuff
     const settings = await models.settings.getOrCreate();
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
-    await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
+    let session = await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
     settings.proxyEnabled = true;
     settings.httpProxy = api.ProxyUrl();
 
@@ -299,13 +317,14 @@ class App extends PureComponent {
       const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
       const requestGroupDoc = ancestors.find(doc => doc.type === models.requestGroup.type);
       const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
-      this.props.handleTestInfo(requestGroupDoc.name, request.name);
+      let reqName = requestGroupDoc ? requestGroupDoc.name : '';
+      this.props.handleTestInfo(reqName, request.name, session.Id);
 
       let nextState = 'Continue';
       try {
         do {
           await api.Setup();
-          await api.TestCase(requestGroupDoc.name + '_' + request.name);
+          await api.TestCase(reqName + '_' + request.name);
           const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment._id);
           const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment._id, ancestors);
 
@@ -316,8 +335,10 @@ class App extends PureComponent {
       } catch (ex) {
         await showAlert({
           title: 'Error',
-          message: ex.message
+          message: 'An error occurred on the test run or the test run was cancelled.  ' + ex.message
         });
+        this.props.handleStopTesting();
+        return;
       }
     }
     await api.SuiteTeardown();
@@ -351,14 +372,14 @@ class App extends PureComponent {
     const requestGroupDoc = ancestors.find(doc => doc.type === models.requestGroup.type);
     const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
     const rgName = requestGroupDoc ? requestGroupDoc.name : '';
-    this.props.handleTestInfo(rgName, request.name);
+    
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
     let nextState = 'Continue';
     let result;
 
     try {
-      await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
-
+      let session = await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
+      this.props.handleTestInfo(rgName, request.name, session.Id);
       settings.proxyEnabled = true;
       settings.httpProxy = api.ProxyUrl();
       do {
@@ -374,8 +395,10 @@ class App extends PureComponent {
     } catch (ex) {
       await showAlert({
         title: 'Error',
-        message: ex.message
+        message: 'An error occurred on the test run or the test run was cancelled.  ' + ex.message
       });
+      this.props.handleStopTesting();
+      return;
     }
     await api.SuiteTeardown();
     result = await api.SessionTeardown();
@@ -945,6 +968,7 @@ class App extends PureComponent {
               handleSetActiveEnvironment={this._handleSetActiveEnvironment}
               handleSetSidebarFilter={this._handleSetSidebarFilter}
               handleToggleMenuBar={this._handleToggleMenuBar}
+              handleCancelTests={this._handleCancelTests}
             />
           </ErrorBoundary>
           {/* Block all mouse activity by showing an overlay while dragging */}

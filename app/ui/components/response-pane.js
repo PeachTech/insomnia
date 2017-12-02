@@ -38,6 +38,7 @@ type Props = {
   handleDeleteResponses: Function,
   handleDeleteResponse: Function,
   handleShowRequestSettings: Function,
+  handleCancelTests: Function,
 
   // Required
   previewMode: string,
@@ -170,7 +171,8 @@ class ResponsePane extends React.PureComponent<Props> {
       filter,
       filterHistory,
       showCookiesModal,
-      testInfo
+      testInfo,
+      handleCancelTests
     } = this.props;
 
     if (!request) {
@@ -220,9 +222,9 @@ class ResponsePane extends React.PureComponent<Props> {
           </div>
 
           <TestTimer
-            handleCancel={cancelCurrentRequest}
             loadStartTime={loadStartTime}
             testInfo={testInfo}
+            handleCancelTests={handleCancelTests}
           />
         </section>
       );

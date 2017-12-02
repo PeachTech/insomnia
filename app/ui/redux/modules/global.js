@@ -81,7 +81,7 @@ function testingReducer (state = false, action) {
 function testInfoReducer (state = {}, action) {
   switch (action.type) {
     case TEST_INFO:
-      return Object.assign({}, state, {workspace: action.workspace, test: action.test});
+      return Object.assign({}, state, {workspace: action.workspace, test: action.test, session: action.session});
     default:
       return state;
   }
@@ -147,8 +147,8 @@ export function testStop () {
   return {type: STOP_TEST, time: Date.now()};
 }
 
-export function testSetInfo (workspaceName, testName) {
-  return {type: TEST_INFO, workspace: workspaceName, test: testName};
+export function testSetInfo (workspaceName, testName, sessionId) {
+  return {type: TEST_INFO, workspace: workspaceName, test: testName, session: sessionId};
 }
 
 export function setActiveWorkspace (workspaceId) {

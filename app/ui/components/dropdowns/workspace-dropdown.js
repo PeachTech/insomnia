@@ -107,6 +107,10 @@ class WorkspaceDropdown extends PureComponent {
     });
   }
 
+  _handleRunTests () {
+    this.props.handleRunTests();
+  }
+
   render () {
     const {
       className,
@@ -164,8 +168,9 @@ class WorkspaceDropdown extends PureComponent {
           <DropdownItem onClick={this._handleShowPeachSettings}>
             <i className="fa fa-cog"/> Peach Preferences
           </DropdownItem>
-          <DropdownItem onClick={this._handleShowExport}>
+          <DropdownItem onClick={this._handleRunTests}>
             <i className="fa fa-bomb"/> Test All Requests
+            <DropdownHint hotkey={hotkeys.RUN_ALL_TESTS}/>
           </DropdownItem>
           <DropdownDivider>Switch Workspace</DropdownDivider>
 
@@ -229,6 +234,7 @@ WorkspaceDropdown.propTypes = {
   workspaces: PropTypes.arrayOf(PropTypes.object).isRequired,
   unseenWorkspaces: PropTypes.arrayOf(PropTypes.object).isRequired,
   activeWorkspace: PropTypes.object.isRequired,
+  handleRunTests: PropTypes.func.isRequired,
 
   // Optional
   className: PropTypes.string

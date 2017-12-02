@@ -2,6 +2,8 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import classnames from 'classnames';
+import PeachApiSec from 'peachapisec';
+import * as models from '../../models';
 
 @autobind
 class TestTimer extends PureComponent {
@@ -11,6 +13,10 @@ class TestTimer extends PureComponent {
     this.state = {
       elapsedTime: 0
     };
+  }
+
+  async _handleCancel (sessionid) {
+    this.props.handleCancelTests(sessionid);
   }
 
   componentWillUnmount () {
@@ -38,7 +44,7 @@ class TestTimer extends PureComponent {
   }
 
   render () {
-    const {handleCancel, testInfo} = this.props;
+    const {testInfo} = this.props;
     const reqGroup = testInfo.workspace === '' ? '' : <div>Request Group: {testInfo.workspace}</div>;
     return (
       <div className={classnames('overlay theme--overlay', {'overlay--hidden': false})}>
@@ -53,7 +59,7 @@ class TestTimer extends PureComponent {
           <i className="fa fa-refresh fa-spin"/>
         </div>
         <div className="pad">
-          <button className="btn btn--clicky" onClick={handleCancel}>
+          <button className="btn btn--clicky" onClick={() => this.props.handleCancelTests(testInfo.session)}>
             Cancel Test Run
           </button>
         </div>
@@ -63,7 +69,7 @@ class TestTimer extends PureComponent {
 }
 
 TestTimer.propTypes = {
-  handleCancel: PropTypes.func.isRequired,
+  handleCancelTests: PropTypes.func.isRequired,
   loadStartTime: PropTypes.number.isRequired,
   testInfo: PropTypes.object
 };

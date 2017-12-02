@@ -111,6 +111,7 @@ type Props = {
 
   // Peach API Properties
   testRunning: boolean, // is a test or group of tests running?
+  handleCancelTests: Function,
 
   // Optional
   oAuth2Token: ?OAuth2Token,
@@ -400,7 +401,8 @@ class Wrapper extends React.PureComponent<Props, State> {
       workspaces,
       unseenWorkspaces,
       isTesting,
-      testInfo
+      testInfo,
+      handleCancelTests
     } = this.props;
 
     const realSidebarWidth = sidebarHidden ? 0 : sidebarWidth;
@@ -665,6 +667,7 @@ class Wrapper extends React.PureComponent<Props, State> {
             handleSetFilter={this._handleSetResponseFilter}
             isTesting={isTesting}
             testInfo={testInfo}
+            handleCancelTests={handleCancelTests}
           />
         </ErrorBoundary>
       </div>

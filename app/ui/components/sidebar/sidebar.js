@@ -72,6 +72,7 @@ class Sidebar extends PureComponent {
           handleImportFile={handleImportFile}
           handleSetActiveWorkspace={handleSetActiveWorkspace}
           isLoading={isLoading}
+          handleRunTests={handleRunTests}
         />
 
         <div className="sidebar__menu">
