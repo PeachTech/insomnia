@@ -45,7 +45,7 @@ script:
 - npm test
 
 after_success:
-- npm run build-n-package:$PLATFORM
+- npm run package:$PLATFORM
 
 deploy:
   provider: releases
