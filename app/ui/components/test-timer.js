@@ -2,8 +2,6 @@ import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import classnames from 'classnames';
-import PeachApiSec from 'peachapisec';
-import * as models from '../../models';
 
 @autobind
 class TestTimer extends PureComponent {

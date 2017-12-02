@@ -372,7 +372,7 @@ class App extends PureComponent {
     const requestGroupDoc = ancestors.find(doc => doc.type === models.requestGroup.type);
     const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
     const rgName = requestGroupDoc ? requestGroupDoc.name : '';
-    
+
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
     let nextState = 'Continue';
     let result;
