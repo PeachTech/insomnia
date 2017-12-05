@@ -192,7 +192,7 @@ class WorkspaceDropdown extends PureComponent {
             <i className="fa fa-empty"/> New Workspace
           </DropdownItem>
 
-          <DropdownDivider>Insomnia Version {getAppVersion()}</DropdownDivider>
+          <DropdownDivider>Peach Insomnia Version {getAppVersion()}</DropdownDivider>
 
           <DropdownItem onClick={this._handleShowSettings}>
             <i className="fa fa-cog"/> Preferences
@@ -201,24 +201,6 @@ class WorkspaceDropdown extends PureComponent {
           <DropdownItem onClick={this._handleShowExport}>
             <i className="fa fa-share"/> Import/Export
           </DropdownItem>
-
-          {/* Not Logged In */}
-
-          {!this.state.loggedIn && (
-            <DropdownItem key="login" onClick={this._handleShowLogin}>
-              <i className="fa fa-sign-in"/> Log In
-            </DropdownItem>
-          )}
-
-          {!this.state.loggedIn && (
-            <DropdownItem key="invite"
-                          buttonClass={Link}
-                          href="https://insomnia.rest/pricing/"
-                          button>
-              <i className="fa fa-users"/> Upgrade to Plus
-              <i className="fa fa-star surprise fa-outline"/>
-            </DropdownItem>
-          )}
         </Dropdown>
       </KeydownBinder>
     );

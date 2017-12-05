@@ -268,6 +268,7 @@ class App extends PureComponent {
       const settings = await models.settings.getOrCreate();
       let api = new PeachApiSec(settings.peachApiUrl, settings.peachApiToken);
       await api.StopJob(sessionid);
+      this.props.handleStopTesting();
     }
   }
 
@@ -293,11 +294,6 @@ class App extends PureComponent {
       showModal(SettingsModal, 1);
       return;
     }
-
-    await showAlert({
-      title: 'Running All Tests in Group',
-      message: 'Going to run tests now'
-    });
 
     this.props.handleStartTesting();
 
@@ -335,7 +331,7 @@ class App extends PureComponent {
       } catch (ex) {
         await showAlert({
           title: 'Error',
-          message: 'An error occurred on the test run or the test run was cancelled.  ' + ex.message
+          message: 'An error occurred on the test run or the test run was cancelled.'
         });
         this.props.handleStopTesting();
         await api.SuiteTeardown();
@@ -397,7 +393,7 @@ class App extends PureComponent {
     } catch (ex) {
       await showAlert({
         title: 'Error',
-        message: 'An error occurred on the test run or the test run was cancelled.  ' + ex.message
+        message: 'An error occurred on the test run or the test run was cancelled.'
       });
       this.props.handleStopTesting();
       return;
