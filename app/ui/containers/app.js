@@ -325,8 +325,8 @@ class App extends PureComponent {
         do {
           await api.Setup();
           await api.TestCase(reqName + '_' + request.name);
-          const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment._id);
-          const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment._id, ancestors);
+          const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment ? activeEnvironment._id : 'n/a');
+          const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment ? activeEnvironment._id : 'n/a', ancestors);
 
           let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
           await network._actuallySend(renderedRequest, workspace, settings);
@@ -338,6 +338,8 @@ class App extends PureComponent {
           message: 'An error occurred on the test run or the test run was cancelled.  ' + ex.message
         });
         this.props.handleStopTesting();
+        await api.SuiteTeardown();
+        await api.SessionTeardown();
         return;
       }
     }
@@ -385,8 +387,8 @@ class App extends PureComponent {
       do {
         await api.Setup();
         await api.TestCase(rgName + '_' + request.name);
-        const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment._id);
-        const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment._id, ancestors);
+        const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment ? activeEnvironment._id : 'n/a');
+        const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment ? activeEnvironment._id : 'n/a', ancestors);
 
         let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
         await network._actuallySend(renderedRequest, workspace, settings);
