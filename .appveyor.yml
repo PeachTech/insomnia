@@ -55,8 +55,8 @@ artifacts:
 
 deploy:
   provider: S3
-  access_key_id: %S3_ACCESS_KEY_ID%
-  secret_access_key: %S3_SECRET_KEY%
+  access_key_id: $S3_ACCESS_KEY_ID
+  secret_access_key: $S3_SECRET_KEY
   bucket: peach-insomnia
   region: eu-west-1
   folder: appveyor
