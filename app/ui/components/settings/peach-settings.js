@@ -40,8 +40,8 @@ class PeachSettings extends PureComponent<void, State> {
   async _testPeachConnection (url: string, token: string) {
     let isGood: boolean = false;
     let err = 'OK';
-    let api = new PeachApiSec(url, token);
     try {
+      let api = new PeachApiSec(url, token);
       let projects = await api.GetProjects();
       if (projects) {
         isGood = true;
