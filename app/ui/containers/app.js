@@ -266,9 +266,15 @@ class App extends PureComponent {
   async _handleCancelTests (sessionid) {
     if (sessionid && sessionid !== '') {
       const settings = await models.settings.getOrCreate();
-      let api = new PeachApiSec(settings.peachApiUrl, settings.peachApiToken);
-      await api.StopJob(sessionid);
-      this.props.handleStopTesting();
+      try {
+        let api = new PeachApiSec(settings.peachApiUrl, settings.peachApiToken);
+        await api.StopJob(sessionid);
+        // don't really care what the error was here since 404 
+        // very possible if cancel is clicked multiple times for some 
+        // reason
+      } finally {
+        this.props.handleStopTesting();
+      }
     }
   }
 
