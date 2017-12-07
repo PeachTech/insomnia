@@ -43,10 +43,7 @@ addons:
   artifacts:
     s3_region: "us-west-1"
     paths:
-      - $(ls dist/mac/*.zip | tr "\n" ":")
-      - $(ls dist/mac/*.dmg | tr "\n" ":")
-      - $(ls dist/linux/*.deb | tr "\n" ":")
-      - $(ls dist/linux/*.AppImage | tr "\n" ":")
+      - $(find dist -type -f -name *.zip -o -name *.deb -o -name *.AppImate -o -name *.dmg | tr "\n" ":")      
   
   apt:
     packages:
