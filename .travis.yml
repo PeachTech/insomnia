@@ -43,7 +43,7 @@ addons:
   artifacts:
     s3_region: "us-west-1"
     paths:
-      - $(find dist -type f -name *.zip -o -name *.deb -o -name *.AppImate -o -name *.dmg | tr "\n" ":")
+      - $(find dist -type f -name *.zip -o -name *.AppImage -o -name *.dmg | tr "\n" ":")
   
   apt:
     packages:
