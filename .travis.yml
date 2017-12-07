@@ -43,7 +43,11 @@ addons:
   artifacts:
     s3_region: "us-west-1"
     paths:
-    - dist
+      - dist/mac/*.zip
+      - dist/mac/*.dmg
+      - dist/linux/*.deb
+      - dist/linux/*.tar.gz
+      - dist/linux/*.AppImage
   
   apt:
     packages:
