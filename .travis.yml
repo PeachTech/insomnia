@@ -10,14 +10,14 @@ matrix:
       env:
         - PLATFORM=linux
 
-    - os: linux
-      dist: trusty
-      env: CC=clang CXX=clang++ npm_config_clang=1
-      compiler: clang
-      env:
-        - PLATFORM=win
-        # prevent wine popup dialogs about installing additional packages
-        - WINEDLLOVERRIDES="mscoree,mshtml="
+#    - os: linux
+#      dist: trusty
+#      env: CC=clang CXX=clang++ npm_config_clang=1
+#      compiler: clang
+#      env:
+#        - PLATFORM=win
+#        # prevent wine popup dialogs about installing additional packages
+#        - WINEDLLOVERRIDES="mscoree,mshtml="
 
     - os: osx
       env:
