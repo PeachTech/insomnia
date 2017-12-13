@@ -23,6 +23,13 @@ class PeachSettings extends PureComponent<void, State> {
       hasChanged: false
     };
   }
+  _handleUpdatePeachUrl (e: Event) {
+    let value = (e.target: any).value;
+    // strip trailing slash if present
+    value = value.replace(/\/$/, '');
+    this.props.updateSetting((e.target: any).name, value);
+    this.setState({hasChanged: true});
+  }
   _handleUpdateSetting (e: Event) {
     let value = e.target.type === 'checkbox' ? (e.target: any).checked : (e.target: any).value;
 
@@ -42,7 +49,7 @@ class PeachSettings extends PureComponent<void, State> {
     let err = 'OK';
     try {
       let api = new PeachApiSec(url, token);
-      let projects = await api.GetProjects();
+      let projects = await api.GetJobs();
       if (projects) {
         isGood = true;
       }
@@ -76,7 +83,7 @@ class PeachSettings extends PureComponent<void, State> {
             <input type="text"
                    name="peachApiUrl"
                    defaultValue={settings.peachApiUrl}
-                   onChange={this._handleUpdateSetting}/>
+                   onChange={this._handleUpdatePeachUrl}/>
           </label>
         </div>
 
