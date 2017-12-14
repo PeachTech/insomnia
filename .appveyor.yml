@@ -35,8 +35,12 @@ build_script:
 #---------------------------------#
 
 artifacts:
-  - path: dist\win\*
-    name: dist
+  - path: dist\win\*.exe
+    name: dist_exe
+
+  - path: dist\win\*.nupkg
+    name: dist_nupkg
+  
 
 #---------------------------------#
 #     deployment configuration    #
@@ -60,4 +64,4 @@ deploy:
   bucket: peach-insomnia
   region: us-west-1
   folder: appveyor
-  artifact: dist\win\*.exe, dist\win\*.nupkg
+  artifact: dist_exe, dist_nupkg
