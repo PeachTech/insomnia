@@ -60,4 +60,4 @@ deploy:
   bucket: peach-insomnia
   region: us-west-1
   folder: appveyor
-  artifact: dist
+  artifact: dist\win\*.exe, dist\win\*.nupkg
