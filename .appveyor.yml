@@ -64,4 +64,4 @@ deploy:
   bucket: peach-insomnia
   region: us-west-1
   folder: appveyor
-  artifact: dist_exe, dist_nupkg
+  artifact: dist_exe
