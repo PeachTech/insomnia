@@ -32,7 +32,7 @@
     "build:win": "npm run build:clean && npm run build:renderer && npm run build:main && npm run build:copywin && npm run build:install",
     "rebuild": "electron-rebuild -f -w node-libcurl",
     "package:mac": "rm -rf dist/mac && node node_modules/electron-builder/out/cli/build-cli.js --publish=never --x64 --mac",
-    "package:win": "rimraf dist/win* && node node_modules/electron-builder/out/cli/build-cli.js --publish=never --x64 --win",
+    "package:win": "rimraf dist/win* && node node_modules/electron-builder/out/cli/build-cli.js --publish=never -w --x64 --ia32",
     "package:linux": "rm -rf dist/linux && rm -f dist/*.AppImage && rm -f dist/*.deb && node node_modules/electron-builder/out/cli/build-cli.js --publish=never --x64 --linux",
     "package": "npm test && rm -rf dist/* && npm run package:mac && npm run package:win && npm run package:linux",
     "build-n-package": "npm run build && npm run package",
@@ -96,8 +96,7 @@
     "win": {
       "iconUrl": "https://insomnia.rest/images/icon.png",
       "target": [
-        "squirrel",
-        "zip"
+        "squirrel"
       ],
       "msi": false
     },
@@ -106,9 +105,7 @@
       "synopsis": "A simple, beautiful, and free REST API client",
       "category": "Development",
       "target": [
-        "AppImage",
-        "deb",
-        "tar.gz"
+        "AppImage"
       ]
     },
     "deb": {

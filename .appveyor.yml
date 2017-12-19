@@ -36,11 +36,23 @@ build_script:
 
 artifacts:
   - path: dist\win\*.exe
-    name: dist_exe
+    name: dist_exe_64
+
+  - path: dist\win-ia32\*.exe
+    name: dist_exe_ia32
 
   - path: dist\win\*.nupkg
     name: dist_nupkg
-  
+
+before_package:
+- ps: >-
+    $ver = node -e "console.log(require('./app/package.json').version);"
+    Get-ChildItem dist/win/*.exe | Foreach-object {
+        Rename-Item -Path $_.fullname -Newname Peach-Insomnia-Setup-$ver-x64-win.exe;
+    }
+    Get-ChildItem dist/win-ia32/*.exe | Foreach-object {
+        Rename-Item -Path $_.fullname -Newname Peach-Insomnia-Setup-$ver-ia32-win.exe;
+    } 
 
 #---------------------------------#
 #     deployment configuration    #
@@ -64,4 +76,4 @@ deploy:
   bucket: peach-insomnia
   region: us-west-1
   folder: appveyor
-  artifact: dist_exe
+  artifact: dist_exe_64, dist_exe_ia32
