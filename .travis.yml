@@ -84,3 +84,4 @@ deploy:
     - dist/**/*.AppImage
   on:
     tags: true
+    branch: peach/develop

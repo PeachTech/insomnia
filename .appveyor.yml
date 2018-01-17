@@ -69,3 +69,5 @@ deploy:
   region: us-west-1
   folder: appveyor
   artifact: dist_exe_64, dist_exe_ia32
+  on:
+    branch: peach/develop
