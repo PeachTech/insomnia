@@ -310,6 +310,7 @@ class App extends PureComponent {
     let session = await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
     settings.proxyEnabled = true;
     settings.httpProxy = api.ProxyUrl();
+    settings.httpsProxy = api.ProxyUrl();
     settings.validateSSL = false;
 
     for (const request of requests) {
