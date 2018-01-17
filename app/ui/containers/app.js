@@ -388,6 +388,9 @@ class App extends PureComponent {
       this.props.handleTestInfo(rgName, request.name, session.Id);
       settings.proxyEnabled = true;
       settings.httpProxy = api.ProxyUrl();
+      settings.httpsProxy = api.ProxyUrl();
+      settings.validateSSL = false;
+
       do {
         await api.Setup();
         await api.TestCase(rgName + '_' + request.name);
