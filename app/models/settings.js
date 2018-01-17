@@ -60,7 +60,7 @@ export function init (): BaseSettings {
     maxRedirects: -1,
     proxyEnabled: false,
     timeout: 0,
-    validateSSL: true,
+    validateSSL: false,
     forceVerticalLayout: false,
     autoHideMenuBar: false,
     theme: 'default',
