@@ -74,13 +74,14 @@ after_success:
  - ./travis_rename.sh
 
 deploy:
-  provider: releases
-  api_key: $GITHUB_TOKEN
+  provider: s3
+  access_key_id: $ARTIFACTS_KEY
+  secret_access_key: $ARTIFACTS_SECRET
+  bucket: $ARTIFACTS_BUCKET
   skip_cleanup: true
   file_glob: true
   file:
     - dist/**/*.dmg
-    - dist/**/*.deb
     - dist/**/*.AppImage
   on:
     tags: true
