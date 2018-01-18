@@ -83,6 +83,7 @@ deploy:
   file:
     - dist/**/*.dmg
     - dist/**/*.AppImage
+  upload-dir: travis-builds
   on:
     tags: true
     branch: peach/develop
