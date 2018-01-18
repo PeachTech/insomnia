@@ -12,7 +12,6 @@ import * as models from '../../../models';
 import {getAppVersion} from '../../../common/constants';
 import {showModal, showPrompt} from '../modals/index';
 import {trackEvent} from '../../../analytics/index';
-import Link from '../base/link';
 import WorkspaceSettingsModal from '../modals/workspace-settings-modal';
 import WorkspaceShareSettingsModal from '../modals/workspace-share-settings-modal';
 import * as session from '../../../sync/session';
@@ -63,6 +62,10 @@ class WorkspaceDropdown extends PureComponent {
     showModal(SettingsModal);
   }
 
+  _handleShowPeachSettings () {
+    showModal(SettingsModal, 1);
+  }
+
   _handleShowWorkspaceSettings () {
     showModal(WorkspaceSettingsModal, {
       workspace: this.props.activeWorkspace
@@ -101,6 +104,10 @@ class WorkspaceDropdown extends PureComponent {
     executeHotKey(e, hotkeys.TOGGLE_MAIN_MENU, () => {
       this._dropdown && this._dropdown.toggle(true);
     });
+  }
+
+  _handleRunTests () {
+    this.props.handleRunTests();
   }
 
   render () {
@@ -156,6 +163,14 @@ class WorkspaceDropdown extends PureComponent {
             <i className="fa fa-globe"/> Share <strong>{activeWorkspace.name}</strong>
           </DropdownItem>
 
+          <DropdownDivider>Peach API Security</DropdownDivider>
+          <DropdownItem onClick={this._handleShowPeachSettings}>
+            <i className="fa fa-cog"/> Peach Preferences
+          </DropdownItem>
+          <DropdownItem onClick={this._handleRunTests}>
+            <i className="fa fa-bomb"/> Test All Requests
+            <DropdownHint hotkey={hotkeys.RUN_ALL_TESTS}/>
+          </DropdownItem>
           <DropdownDivider>Switch Workspace</DropdownDivider>
 
           {nonActiveWorkspaces.map(w => {
@@ -176,7 +191,7 @@ class WorkspaceDropdown extends PureComponent {
             <i className="fa fa-empty"/> New Workspace
           </DropdownItem>
 
-          <DropdownDivider>Insomnia Version {getAppVersion()}</DropdownDivider>
+          <DropdownDivider>Peach Insomnia Version {getAppVersion()}</DropdownDivider>
 
           <DropdownItem onClick={this._handleShowSettings}>
             <i className="fa fa-cog"/> Preferences
@@ -185,24 +200,6 @@ class WorkspaceDropdown extends PureComponent {
           <DropdownItem onClick={this._handleShowExport}>
             <i className="fa fa-share"/> Import/Export
           </DropdownItem>
-
-          {/* Not Logged In */}
-
-          {!this.state.loggedIn && (
-            <DropdownItem key="login" onClick={this._handleShowLogin}>
-              <i className="fa fa-sign-in"/> Log In
-            </DropdownItem>
-          )}
-
-          {!this.state.loggedIn && (
-            <DropdownItem key="invite"
-                          buttonClass={Link}
-                          href="https://insomnia.rest/pricing/"
-                          button>
-              <i className="fa fa-users"/> Upgrade to Plus
-              <i className="fa fa-star surprise fa-outline"/>
-            </DropdownItem>
-          )}
         </Dropdown>
       </KeydownBinder>
     );
@@ -218,6 +215,7 @@ WorkspaceDropdown.propTypes = {
   workspaces: PropTypes.arrayOf(PropTypes.object).isRequired,
   unseenWorkspaces: PropTypes.arrayOf(PropTypes.object).isRequired,
   activeWorkspace: PropTypes.object.isRequired,
+  handleRunTests: PropTypes.func.isRequired,
 
   // Optional
   className: PropTypes.string

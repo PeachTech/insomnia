@@ -253,10 +253,12 @@ export function _actuallySend (
       // SSL Validation
       if (settings.validateSSL) {
         timeline.push({name: 'TEXT', value: 'Enable SSL validation'});
+        console.log('Enable SSL validation');
       } else {
         setOpt(Curl.option.SSL_VERIFYHOST, 0);
         setOpt(Curl.option.SSL_VERIFYPEER, 0);
         timeline.push({name: 'TEXT', value: 'Disable SSL validation'});
+        console.log('Disable SSL validation');
       }
 
       // Setup CA Root Certificates if not on Mac. Thanks to libcurl, Mac will use
@@ -746,7 +748,7 @@ export async function send (requestId: string, environmentId: string) {
   return _actuallySend(renderedRequest, workspace, settings);
 }
 
-async function _applyRequestPluginHooks (
+export async function _applyRequestPluginHooks (
   renderedRequest: RenderedRequest,
   renderedContext: Object
 ): Promise<RenderedRequest> {

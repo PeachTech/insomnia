@@ -24,3 +24,11 @@ pids
 
 # Optional REPL history
 .node_repl_history
+
+# Visual Studio and VS Code stuff
+.vs/
+*.sln
+*.njsproj
+
+# Vim swap files
+*.swp

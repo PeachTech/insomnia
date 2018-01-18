@@ -22,7 +22,11 @@ type BaseSettings = {
   maxRedirects: number,
   disableAnalyticsTracking: boolean,
   pluginPath: string,
-  nunjucksPowerUserMode: boolean
+  nunjucksPowerUserMode: boolean,
+  peachApiUrl: string,
+  peachApiToken: string,
+  peachProject: string,
+  peachProfile: string
 };
 
 export type Settings = BaseModel & Settings;
@@ -33,6 +37,15 @@ export const prefix = 'set';
 export const canDuplicate = false;
 
 export function init (): BaseSettings {
+  let pUrl = '';
+  if (process.env.PEACH_API) {
+    pUrl = process.env.PEACH_API;
+  }
+  let pApiToken = '';
+  if (process.env.PEACH_API_TOKEN) {
+    pApiToken = process.env.PEACH_API_TOKEN;
+  }
+
   return {
     showPasswords: false,
     useBulkHeaderEditor: false,
@@ -47,13 +60,17 @@ export function init (): BaseSettings {
     maxRedirects: -1,
     proxyEnabled: false,
     timeout: 0,
-    validateSSL: true,
+    validateSSL: false,
     forceVerticalLayout: false,
     autoHideMenuBar: false,
     theme: 'default',
     disableAnalyticsTracking: false,
     pluginPath: '',
-    nunjucksPowerUserMode: false
+    nunjucksPowerUserMode: false,
+    peachApiUrl: pUrl,
+    peachApiToken: pApiToken,
+    peachProject: 'Default',
+    peachProfile: 'Quick'
   };
 }
 

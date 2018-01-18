@@ -9,8 +9,6 @@ shallow_clone: true
 platform: x64
 environment:
   NODEJS_VERSION: "7"
-  CSC_LINK: '%WINDOWS_CSC_LINK%'
-  CSC_KEY_PASSWORD: '%WINDOWS_CSC_KEY_PASSWORD%'
 
 # Things to install after repo clone
 install:
@@ -30,25 +28,46 @@ cache:
 #---------------------------------#
 
 build_script:
-  - if %APPVEYOR_REPO_TAG%==true npm run build-n-package:win
+  - npm run build-n-package:win
+  - ps: >-
+      $ver = node -e "console.log(require('./app/package.json').version);"; Get-ChildItem dist/win/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Insomnia-Setup-$ver-x64-win.exe; }; Get-ChildItem dist/win-ia32/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Insomnia-Setup-$ver-ia32-win.exe; }
 
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
 
 artifacts:
-  - path: dist\win\*
-    name: dist
+  - path: dist\win\*.exe
+    name: dist_exe_64
+
+  - path: dist\win-ia32\*.exe
+    name: dist_exe_ia32
+
+  - path: dist\win\*.nupkg
+    name: dist_nupkg
 
 #---------------------------------#
 #     deployment configuration    #
 #---------------------------------#
 
+#deploy:
+#  description: ''
+#  provider: GitHub
+#  auth_token:
+#    secure: Ffmgxn+wt5WSf/jgJ/L+/3mkUs4fn9Z5j4Dz73VATsgL14Rf/xUp2nOyE0ecow+1
+#  artifact: dist
+#  on:
+#    appveyor_repo_tag: true
+
 deploy:
-  description: ''
-  provider: GitHub
-  auth_token:
-    secure: Ffmgxn+wt5WSf/jgJ/L+/3mkUs4fn9Z5j4Dz73VATsgL14Rf/xUp2nOyE0ecow+1
-  artifact: dist
+  provider: S3
+  access_key_id:
+    secure: hUZXFNfyXbf/SwD6ZU05kW8OX7Qf5UQeNzu0z19npdQ=
+  secret_access_key:
+    secure: xlRU6LcoTAIRAy113AGY5rzR4l+zX1X+O/kgiIrsnJ8FSigUQQxJ34lUWRREtKUc
+  bucket: peach-insomnia
+  region: us-west-1
+  folder: appveyor
+  artifact: dist_exe_64, dist_exe_ia32
   on:
-    appveyor_repo_tag: true
+    branch: peach/develop

@@ -11,7 +11,6 @@ import {bindActionCreators} from 'redux';
 import {showModal} from '../components/modals';
 import Wrapper from '../components/wrapper';
 import WorkspaceEnvironmentsEditModal from '../components/modals/workspace-environments-edit-modal';
-import Toast from '../components/toast';
 import CookiesModal from '../components/modals/cookies-modal';
 import RequestSwitcherModal from '../components/modals/request-switcher-modal';
 import ChangelogModal from '../components/modals/changelog-modal';
@@ -42,6 +41,8 @@ import ErrorBoundary from '../components/error-boundary';
 import * as plugins from '../../plugins';
 import * as templating from '../../templating/index';
 import AskModal from '../components/modals/ask-modal';
+import PeachApiSec from 'peachapisec';
+import {getRenderContext, getRenderedRequest} from '../../common/render';
 
 @autobind
 class App extends PureComponent {
@@ -125,6 +126,9 @@ class App extends PureComponent {
       }],
       [hotkeys.DUPLICATE_REQUEST, async () => {
         await this._requestDuplicate(this.props.activeRequest);
+      }],
+      [hotkeys.RUN_TEST, async() => {
+        await this._handleRunTest(this.props.activeRequest);
       }]
     ];
   }
@@ -257,6 +261,161 @@ class App extends PureComponent {
     const snippet = new HTTPSnippet(har);
     const cmd = snippet.convert('shell', 'curl');
     clipboard.writeText(cmd);
+  }
+
+  async _handleCancelTests (sessionid) {
+    if (sessionid && sessionid !== '') {
+      const settings = await models.settings.getOrCreate();
+      try {
+        let api = new PeachApiSec(settings.peachApiUrl, settings.peachApiToken);
+        await api.StopJob(sessionid);
+        // don't really care what the error was here since 404
+        // very possible if cancel is clicked multiple times for some
+        // reason
+      } finally {
+        this.props.handleStopTesting();
+      }
+    }
+  }
+
+  async _handleRunTests (requestGroup) {
+    let requests;
+    if (requestGroup && requestGroup.type === models.requestGroup.type) {
+      let objs = await db.withDescendants(requestGroup, models.request.type);
+      requests = objs.filter(doc => doc.type === models.request.type);
+    } else {
+      let objs = await db.withDescendants(this.props.activeWorkspace, models.request.type);
+      requests = objs.filter(doc => doc.type === models.request.type);
+    }
+
+    if (requests.length === 0) {
+      await showAlert({title: 'Error - no requests found',
+        message: 'Unable to find any requests in your workspace.  Ensure you have an active workspace and that it contains at least one request.'});
+      return;
+    }
+
+    if (this.props.settings.peachApiUrl === '' || this.props.settings.peachApiToken === '' ||
+        this.props.settings.peachProject === '') {
+      await showAlert({title: 'Error', message: 'Peach API Security has not been configured.'});
+      showModal(SettingsModal, 1);
+      return;
+    }
+
+    this.props.handleStartTesting();
+
+    const {activeEnvironment} = this.props;
+        // fix up request and stuff
+    const settings = await models.settings.getOrCreate();
+    let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
+    let session = await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
+    settings.proxyEnabled = true;
+    settings.httpProxy = api.ProxyUrl();
+    settings.httpsProxy = api.ProxyUrl();
+    settings.validateSSL = false;
+
+    for (const request of requests) {
+      const ancestors = await db.withAncestors(request, [
+        models.requestGroup.type,
+        models.workspace.type
+      ]);
+      const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
+      const requestGroupDoc = ancestors.find(doc => doc.type === models.requestGroup.type);
+      const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
+      let reqName = requestGroupDoc ? requestGroupDoc.name : '';
+      this.props.handleTestInfo(reqName, request.name, session.Id);
+
+      let nextState = 'Continue';
+      try {
+        do {
+          await api.Setup();
+          await api.TestCase(reqName + '_' + request.name);
+          const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment ? activeEnvironment._id : 'n/a');
+          const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment ? activeEnvironment._id : 'n/a', ancestors);
+
+          let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
+          await network._actuallySend(renderedRequest, workspace, settings);
+          nextState = await api.Teardown();
+        } while (nextState === 'Continue');
+      } catch (ex) {
+        await showAlert({
+          title: 'Error',
+          message: 'An error occurred on the test run or the test run was cancelled.'
+        });
+        this.props.handleStopTesting();
+        await api.SuiteTeardown();
+        await api.SessionTeardown();
+        return;
+      }
+    }
+    await api.SuiteTeardown();
+    let result = await api.SessionTeardown();
+    this.props.handleStopTesting();
+    await showAlert({
+      title: result.State,
+      message: result.Reason
+    });
+  }
+
+  async _handleRunTest (request) {
+    if (this.props.settings.peachApiUrl === '' || this.props.settings.peachApiToken === '' ||
+    this.props.settings.peachProject === '') {
+      await showAlert({title: 'Error', message: 'Peach API Security has not been configured.'});
+      showModal(SettingsModal, 1);
+      return;
+    }
+
+    this.props.handleStartTesting();
+    const {activeEnvironment} = this.props;
+
+    // fix up request and stuff
+    const settings = await models.settings.getOrCreate();
+    const ancestors = await db.withAncestors(request, [
+      models.requestGroup.type,
+      models.workspace.type
+    ]);
+
+    const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
+    const requestGroupDoc = ancestors.find(doc => doc.type === models.requestGroup.type);
+    const workspace = await models.workspace.getById(workspaceDoc ? workspaceDoc._id : 'n/a');
+    const rgName = requestGroupDoc ? requestGroupDoc.name : '';
+
+    let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
+    let nextState = 'Continue';
+    let result;
+
+    try {
+      let session = await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
+      this.props.handleTestInfo(rgName, request.name, session.Id);
+      settings.proxyEnabled = true;
+      settings.httpProxy = api.ProxyUrl();
+      settings.httpsProxy = api.ProxyUrl();
+      settings.validateSSL = false;
+
+      do {
+        await api.Setup();
+        await api.TestCase(rgName + '_' + request.name);
+        const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment ? activeEnvironment._id : 'n/a');
+        const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment ? activeEnvironment._id : 'n/a', ancestors);
+
+        let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
+        await network._actuallySend(renderedRequest, workspace, settings);
+        nextState = await api.Teardown();
+      } while (nextState === 'Continue');
+    } catch (ex) {
+      await showAlert({
+        title: 'Error',
+        message: 'An error occurred on the test run or the test run was cancelled.'
+      });
+      this.props.handleStopTesting();
+      return;
+    }
+    await api.SuiteTeardown();
+    result = await api.SessionTeardown();
+    this.props.handleStopTesting();
+    await showAlert({
+      title: result.State,
+      message: result.Reason
+    });
   }
 
   async _updateRequestGroupMetaByParentId (requestGroupId, patch) {
@@ -803,6 +962,8 @@ class App extends PureComponent {
               handleDuplicateRequest={this._requestDuplicate}
               handleDuplicateRequestGroup={this._requestGroupDuplicate}
               handleDuplicateWorkspace={this._workspaceDuplicate}
+              handleRunTest={this._handleRunTest}
+              handleRunTests={this._handleRunTests}
               handleCreateRequestGroup={this._requestGroupCreate}
               handleGenerateCode={this._handleGenerateCode}
               handleGenerateCodeForActiveRequest={this._handleGenerateCodeForActiveRequest}
@@ -816,13 +977,9 @@ class App extends PureComponent {
               handleSetActiveEnvironment={this._handleSetActiveEnvironment}
               handleSetSidebarFilter={this._handleSetSidebarFilter}
               handleToggleMenuBar={this._handleToggleMenuBar}
+              handleCancelTests={this._handleCancelTests}
             />
           </ErrorBoundary>
-
-          <ErrorBoundary showAlert>
-            <Toast/>
-          </ErrorBoundary>
-
           {/* Block all mouse activity by showing an overlay while dragging */}
           {this.state.showDragOverlay ? <div className="blocker-overlay"></div> : null}
         </div>
@@ -858,7 +1015,9 @@ function mapStateToProps (state, props) {
 
   const {
     isLoading,
-    loadingRequestIds
+    loadingRequestIds,
+    isTesting,
+    testInfo
   } = global;
 
   // Entities
@@ -935,7 +1094,9 @@ function mapStateToProps (state, props) {
     sidebarChildren,
     environments,
     activeEnvironment,
-    workspaceChildren
+    workspaceChildren,
+    isTesting,
+    testInfo
   });
 }
 
@@ -945,6 +1106,9 @@ function mapDispatchToProps (dispatch) {
   return {
     handleStartLoading: global.loadRequestStart,
     handleStopLoading: global.loadRequestStop,
+    handleStartTesting: global.testStart,
+    handleStopTesting: global.testStop,
+    handleTestInfo: global.testSetInfo,
 
     handleSetActiveWorkspace: global.setActiveWorkspace,
     handleImportFileToWorkspace: global.importFile,

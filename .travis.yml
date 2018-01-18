@@ -3,18 +3,48 @@ language: node_js
 matrix:
   include:
     - os: linux
+      sudo: required
       dist: trusty
       env: CC=clang CXX=clang++ npm_config_clang=1
       compiler: clang
       env:
         - PLATFORM=linux
+
+#    - os: linux
+#      dist: trusty
+#      env: CC=clang CXX=clang++ npm_config_clang=1
+#      compiler: clang
+#      env:
+#        - PLATFORM=win
+#        # prevent wine popup dialogs about installing additional packages
+#        - WINEDLLOVERRIDES="mscoree,mshtml="
+
     - os: osx
       env:
         - PLATFORM=mac
         - CSC_LINK=$MAC_CSC_LINK
         - CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD
 
+before_install:
+  # Wine
+  - if [[ "$PLATFORM" == "win" ]]; then sudo dpkg --add-architecture i386; fi
+  - if [[ "$PLATFORM" == "win" ]]; then wget https://dl.winehq.org/wine-builds/Release.key; fi
+  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-key add Release.key; fi
+  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-add-repository "https://dl.winehq.org/wine-builds/ubuntu/" -y; fi
+  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-get update -q; fi
+  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-get install --no-install-recommends winehq-stable -y; fi
+  # Mono
+  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF; fi
+  - if [[ "$PLATFORM" == "win" ]]; then echo "deb http://download.mono-project.com/repo/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/mono-official.list; fi
+  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-get update -q; fi
+  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-get install --no-install-recommends mono-devel ca-certificates-mono -y; fi
+
 addons:
+  artifacts:
+    s3_region: "us-west-1"
+    paths:
+      - $(find dist -type f -name *.AppImage -o -name *.dmg | tr "\n" ":")
+  
   apt:
     packages:
     - libcurl4-openssl-dev
@@ -38,19 +68,21 @@ install:
 
 script:
 - npm test
-
-before_deploy:
 - npm run build-n-package:$PLATFORM
 
+after_success:
+ - ./travis_rename.sh
+
 deploy:
-  provider: releases
-  api_key: $GITHUB_TOKEN
+  provider: s3
+  access_key_id: $ARTIFACTS_KEY
+  secret_access_key: $ARTIFACTS_SECRET
+  bucket: $ARTIFACTS_BUCKET
   skip_cleanup: true
   file_glob: true
   file:
-    - dist/**/*.zip
     - dist/**/*.dmg
-    - dist/**/*.deb
     - dist/**/*.AppImage
   on:
     tags: true
+    branch: peach/develop

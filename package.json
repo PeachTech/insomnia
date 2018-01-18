@@ -22,19 +22,21 @@
     "build-main": "cross-env NODE_ENV=development webpack --config ./webpack/webpack.config.electron.babel.js",
     "hot-server": "webpack-dev-server --config ./webpack/webpack.config.development.babel.js",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
-    "build:clean": "rm -rf ./build/* && rm -rf ./dist/* && mkdirp ./build",
+    "build:clean": "rimraf ./build/* && rimraf ./dist/* && mkdirp ./build",
     "build:renderer": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.config.production.babel.js",
     "build:main": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.config.electron.babel.js",
     "build:copy": "cp -r ./app/package.json ./bin ./app/static ./app/icons/* ./build/",
+    "build:copywin": "cpx ./app/package.json ./build",
     "build:install": "cd build && npm install",
     "build": "npm run build:clean && npm run build:renderer && npm run build:main && npm run build:copy && npm run build:install",
+    "build:win": "npm run build:clean && npm run build:renderer && npm run build:main && npm run build:copywin && npm run build:install",
     "rebuild": "electron-rebuild -f -w node-libcurl",
     "package:mac": "rm -rf dist/mac && node node_modules/electron-builder/out/cli/build-cli.js --publish=never --x64 --mac",
-    "package:win": "rm -rf dist/win* && node node_modules/electron-builder/out/cli/build-cli.js --publish=never --x64 --win",
+    "package:win": "rimraf dist/win* && node node_modules/electron-builder/out/cli/build-cli.js --publish=never -w --x64 --ia32",
     "package:linux": "rm -rf dist/linux && rm -f dist/*.AppImage && rm -f dist/*.deb && node node_modules/electron-builder/out/cli/build-cli.js --publish=never --x64 --linux",
     "package": "npm test && rm -rf dist/* && npm run package:mac && npm run package:win && npm run package:linux",
     "build-n-package": "npm run build && npm run package",
-    "build-n-package:win": "npm run build && npm run package:win",
+    "build-n-package:win": "npm run build:win && npm run package:win",
     "build-n-package:mac": "npm run build && npm run package:mac",
     "build-n-package:linux": "npm run build && npm run package:linux"
   },
@@ -94,8 +96,7 @@
     "win": {
       "iconUrl": "https://insomnia.rest/images/icon.png",
       "target": [
-        "squirrel",
-        "zip"
+        "squirrel"
       ],
       "msi": false
     },
@@ -104,9 +105,7 @@
       "synopsis": "A simple, beautiful, and free REST API client",
       "category": "Development",
       "target": [
-        "AppImage",
-        "deb",
-        "tar.gz"
+        "AppImage"
       ]
     },
     "deb": {
@@ -128,6 +127,8 @@
     "clone": "^2.1.0",
     "codemirror": "^5.24.2",
     "codemirror-graphql": "^0.6.11",
+    "copy": "^0.3.1",
+    "copy-dir": "^0.3.0",
     "deep-equal": "^1.0.1",
     "electron-context-menu": "^0.9.0",
     "electron-devtools-installer": "^2.2.0",
@@ -154,8 +155,9 @@
     "nunjucks": "^3.0.0",
     "oauth-1.0a": "^2.2.2",
     "pdfjs-dist": "^1.9.640",
+    "peachapisec": "^1.4.1",
     "prop-types": "^15.5.10",
-    "react": "^16.0.0",
+    "react": "^16.1.1",
     "react-dnd": "^2.4.0",
     "react-dnd-html5-backend": "^2.4.1",
     "react-dom": "^16.0.0",
@@ -189,6 +191,8 @@
     "babel-preset-react": "^6.23.0",
     "babel-preset-react-hmre": "^1.1.1",
     "concurrently": "^2.0.0",
+    "cpx": "^1.5.0",
+    "cpy-cli": "^1.0.1",
     "cross-env": "^2.0.0",
     "css-loader": "^0.26.2",
     "electron": "^1.7.9",
@@ -210,11 +214,13 @@
     "jest": "^19.0.2",
     "less": "^2.7.2",
     "less-loader": "^2.2.3",
+    "ncp": "^2.0.0",
     "react-hot-loader": "^3.0.0-beta.6",
     "redux-mock-store": "^1.0.2",
+    "rimraf": "^2.6.2",
     "style-loader": "^0.13.2",
     "url-loader": "^0.5.8",
-    "webpack": "^3.5.5",
+    "webpack": "^3.8.1",
     "webpack-dev-middleware": "^1.10.1",
     "webpack-dev-server": "^2.4.1",
     "webpack-hot-middleware": "^2.17.1",

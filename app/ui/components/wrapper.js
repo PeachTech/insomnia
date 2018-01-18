@@ -65,6 +65,8 @@ type Props = {
   handleGenerateCodeForActiveRequest: Function,
   handleGenerateCode: Function,
   handleCopyAsCurl: Function,
+  handleRunTest: Function,
+  handleRunTests: Function,
   handleCreateRequestForWorkspace: Function,
   handleSetRequestPaneRef: Function,
   handleSetResponsePaneRef: Function,
@@ -106,6 +108,10 @@ type Props = {
   activeCookieJar: CookieJar,
   activeEnvironment: Environment | null,
   activeWorkspaceClientCertificates: Array<ClientCertificate>,
+
+  // Peach API Properties
+  testRunning: boolean, // is a test or group of tests running?
+  handleCancelTests: Function,
 
   // Optional
   oAuth2Token: ?OAuth2Token,
@@ -376,6 +382,8 @@ class Wrapper extends React.PureComponent<Props, State> {
       handleGenerateCodeForActiveRequest,
       handleGenerateCode,
       handleCopyAsCurl,
+      handleRunTest,
+      handleRunTests,
       isLoading,
       loadStartTime,
       paneWidth,
@@ -391,7 +399,10 @@ class Wrapper extends React.PureComponent<Props, State> {
       sidebarWidth,
       workspaceChildren,
       workspaces,
-      unseenWorkspaces
+      unseenWorkspaces,
+      isTesting,
+      testInfo,
+      handleCancelTests
     } = this.props;
 
     const realSidebarWidth = sidebarHidden ? 0 : sidebarWidth;
@@ -554,6 +565,8 @@ class Wrapper extends React.PureComponent<Props, State> {
             handleDuplicateRequest={handleDuplicateRequest}
             handleGenerateCode={handleGenerateCode}
             handleCopyAsCurl={handleCopyAsCurl}
+            handleRunTest={handleRunTest}
+            handleRunTests={handleRunTests}
             handleDuplicateRequestGroup={handleDuplicateRequestGroup}
             handleSetActiveEnvironment={handleSetActiveEnvironment}
             moveDoc={handleMoveDoc}
@@ -652,6 +665,9 @@ class Wrapper extends React.PureComponent<Props, State> {
             handleDeleteResponses={this._handleDeleteResponses}
             handleDeleteResponse={this._handleDeleteResponse}
             handleSetFilter={this._handleSetResponseFilter}
+            isTesting={isTesting}
+            testInfo={testInfo}
+            handleCancelTests={handleCancelTests}
           />
         </ErrorBoundary>
       </div>

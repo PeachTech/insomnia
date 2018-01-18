@@ -73,6 +73,7 @@ class SidebarRequestRow extends PureComponent {
       handleDuplicateRequest,
       handleGenerateCode,
       handleCopyAsCurl,
+      handleRunTest,
       connectDragSource,
       connectDropTarget,
       isDragging,
@@ -129,6 +130,7 @@ class SidebarRequestRow extends PureComponent {
                 handleGenerateCode={handleGenerateCode}
                 handleCopyAsCurl={handleCopyAsCurl}
                 handleShowSettings={this._handleShowRequestSettings}
+                handleRunTest={handleRunTest}
                 request={request}
                 requestGroup={requestGroup}
               />
@@ -152,6 +154,7 @@ SidebarRequestRow.propTypes = {
   handleDuplicateRequest: PropTypes.func.isRequired,
   handleGenerateCode: PropTypes.func.isRequired,
   handleCopyAsCurl: PropTypes.func.isRequired,
+  handleRunTest: PropTypes.func.isRequired,
   requestCreate: PropTypes.func.isRequired,
   moveDoc: PropTypes.func.isRequired,
 

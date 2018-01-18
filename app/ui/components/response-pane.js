@@ -27,6 +27,7 @@ import {trackEvent} from '../../analytics';
 import Hotkey from './hotkey';
 import * as hotkeys from '../../common/hotkeys';
 import ErrorBoundary from './error-boundary';
+import TestTimer from './test-timer';
 
 type Props = {
   // Functions
@@ -37,6 +38,7 @@ type Props = {
   handleDeleteResponses: Function,
   handleDeleteResponse: Function,
   handleShowRequestSettings: Function,
+  handleCancelTests: Function,
 
   // Required
   previewMode: string,
@@ -51,7 +53,9 @@ type Props = {
 
   // Other
   request: ?Request,
-  response: ?Response
+  response: ?Response,
+  isTesting: boolean,
+  testInfo: ?Object
 };
 
 @autobind
@@ -151,6 +155,7 @@ class ResponsePane extends React.PureComponent<Props> {
       request,
       responses,
       response,
+      isTesting,
       previewMode,
       handleShowRequestSettings,
       handleSetPreviewMode,
@@ -165,7 +170,9 @@ class ResponsePane extends React.PureComponent<Props> {
       editorKeyMap,
       filter,
       filterHistory,
-      showCookiesModal
+      showCookiesModal,
+      testInfo,
+      handleCancelTests
     } = this.props;
 
     if (!request) {
@@ -173,6 +180,52 @@ class ResponsePane extends React.PureComponent<Props> {
         <section className="response-pane pane">
           <header className="pane__header"></header>
           <div className="pane__body pane__body--placeholder"></div>
+        </section>
+      );
+    }
+
+    if (isTesting) {
+      return (
+        <section className="response-pane pane">
+          <header className="pane__header"></header>
+          <div className="pane__body pane__body--placeholder">
+            <div>
+              <table className="table--fancy">
+                <tbody>
+                <tr>
+                  <td>Send Request</td>
+                  <td className="text-right">
+                    <code><Hotkey hotkey={hotkeys.SEND_REQUEST}/></code>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Focus Url Bar</td>
+                  <td className="text-right">
+                    <code><Hotkey hotkey={hotkeys.FOCUS_URL}/></code>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Manage Cookies</td>
+                  <td className="text-right">
+                    <code><Hotkey hotkey={hotkeys.SHOW_COOKIES}/></code>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Edit Environments</td>
+                  <td className="text-right">
+                    <code><Hotkey hotkey={hotkeys.SHOW_ENVIRONMENTS}/></code>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <TestTimer
+            loadStartTime={loadStartTime}
+            testInfo={testInfo}
+            handleCancelTests={handleCancelTests}
+          />
         </section>
       );
     }

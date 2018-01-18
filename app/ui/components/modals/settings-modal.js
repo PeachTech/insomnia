@@ -12,6 +12,7 @@ import General from '../settings/general';
 import ImportExport from '../settings/import-export';
 import Account from '../settings/account';
 import Plugins from '../settings/plugins';
+import PeachSettings from '../settings/peach-settings';
 import Theme from '../settings/theme';
 import * as models from '../../../models/index';
 import {Curl} from 'insomnia-node-libcurl';
@@ -110,6 +111,11 @@ class SettingsModal extends PureComponent {
                 </Button>
               </Tab>
               <Tab>
+                <Button value="PeachSettings">
+                Peach
+                </Button>
+              </Tab>
+              <Tab>
                 <Button value="Import/Export">
                   Data
                 </Button>
@@ -146,6 +152,13 @@ class SettingsModal extends PureComponent {
                 handleToggleMenuBar={this.props.handleToggleMenuBar}
                 updateSetting={this._handleUpdateSetting}
               />
+            </TabPanel>
+            <TabPanel className="react-tabs__tab-panel pad scrollable">
+              <PeachSettings
+                settings={settings}
+                handleToggleMenuBar={this.props.handleToggleMenuBar}
+                updateSetting={this._handleUpdateSetting}
+                />
             </TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable">
               <ImportExport

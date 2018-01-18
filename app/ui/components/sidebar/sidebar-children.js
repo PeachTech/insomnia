@@ -23,6 +23,8 @@ type Props = {
   handleDuplicateRequestGroup: Function,
   handleGenerateCode: Function,
   handleCopyAsCurl: Function,
+  handleRunTest: Function,
+  handleRunTests: Function,
   moveDoc: Function,
   childObjects: Array<Child>,
   workspace: Workspace,
@@ -41,6 +43,8 @@ class SidebarChildren extends React.PureComponent<Props> {
       handleDuplicateRequestGroup,
       handleGenerateCode,
       handleCopyAsCurl,
+      handleRunTest,
+      handleRunTests,
       moveDoc,
       handleActivateRequest,
       activeRequest,
@@ -63,6 +67,7 @@ class SidebarChildren extends React.PureComponent<Props> {
             handleDuplicateRequest={handleDuplicateRequest}
             handleGenerateCode={handleGenerateCode}
             handleCopyAsCurl={handleCopyAsCurl}
+            handleRunTest={handleRunTest}
             requestCreate={handleCreateRequest}
             isActive={child.doc._id === activeRequestId}
             request={child.doc}
@@ -102,6 +107,7 @@ class SidebarChildren extends React.PureComponent<Props> {
           isCollapsed={child.collapsed}
           handleCreateRequest={handleCreateRequest}
           handleCreateRequestGroup={handleCreateRequestGroup}
+          handleRunTests={handleRunTests}
           numChildren={child.children.length}
           workspace={workspace}
           requestGroup={requestGroup}

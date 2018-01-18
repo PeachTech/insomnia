@@ -211,6 +211,22 @@ export const CLOSE_MODAL: Hotkey = {
   keycode: keycodes.esc
 };
 
+export const RUN_TEST: Hotkey = {
+  description: 'Test current request with Peach API Security',
+  meta: true,
+  alt: false,
+  shift: false,
+  keycode: keycodes.t
+};
+
+export const RUN_ALL_TESTS: Hotkey = {
+  description: 'Test all requests in folder with Peach API Security',
+  meta: true,
+  alt: false,
+  shift: true,
+  keycode: keycodes.t
+};
+
 export function pressedHotKey (e: KeyboardEvent, definition: Hotkey): boolean {
   const isMetaPressed = isMac() ? e.metaKey : e.ctrlKey;
   const isAltPressed = isMac() ? e.ctrlKey : e.altKey;

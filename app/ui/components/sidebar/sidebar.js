@@ -48,7 +48,9 @@ class Sidebar extends PureComponent {
       handleDuplicateRequestGroup,
       handleGenerateCode,
       handleCopyAsCurl,
+      handleRunTest,
       handleCreateRequestGroup,
+      handleRunTests,
       handleSetRequestGroupCollapsed,
       moveDoc,
       handleActivateRequest,
@@ -70,6 +72,7 @@ class Sidebar extends PureComponent {
           handleImportFile={handleImportFile}
           handleSetActiveWorkspace={handleSetActiveWorkspace}
           isLoading={isLoading}
+          handleRunTests={handleRunTests}
         />
 
         <div className="sidebar__menu">
@@ -98,11 +101,13 @@ class Sidebar extends PureComponent {
           handleActivateRequest={handleActivateRequest}
           handleCreateRequest={handleCreateRequest}
           handleCreateRequestGroup={handleCreateRequestGroup}
+          handleRunTests={handleRunTests}
           handleSetRequestGroupCollapsed={handleSetRequestGroupCollapsed}
           handleDuplicateRequest={handleDuplicateRequest}
           handleDuplicateRequestGroup={handleDuplicateRequestGroup}
           handleGenerateCode={handleGenerateCode}
           handleCopyAsCurl={handleCopyAsCurl}
+          handleRunTest={handleRunTest}
           moveDoc={moveDoc}
           workspace={workspace}
           activeRequest={activeRequest}
@@ -134,8 +139,10 @@ Sidebar.propTypes = {
   handleDuplicateRequestGroup: PropTypes.func.isRequired,
   handleGenerateCode: PropTypes.func.isRequired,
   handleCopyAsCurl: PropTypes.func.isRequired,
+  handleRunTest: PropTypes.func.isRequired,
   showEnvironmentsModal: PropTypes.func.isRequired,
   showCookiesModal: PropTypes.func.isRequired,
+  handleRunTests: PropTypes.func.isRequired,
 
   // Other
   hidden: PropTypes.bool.isRequired,
