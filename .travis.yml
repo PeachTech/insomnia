@@ -70,6 +70,9 @@ install:
 - node --version
 - npm --version
 
+before_script:
+  - if [[ "$TRAVIS_BRANCH" == "peach/develop" ]]; then ./version.sh; fi
+
 script:
 - npm test
 - npm run build-n-package:$PLATFORM

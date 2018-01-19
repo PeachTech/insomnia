@@ -18,6 +18,13 @@ install:
   - npm config set msvs_version 2013
   - npm install > NUL
   - npm test
+  - ps: >-
+          if (($env:APPVEYOR_REPO_BRANCH -eq 'peach/develop') -and ($env:APPVEYOR_REPO_TAG -eq "true" )) {
+              npm version from-git --no-git-tag-version --allow-same
+              $ver = node -e "console.log(require('./package.json').version);";
+              cd app
+              npm version $ver --no-git-tag-version --allow-same
+          }
 
 cache:
   - '%APPDATA%\npm-cache -> package.json'
