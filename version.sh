@@ -6,5 +6,6 @@ npm version from-git --no-git-tag-version --allow-same-version --force
 # ironically, 'npm version' outputs the version number but not in the format
 # that we need, so just read the file we just changed
 ver=$(node -e "console.log(require('./package.json').version);")
+echo "ver has been set to $ver"
 cd app
 npm version $ver --no-git-tag-version --allow-same-version --force
