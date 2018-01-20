@@ -71,7 +71,7 @@ install:
 - npm --version
 
 before_script:
-  - if [[ "$TRAVIS_BRANCH" == "peach/develop" ]]; then ./version.sh; fi
+  - ./version.sh
 
 script:
 - npm test
