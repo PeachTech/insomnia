@@ -22,6 +22,7 @@ install:
           npm version $ver --no-git-tag-version --allow-same;
           cd app;
           npm version $ver --no-git-tag-version --allow-same;
+          cd ..;
 
 
 cache:
