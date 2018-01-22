@@ -19,9 +19,9 @@ install:
   - npm test
   - ps: >-
           $ver = git describe --abbrev=0;
-          npm version $ver --no-git-tag-version --allow-same --force;
+          npm version $ver --no-git-tag-version --allow-same;
           cd app;
-          npm version $ver --no-git-tag-version --allow-same --force;
+          npm version $ver --no-git-tag-version --allow-same;
 
 
 cache:
