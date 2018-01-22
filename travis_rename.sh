@@ -13,5 +13,6 @@ find ./dist -type f -name *.AppImage -execdir mv {} Peach-Insomnia-Setup-$ver-x8
 find ./dist -type f -name *.dmg -execdir mv {} Peach-Insomnia-Setup-$ver-x86_64-mac.dmg \;
 # copy to dist/deploy so that upload-dir in the deploy provider will only copy 
 # the files we actually want
-find ./dist -type f -name Peach*.AppImage -exec mv {} ./dist/deploy/ \;
-find ./dist -type f -name Peach*.dmg -exec mv {} ./dist/deploy/ \;
+find ./dist -type f -name Peach*.AppImage -exec cp -f {} ./dist/deploy/ \;
+find ./dist -type f -name Peach*.dmg -exec cp -f {} ./dist/deploy/ \;
+ls ./dist/deploy
