@@ -79,7 +79,7 @@ script:
 
 after_success:
  - ./travis_rename.sh
- - export INSOMNIA_VERION=$(node -e "console.log(require('./app/package.json').version);")
+ - export INSOMNIA_VERSION=$(node -e "console.log(require('./app/package.json').version);")
    
 deploy:
   provider: s3
