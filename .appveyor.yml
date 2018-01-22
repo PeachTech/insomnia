@@ -19,12 +19,11 @@ install:
   - npm install > NUL
   - npm test
   - ps: >-
-          if (($env:APPVEYOR_REPO_BRANCH -eq 'peach/develop') -and ($env:APPVEYOR_REPO_TAG -eq "true" )) {
-              npm version from-git --no-git-tag-version --allow-same --force
-              $ver = node -e "console.log(require('./package.json').version);";
-              cd app
-              npm version $ver --no-git-tag-version --allow-same --force
-          }
+          $ver = git describe --abbrev=0
+          npm version $ver --no-git-tag-version --allow-same --force
+          cd app
+          npm version $ver --no-git-tag-version --allow-same --force
+
 
 cache:
   - '%APPDATA%\npm-cache -> package.json'
