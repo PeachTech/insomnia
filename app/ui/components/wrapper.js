@@ -418,7 +418,6 @@ class Wrapper extends React.PureComponent<Props, State> {
           <PromptModal ref={registerModal}/>
 
           <WrapperModal ref={registerModal}/>
-          <ChangelogModal ref={registerModal}/>
           <LoginModal ref={registerModal}/>
           <AskModal ref={registerModal}/>
           <SelectModal ref={registerModal}/>

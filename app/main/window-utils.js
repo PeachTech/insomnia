@@ -124,16 +124,6 @@ export function createWindow () {
           trackEvent('App Menu', 'Preferences');
         }
       },
-      {
-        label: 'Changelog',
-        click: function (menuItem, window, e) {
-          if (!window || !window.webContents) {
-            return;
-          }
-          window.webContents.send('toggle-changelog');
-          trackEvent('App Menu', 'Changelog');
-        }
-      },
       ...(isMac() ? [
         {type: 'separator'},
         {role: 'hide'},
@@ -245,7 +235,7 @@ export function createWindow () {
         label: 'Contact Support',
         click: () => {
           trackEvent('App Menu', 'Contact');
-          shell.openExternal('https://insomnia.rest/support/');
+          shell.openExternal('mailto:support@peach.tech');
         }
       },
       {
