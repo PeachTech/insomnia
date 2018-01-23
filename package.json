@@ -94,7 +94,7 @@
       "output": "dist"
     },
     "win": {
-      "iconUrl": "https://insomnia.rest/images/icon.png",
+      "iconUrl": "https://peach-insomnia.s3.amazonaws.com/images/icon.png",
       "target": [
         "squirrel"
       ],
