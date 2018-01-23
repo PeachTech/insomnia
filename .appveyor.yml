@@ -77,3 +77,8 @@ deploy:
   artifact: dist_exe_64, dist_exe_ia32
   on:
     branch: peach/develop
+
+notifications:
+  -provider: Slack
+  incoming_webhook:
+    secure: rnZB1yWnCvqTXiBw12lEQdir7+zONR7EzNwRMSJKnWb92yV9bhQ4tGfiG+vW0BRf8ZHXhXB9SCOR9CeFSq+ZDd9kJ2nhZPgUSB09I81Kdn8=
