@@ -20,12 +20,12 @@ const THEMES = [
   {key: 'default', name: 'Insomnia', img: imgDefault},
   {key: 'light', name: 'Simple Light', img: imgLight},
   {key: 'dark', name: 'Simple Dark', img: imgDark},
-  {key: 'purple', name: 'Purple', img: imgPurple, paid: true},
-  {key: 'material', name: 'Material', img: imgMaterial, paid: true},
-  {key: 'solarized', name: 'Solarized', img: imgSolarized, paid: true},
-  {key: 'solarized-light', name: 'Solarized Light', img: imgSolarizedLight, paid: true},
-  {key: 'solarized-dark', name: 'Solarized Dark', img: imgSolarizedDark, paid: true},
-  {key: 'railscasts', name: 'Railscasts', img: imgRailscasts, paid: true}
+  {key: 'purple', name: 'Purple', img: imgPurple},
+  {key: 'material', name: 'Material', img: imgMaterial},
+  {key: 'solarized', name: 'Solarized', img: imgSolarized},
+  {key: 'solarized-light', name: 'Solarized Light', img: imgSolarizedLight},
+  {key: 'solarized-dark', name: 'Solarized Dark', img: imgSolarizedDark},
+  {key: 'railscasts', name: 'Railscasts', img: imgRailscasts}
 ];
 
 @autobind
