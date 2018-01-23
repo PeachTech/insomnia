@@ -191,7 +191,7 @@ class WorkspaceDropdown extends PureComponent {
             <i className="fa fa-empty"/> New Workspace
           </DropdownItem>
 
-          <DropdownDivider>Peach Insomnia Version {getAppVersion()}</DropdownDivider>
+          <DropdownDivider>Peach Sidecar Version {getAppVersion()}</DropdownDivider>
 
           <DropdownItem onClick={this._handleShowSettings}>
             <i className="fa fa-cog"/> Preferences

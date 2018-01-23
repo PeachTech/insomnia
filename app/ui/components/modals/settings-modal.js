@@ -10,7 +10,6 @@ import SettingsShortcuts from '../settings/shortcuts';
 import About from '../settings/about';
 import General from '../settings/general';
 import ImportExport from '../settings/import-export';
-import Account from '../settings/account';
 import Plugins from '../settings/plugins';
 import PeachSettings from '../settings/peach-settings';
 import Theme from '../settings/theme';
@@ -131,11 +130,6 @@ class SettingsModal extends PureComponent {
                 </Button>
               </Tab>
               <Tab>
-                <Button value="Account">
-                  Account
-                </Button>
-              </Tab>
-              <Tab>
                 <Button value="Plugins">
                   Plugins
                 </Button>
@@ -176,7 +170,6 @@ class SettingsModal extends PureComponent {
             </TabPanel>
             <TabPanel
               className="react-tabs__tab-panel pad scrollable"><SettingsShortcuts/></TabPanel>
-            <TabPanel className="react-tabs__tab-panel pad scrollable"><Account/></TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable"><Plugins/></TabPanel>
             <TabPanel className="react-tabs__tab-panel pad scrollable"><About/></TabPanel>
           </Tabs>

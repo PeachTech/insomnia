@@ -165,7 +165,7 @@ class ChangelogModal extends PureComponent {
 
     return (
       <Modal tall ref={this._setModalRef} {...this.props}>
-        <ModalHeader>Insomnia Changelog</ModalHeader>
+        <ModalHeader>Peach Sidecar Changelog</ModalHeader>
         <ModalBody className="pad changelog">
           {html}
         </ModalBody>

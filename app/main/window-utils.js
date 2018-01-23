@@ -267,7 +267,7 @@ export function createWindow () {
         }
       },
       {
-        label: 'Insomnia Help',
+        label: 'Peach Sidecar Help',
         accelerator: 'CmdOrCtrl+/',
         click: () => {
           trackEvent('App Menu', 'Help');
@@ -349,7 +349,7 @@ function showUnresponsiveModal () {
     defaultId: 1,
     cancelId: 0,
     title: 'Unresponsive',
-    message: 'Insomnia has become unresponsive. Do you want to reload?'
+    message: 'Peach Sidecar has become unresponsive. Do you want to reload?'
   }, id => {
     if (id === 1) {
       mainWindow.destroy();

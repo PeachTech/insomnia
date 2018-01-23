@@ -268,7 +268,7 @@ export function preventDefault (e: Event): void {
 
 export function clickLink (href: string): void {
   if (href.match(/^http/i)) {
-    const appName = isDevelopment() ? 'Peach Insomnia Dev' : 'Peach Insomnia';
+    const appName = isDevelopment() ? 'Peach Sidecar Dev' : 'Peach Sidecar';
     const qs = `utm_source=${appName}&utm_medium=app&utm_campaign=v${getAppVersion()}`;
     const attributedHref = querystring.joinUrl(href, qs);
     shell.openExternal(attributedHref);

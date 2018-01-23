@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "insomnia",
+  "name": "sidecar",
   "version": "5.11.5",
-  "productName": "Peach Insomnia",
-  "longName": "Peach Insomnia REST Client",
+  "productName": "Peach Sidecar",
+  "longName": "Peach Sidecar REST Client",
   "description": "Debug APIs like a human, not a robot",
   "homepage": "https://peach.tech",
   "author": "Peach <peach@peach.tech>",
