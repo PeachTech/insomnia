@@ -16,11 +16,11 @@ echo "installer renamed"
 # copy to dist/deploy so that upload-dir in the deploy provider will only copy 
 # the files we actually want
 echo "copying AppImage to ./dist/deploy"
-find ./dist -type f -name Peach*.AppImage -exec cp -f {} ./dist/deploy/ \;
+find ./dist -type f -name Peach*.AppImage -exec mv -f {} ./dist/deploy/ \;
 echo "AppImage copied."
 ls -al ./dist/deploy
 echo "copying dmg to ./dist/deploy"
-find ./dist -type f -name Peach*.dmg -exec cp -f {} ./dist/deploy/ \;
+find ./dist -type f -name Peach*.dmg -exec mv -f {} ./dist/deploy/ \;
 echo "dmg copied"
 ls -al ./dist/deploy
 echo "done"
