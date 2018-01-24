@@ -44,6 +44,10 @@ build_script:
 #      artifacts configuration    #
 #---------------------------------#
 
+after_build:
+  - ps: Get-ChildItem dist/win/*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name -DeploymentName dist_exe_64_file }
+  - ps: Get-ChildItem dist/win-ia32/*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name -DeploymentName dist_exe_ia32_file }
+
 artifacts:
   - path: dist\win\*.exe
     name: dist_exe_64
@@ -88,6 +92,7 @@ deploy:
     bucket: peach-insomnia
     region: us-west-1
     folder: release/1.4/$(sidecarversion)
-    artifact: dist_exe_64, dist_exe_ia32
+    artifact: dist_exe_64_file, dist_exe_ia32_file
     on:
-      appveyor_repo_tag: true
+      branch: peach/develop
+#      appveyor_repo_tag: true
