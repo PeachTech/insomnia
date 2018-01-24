@@ -93,4 +93,5 @@ deploy:
   local_dir: ./dist/deploy
   upload-dir: release/1.4/$INSOMNIA_VERSION
   on:
-    tags: true
+    branch: peach/develop
+#    tags: true

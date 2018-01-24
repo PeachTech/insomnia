@@ -94,5 +94,4 @@ deploy:
     folder: release/1.4/$(sidecarversion)
     artifact: dist_exe_64_file, dist_exe_ia32_file
     on:
-      branch: peach/develop
-#      appveyor_repo_tag: true
+      appveyor_repo_tag: true
