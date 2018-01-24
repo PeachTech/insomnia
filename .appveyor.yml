@@ -23,7 +23,7 @@ install:
           cd app;
           npm version $ver --no-git-tag-version --allow-same;
           cd ..;
-          $version = node -e "console.log(require('./app/package.json).version);";
+          $version = node -e "console.log(require('./app/package.json').version);";
           Set-AppveyorBuildVariable -Name sidecarversion -Value $version;
 
 
