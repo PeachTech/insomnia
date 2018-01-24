@@ -10,8 +10,8 @@ ls ./dist/deploy
 # must use execdir in order to actually rename the file or it will want the full path
 # in the command
 echo "renaming installer"
-find ./dist -type f -name *.AppImage -execdir mv {} Peach-Insomnia-Setup-$ver-x86_64-linux.AppImage \;
-find ./dist -type f -name *.dmg -execdir mv {} Peach-Insomnia-Setup-$ver-x86_64-mac.dmg \;
+find ./dist -type f -name *.AppImage -execdir mv {} Peach-Sidecar-Setup-$ver-x86_64-linux.AppImage \;
+find ./dist -type f -name *.dmg -execdir mv {} Peach-Sidecar-Setup-$ver-x86_64-mac.dmg \;
 echo "installer renamed"
 # copy to dist/deploy so that upload-dir in the deploy provider will only copy 
 # the files we actually want
