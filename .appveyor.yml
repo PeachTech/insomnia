@@ -23,6 +23,8 @@ install:
           cd app;
           npm version $ver --no-git-tag-version --allow-same;
           cd ..;
+          $version = node -e "console.log(require('./app/package.json).version);";
+          Set-AppveyorBuildVariable -Name sidecarversion -Value $version;
 
 
 cache:
@@ -77,3 +79,16 @@ deploy:
   artifact: dist_exe_64, dist_exe_ia32
   on:
     branch: peach/develop
+
+deploy:
+  provider: S3
+  access_key_id:
+    secure: hUZXFNfyXbf/SwD6ZU05kW8OX7Qf5UQeNzu0z19npdQ=
+  secret_access_key:
+    secure: xlRU6LcoTAIRAy113AGY5rzR4l+zX1X+O/kgiIrsnJ8FSigUQQxJ34lUWRREtKUc
+  bucket: peach-insomnia
+  region: us-west-1
+  folder: release/1.4/$(sidecarversion)
+  artifact: dist_exe_64, dist_exe_ia32
+  on:
+    appveyor_repo_tag: true
