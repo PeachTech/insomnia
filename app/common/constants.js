@@ -270,7 +270,7 @@ export const RESPONSE_CODE_REASONS = {
 export const RESPONSE_CODE_DESCRIPTIONS = {
 
   // Special
-  [STATUS_CODE_PLUGIN_ERROR]: 'An Insomnia plugin threw an error which prevented the request from sending',
+  [STATUS_CODE_PLUGIN_ERROR]: 'A Peach Sidecar plugin threw an error which prevented the request from sending',
 
   // 100s
 

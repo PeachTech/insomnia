@@ -38,7 +38,7 @@ cache:
 build_script:
   - npm run build-n-package:win
   - ps: >-
-      $ver = node -e "console.log(require('./app/package.json').version);"; Get-ChildItem dist/win/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Insomnia-Setup-$ver-x64-win.exe; }; Get-ChildItem dist/win-ia32/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Insomnia-Setup-$ver-ia32-win.exe; }
+      $ver = node -e "console.log(require('./app/package.json').version);"; Get-ChildItem dist/win/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-x64-win.exe; }; Get-ChildItem dist/win-ia32/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-ia32-win.exe; }
 
 #---------------------------------#
 #      artifacts configuration    #
@@ -95,3 +95,8 @@ deploy:
     artifact: dist_exe_64_file, dist_exe_ia32_file
     on:
       appveyor_repo_tag: true
+      
+notifications:
+  -provider: Slack
+  incoming_webhook:
+    secure: rnZB1yWnCvqTXiBw12lEQdir7+zONR7EzNwRMSJKnWb92yV9bhQ4tGfiG+vW0BRf8ZHXhXB9SCOR9CeFSq+ZDd9kJ2nhZPgUSB09I81Kdn8=

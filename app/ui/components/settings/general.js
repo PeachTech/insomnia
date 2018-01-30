@@ -237,7 +237,7 @@ class General extends PureComponent {
 
         <div className="form-control form-control--outlined">
           <label>
-            Additional Plugin Path <HelpTooltip>Tell Insomnia to look for plugins in a different
+            Additional Plugin Path <HelpTooltip>Tell Peach Sidecar to look for plugins in a different
             directory</HelpTooltip>
             <input placeholder="~/.insomnia:/other/path"
                    name="pluginPath"

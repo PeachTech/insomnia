@@ -50,7 +50,7 @@ export async function all (): Promise<Array<Workspace>> {
   const workspaces = await db.all(type);
 
   if (workspaces.length === 0) {
-    await create({name: 'Insomnia'});
+    await create({name: 'Sidecar'});
     return await all();
   } else {
     return workspaces;

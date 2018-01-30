@@ -168,12 +168,12 @@ export function importFile (workspaceId) {
     dispatch(loadStart());
 
     const options = {
-      title: 'Import Insomnia Data',
+      title: 'Import Peach Sidecar Data',
       buttonLabel: 'Import',
       properties: ['openFile'],
       filters: [{
         // Allow empty extension and JSON
-        name: 'Insomnia Import',
+        name: 'Peach Sidecar Import',
         extensions: [
           '', 'sh', 'txt', 'json', 'har', 'curl', 'bash', 'shell'
         ]
@@ -264,12 +264,12 @@ export function exportFile (workspaceId = null) {
         }
 
         const date = moment().format('YYYY-MM-DD');
-        const name = (workspace ? workspace.name : 'Insomnia All').replace(/ /g, '-');
+        const name = (workspace ? workspace.name : 'Peach Sidecar All').replace(/ /g, '-');
         const lastDir = window.localStorage.getItem('insomnia.lastExportPath');
         const dir = lastDir || electron.remote.app.getPath('desktop');
 
         const options = {
-          title: 'Export Insomnia Data',
+          title: 'Export Peach Sidecar Data',
           buttonLabel: 'Export',
           defaultPath: path.join(dir, `${name}_${date}`),
           filters: []

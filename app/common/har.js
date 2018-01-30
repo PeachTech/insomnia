@@ -216,8 +216,8 @@ export async function exportHar (exportRequests: Array<ExportRequest>): Promise<
     log: {
       version: '1.2',
       creator: {
-        name: 'Insomnia REST Client',
-        version: `insomnia.desktop.app:v${getAppVersion()}`
+        name: 'Peach Sidecar REST Client',
+        version: `peach.sidecar.desktop.app:v${getAppVersion()}`
       },
       entries: entries
     }

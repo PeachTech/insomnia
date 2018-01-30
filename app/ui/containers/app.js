@@ -820,7 +820,6 @@ class App extends PureComponent {
       trackEvent('General', 'First Launch', getAppVersion(), {nonInteraction: true});
     } else if (lastVersion !== getAppVersion()) {
       trackEvent('General', 'Updated', getAppVersion(), {nonInteraction: true});
-      showModal(ChangelogModal);
     } else {
       trackEvent('General', 'Launched', getAppVersion(), {nonInteraction: true});
     }

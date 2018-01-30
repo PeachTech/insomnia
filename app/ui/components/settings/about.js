@@ -5,28 +5,16 @@ class About extends PureComponent {
   render () {
     return (
       <div>
-        <h2 className="no-margin-top">Hi, I'm Greg!</h2>
+        <h2 className="no-margin-top">Thank you for using Peach Sidecar</h2>
         <p>
-          Insomnia started as a side-project of mine in 2014 and transitioned into what I do full-time
-          in mid 2016.
+          Peach Sidecar is a fork of the <Link href="https://github.com/getinsomnia/insomnia">Insomnia REST client</Link> that has been extended to work with Peach API Security.
+          It retains most of the features of Insomnia and the <Link href="https://support.insomnia.rest/">Insomnia Documentation</Link> still applies to Peach Sidecar.
         </p>
         <p>
-          If you have any question or concerns, don't hesitate to
+          If you have any questions or experience any issues, please email
           {' '}
-          <Link href="https://insomnia.rest/support/">reach out</Link>.
+          support@peach.tech
           {' '}
-          And, if you want access to
-          cloud sync or just feel like being awesome, you can sign up for
-          {' '}
-          <Link href="https://insomnia.rest/pricing/">Plus Plan</Link>
-          {' '}
-          <i className="fa fa-smile-o txt-xl"/>
-        </p>
-        <p>
-          Thanks, and I hope you enjoy the app!
-        </p>
-        <p>
-          ~ Gregory
         </p>
       </div>
     );

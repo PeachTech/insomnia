@@ -1,55 +1,43 @@
 language: node_js
-
 matrix:
   include:
-    - os: linux
-      install:
-        - npm install 7zip-bin-linux > /dev/null
-      sudo: required
-      dist: trusty
-      env: CC=clang CXX=clang++ npm_config_clang=1
-      compiler: clang
-      env:
-        - PLATFORM=linux
-
-#    - os: linux
-#      dist: trusty
-#      env: CC=clang CXX=clang++ npm_config_clang=1
-#      compiler: clang
-#      env:
-#        - PLATFORM=win
-#        # prevent wine popup dialogs about installing additional packages
-#        - WINEDLLOVERRIDES="mscoree,mshtml="
-
-    - os: osx
-      install:
-        - npm install 7zip-bin-mac > /dev/null
-      env:
-        - PLATFORM=mac
-        - CSC_LINK=$MAC_CSC_LINK
-        - CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD
-
+  - os: linux
+    install:
+    - npm install 7zip-bin-linux > /dev/null
+    sudo: required
+    dist: trusty
+    env:
+    - PLATFORM=linux
+    compiler: clang
+  - os: osx
+    install:
+    - npm install 7zip-bin-mac > /dev/null
+    env:
+    - PLATFORM=mac
+    - CSC_LINK=$MAC_CSC_LINK
+    - CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD
 before_install:
-  # Wine
-  - if [[ "$PLATFORM" == "win" ]]; then sudo dpkg --add-architecture i386; fi
-  - if [[ "$PLATFORM" == "win" ]]; then wget https://dl.winehq.org/wine-builds/Release.key; fi
-  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-key add Release.key; fi
-  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-add-repository "https://dl.winehq.org/wine-builds/ubuntu/" -y; fi
-  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-get update -q; fi
-  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-get install --no-install-recommends winehq-stable -y; fi
-  # Mono
-  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF; fi
-  - if [[ "$PLATFORM" == "win" ]]; then echo "deb http://download.mono-project.com/repo/ubuntu trusty main" | sudo tee /etc/apt/sources.list.d/mono-official.list; fi
-  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-get update -q; fi
-  - if [[ "$PLATFORM" == "win" ]]; then sudo apt-get install --no-install-recommends mono-devel ca-certificates-mono -y; fi
-
-# uploads artifacts for every branch, every build
+- if [[ "$PLATFORM" == "win" ]]; then sudo dpkg --add-architecture i386; fi
+- if [[ "$PLATFORM" == "win" ]]; then wget https://dl.winehq.org/wine-builds/Release.key;
+  fi
+- if [[ "$PLATFORM" == "win" ]]; then sudo apt-key add Release.key; fi
+- if [[ "$PLATFORM" == "win" ]]; then sudo apt-add-repository "https://dl.winehq.org/wine-builds/ubuntu/"
+  -y; fi
+- if [[ "$PLATFORM" == "win" ]]; then sudo apt-get update -q; fi
+- if [[ "$PLATFORM" == "win" ]]; then sudo apt-get install --no-install-recommends
+  winehq-stable -y; fi
+- if [[ "$PLATFORM" == "win" ]]; then sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80
+  --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF; fi
+- if [[ "$PLATFORM" == "win" ]]; then echo "deb http://download.mono-project.com/repo/ubuntu
+  trusty main" | sudo tee /etc/apt/sources.list.d/mono-official.list; fi
+- if [[ "$PLATFORM" == "win" ]]; then sudo apt-get update -q; fi
+- if [[ "$PLATFORM" == "win" ]]; then sudo apt-get install --no-install-recommends
+  mono-devel ca-certificates-mono -y; fi
 addons:
   artifacts:
-    s3_region: "us-west-1"
+    s3_region: us-west-1
     paths:
-      - $(find dist -type f -name *.AppImage -o -name *.dmg | tr "\n" ":")
-  
+    - $(find dist -type f -name *.AppImage -o -name *.dmg | tr "\n" ":")
   apt:
     packages:
     - libcurl4-openssl-dev
@@ -58,39 +46,35 @@ addons:
     - icnsutils
     - graphicsmagick
     - xz-utils
-
 cache:
   directories:
-    - node_modules
-    - build/node_modules
-    - $HOME/.electron
-    - $HOME/.cache
-
+  - node_modules
+  - build/node_modules
+  - "$HOME/.electron"
+  - "$HOME/.cache"
 install:
 - npm install > /dev/null
 - node --version
 - npm --version
-
 before_script:
-  - ./version.sh
-
+- "./version.sh"
 script:
 - npm test
 - npm run build-n-package:$PLATFORM
-
 after_success:
- - ./travis_rename.sh
- - export INSOMNIA_VERSION=$(node -e "console.log(require('./app/package.json').version);")
-   
-# "official" release build, only happens on tags
+- "./travis_rename.sh"
+- export INSOMNIA_VERSION=$(node -e "console.log(require('./app/package.json').version);")
 deploy:
   provider: s3
   region: us-west-1
-  access_key_id: $ARTIFACTS_KEY
-  secret_access_key: $ARTIFACTS_SECRET
-  bucket: $ARTIFACTS_BUCKET
+  access_key_id: "$ARTIFACTS_KEY"
+  secret_access_key: "$ARTIFACTS_SECRET"
+  bucket: "$ARTIFACTS_BUCKET"
   skip_cleanup: true
   local_dir: ./dist/deploy
   upload-dir: release/1.4/$INSOMNIA_VERSION
   on:
     tags: true
+notifications:
+  slack:
+    secure: njKl/e4gbf1ikkNrOaLrlm3QqMAKNGlwCn+W6NMIp+E1ij6wiMqsNXFeHXhnxbV0t3zsO04ljPoqnqSKn0MVsarAA5hyfJttyCCmeUe2Voj0GUb67x3Gh65R7ridKftbkG/2GcEhYXxA0PgDqWB2llbgulFhEhqz7fxv1/TAAS3zvoLQ8OTEQpC/78xTmKn5BrQ5U1Sm5t3Zuwl4tiHFoHsOIEsV0bYrADFvrdL3DyxJrwyaM/YNvsQdIz/sERjRkPs3pAXstT3grRrPEGIRCE6/AMOSUM8rHSYOYz45cq/0k4CuLBwlMuY0Z5IkHR7GNOfMxmIlp7n0Nke2Ws2MCVxWnwO/1b9NahK7eujFlQoPZRWUkjv1EMzcBvE6CzKgUt5QvDgzqmvMsn+X9pcn3UYPUWg3/P1O+bYUZ7zFoaxScZMhudOD3miA5Z6HxQGGBnd5nuWAfH0TW+Kn/Xam4PsBvtUJmmIoUamNnXWIBwsA7h8V7XJKbee15PGejK2RQLHzBHM64gN+wQZutjWgOrO6dj1QLSapoRKnTPomFT3LfmdBAXkyB44ZyPewIB7txpYtzaTDuZ+nk9D4PQesR2EmDUkJvxXifR6tQL+o9O0hxAv4vC/mzDPZCEURB6cfkFnwqS9rWZRyPuGen2r/6zBbe3H8fqcOjoBdUcpVhlM=

@@ -13,7 +13,6 @@ import {registerModal, showModal} from './modals/index';
 import AlertModal from './modals/alert-modal';
 import WrapperModal from './modals/wrapper-modal';
 import ErrorModal from './modals/error-modal';
-import ChangelogModal from './modals/changelog-modal';
 import CookiesModal from './modals/cookies-modal';
 import CookieModifyModal from '../components/modals/cookie-modify-modal';
 import EnvironmentEditModal from './modals/environment-edit-modal';
@@ -306,7 +305,7 @@ class Wrapper extends React.PureComponent<Props, State> {
         message: 'Since you deleted your only workspace, a new one has been created for you.'
       });
 
-      models.workspace.create({name: 'Insomnia'});
+      models.workspace.create({name: 'Sidecar'});
       trackEvent('Workspace', 'Delete', 'Last');
     } else {
       trackEvent('Workspace', 'Delete');
@@ -418,7 +417,6 @@ class Wrapper extends React.PureComponent<Props, State> {
           <PromptModal ref={registerModal}/>
 
           <WrapperModal ref={registerModal}/>
-          <ChangelogModal ref={registerModal}/>
           <LoginModal ref={registerModal}/>
           <AskModal ref={registerModal}/>
           <SelectModal ref={registerModal}/>

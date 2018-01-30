@@ -270,7 +270,7 @@ class OAuth2Auth extends React.PureComponent<Props, State> {
       'Redirect URL',
       'redirectUrl',
       this._handleChangeRedirectUrl,
-      'This can be whatever you want or need it to be. Insomnia will automatically ' +
+      'This can be whatever you want or need it to be. Peach Sidecar will automatically ' +
       'detect a redirect in the client browser window and extract the code from the ' +
       'redirected URL'
     );

@@ -1,15 +1,15 @@
 {
-  "name": "insomnia",
+  "name": "sidecar",
   "private": true,
   "version": "1.0.0",
-  "description": "Insomnia App",
+  "description": "Peach Sidecar",
   "cache": 1,
   "main": "main.js",
   "licence": "GNU AGPLv3",
-  "homepage": "https://insomnia.rest",
+  "homepage": "https://peach.tech",
   "repository": {
     "type": "git",
-    "url": "https://github.com/getinsomnia/insomnia"
+    "url": "https://github.com/PeachTech/insomnia"
   },
   "scripts": {
     "test:lint": "eslint \"**/*.js\" \"**/*.html\" \"**/*.json\"",
@@ -70,7 +70,7 @@
     ]
   },
   "build": {
-    "appId": "com.insomnia.app",
+    "appId": "com.sidecar.app",
     "extraResources": [
       {
         "from": "./bin",
@@ -81,10 +81,10 @@
     "category": "public.app-category.developer-tools",
     "protocols": [
       {
-        "name": "Insomnia",
+        "name": "Peach Sidecar",
         "role": "Viewer",
         "schemes": [
-          "insomnia"
+          "sidecar"
         ]
       }
     ],
@@ -94,14 +94,14 @@
       "output": "dist"
     },
     "win": {
-      "iconUrl": "https://insomnia.rest/images/icon.png",
+      "iconUrl": "https://peach-insomnia.s3.amazonaws.com/images/icon.png",
       "target": [
         "squirrel"
       ],
       "msi": false
     },
     "linux": {
-      "executableName": "insomnia",
+      "executableName": "peach sidecar",
       "synopsis": "A simple, beautiful, and free REST API client",
       "category": "Development",
       "target": [
