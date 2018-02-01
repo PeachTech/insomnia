@@ -26,7 +26,7 @@
     "build:renderer": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.config.production.babel.js",
     "build:main": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.config.electron.babel.js",
     "build:copy": "cp -r ./app/package.json ./bin ./app/static ./app/icons/* ./build/",
-    "build:copywin": "cpx ./app/package.json ./build",
+    "build:copywin": "mkdirp ./build/bin && mkdirp ./build/static && cpx ./app/package.json ./build && cpy ./bin/* ./build/bin/ && cpy ./app/static/* ./build/static && cpy ./app/icons/* ./build/ ",
     "build:install": "cd build && npm install",
     "build": "npm run build:clean && npm run build:renderer && npm run build:main && npm run build:copy && npm run build:install",
     "build:win": "npm run build:clean && npm run build:renderer && npm run build:main && npm run build:copywin && npm run build:install",
