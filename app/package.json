@@ -18,7 +18,7 @@
     "hawk": "^6.0.2",
     "hkdf": "^0.0.2",
     "html-entities": "^1.2.0",
-    "iconv-lite": "^0.4.15",
+  "iconv-lite": "^0.4.15",
     "insomnia-httpsnippet": "^1.16.5",
     "insomnia-importers": "^1.5.0",
     "insomnia-node-libcurl": "^1.2.3",
