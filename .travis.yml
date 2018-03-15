@@ -4,6 +4,7 @@ matrix:
   - os: linux
     install:
     - npm install 7zip-bin-linux > /dev/null
+    - npm install app-builder-bin-linux > /dev/null
     sudo: required
     dist: trusty
     env:
@@ -12,6 +13,7 @@ matrix:
   - os: osx
     install:
     - npm install 7zip-bin-mac > /dev/null
+    - npm install app-builder-bin-mac > /dev/null
     env:
     - PLATFORM=mac
     - CSC_LINK=$MAC_CSC_LINK
