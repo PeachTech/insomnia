@@ -16,8 +16,7 @@ matrix:
     - npm install app-builder-bin-mac > /dev/null
     env:
     - PLATFORM=mac
-    - CSC_LINK=$MAC_CSC_LINK
-    - CSC_KEY_PASSWORD=$MAC_CSC_KEY_PASSWORD
+    - CSC_IDENTITY_AUTO_DISCOVERY=false    
 before_install:
 - if [[ "$PLATFORM" == "win" ]]; then sudo dpkg --add-architecture i386; fi
 - if [[ "$PLATFORM" == "win" ]]; then wget https://dl.winehq.org/wine-builds/Release.key;

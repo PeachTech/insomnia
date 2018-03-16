@@ -109,6 +109,12 @@
         "AppImage"
       ]
     },
+    "macOS" : {
+      "target": [
+        "dmg"
+      ],
+      "identity": null
+    },
     "deb": {
       "depends": [
         "gconf2",
