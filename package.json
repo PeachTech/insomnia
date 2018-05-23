@@ -203,7 +203,7 @@
     "cpy-cli": "^1.0.1",
     "cross-env": "^2.0.0",
     "css-loader": "^0.26.2",
-    "electron": "^1.7.11",
+    "electron": "^1.7.12",
     "electron-builder": "^20.5.1",
     "electron-rebuild": "^1.6.0",
     "eslint": "^3.16.1",
