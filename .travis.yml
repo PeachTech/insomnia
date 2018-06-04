@@ -47,6 +47,12 @@ addons:
     - icnsutils
     - graphicsmagick
     - xz-utils
+cache:
+  directories:
+  - node_modules
+  - build/node_modules
+  - "$HOME/.electron"
+  - "$HOME/.cache"
 install:
 - npm install > /dev/null
 - node --version
