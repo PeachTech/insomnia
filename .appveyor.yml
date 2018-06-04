@@ -7,7 +7,7 @@ build: off
 
 platform: x64
 environment:
-  NODEJS_VERSION: "7"
+  NODEJS_VERSION: "8"
 
 # Things to install after repo clone
 install:
@@ -27,9 +27,9 @@ install:
           Set-AppveyorBuildVariable -Name sidecarversion -Value $version;
 
 
-# cache:
-#  - '%APPDATA%\npm-cache -> package.json'
-#  - '%USERPROFILE%\.electron -> package.json'
+cache:
+  - '%APPDATA%\npm-cache -> package.json'
+  - '%USERPROFILE%\.electron -> package.json'
 
 #---------------------------------#
 #       tests configuration       #
