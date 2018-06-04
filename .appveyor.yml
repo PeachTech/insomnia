@@ -27,9 +27,9 @@ install:
           Set-AppveyorBuildVariable -Name sidecarversion -Value $version;
 
 
-cache:
-  - '%APPDATA%\npm-cache -> package.json'
-  - '%USERPROFILE%\.electron -> package.json'
+# cache:
+#  - '%APPDATA%\npm-cache -> package.json'
+#  - '%USERPROFILE%\.electron -> package.json'
 
 #---------------------------------#
 #       tests configuration       #
