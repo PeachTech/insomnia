@@ -382,7 +382,7 @@ class App extends PureComponent {
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
     let nextState = 'Continue';
     let result;
-
+    let derp;
     try {
       let session = await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
       this.props.handleTestInfo(rgName, request.name, session.Id);
@@ -390,7 +390,6 @@ class App extends PureComponent {
       settings.httpProxy = api.ProxyUrl();
       settings.httpsProxy = api.ProxyUrl();
       settings.validateSSL = false;
-
       do {
         await api.Setup();
         await api.TestCase(rgName + '_' + request.name);
@@ -398,13 +397,21 @@ class App extends PureComponent {
         const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment ? activeEnvironment._id : 'n/a', ancestors);
 
         let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
-        await network._actuallySend(renderedRequest, workspace, settings);
+        try {
+          derp = await network._actuallySend(renderedRequest, workspace, settings);
+          if (derp.response.error != null && derp.response.error !== '') {
+            break;
+          }
+        } catch (ex) {
+          await api.Teardown();
+          break;
+        }
         nextState = await api.Teardown();
       } while (nextState === 'Continue');
     } catch (ex) {
       await showAlert({
         title: 'Error',
-        message: 'An error occurred on the test run or the test run was cancelled.'
+        message: 'An error occurred on the test run or the test run was cancelled.' + derp
       });
       this.props.handleStopTesting();
       return;

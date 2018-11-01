@@ -74,6 +74,7 @@ export function _actuallySend (
         settingStoreCookies: renderedRequest.settingStoreCookies
       }: ResponsePatch), patch);
 
+      console.warn('_actuallySend()::respond()');
       resolve({bodyBuffer, response});
 
       // Apply plugin hooks and don't wait for them and don't throw from them
@@ -89,6 +90,7 @@ export function _actuallySend (
 
     /** Helper function to respond with an error */
     function handleError (err: Error): void {
+      console.warn('handleError() ' + err.message);
       respond({
         url: renderedRequest.url,
         parentId: renderedRequest._id,
@@ -553,6 +555,7 @@ export function _actuallySend (
 
       // Handle the response ending
       curl.on('end', async (_1, _2, rawHeaders) => {
+        console.warn('response: curl.on(end)');
         const allCurlHeadersObjects = _parseHeaders(rawHeaders);
         // Headers are an array (one for each redirect)
         const lastCurlHeadersObject = allCurlHeadersObjects[allCurlHeadersObjects.length - 1];
@@ -636,6 +639,7 @@ export function _actuallySend (
       curl.on('error', function (err, code) {
         let error = err + '';
         let statusMessage = 'Error';
+        console.warn('curl.on(error)');
 
         if (code === Curl.code.CURLE_ABORTED_BY_CALLBACK) {
           error = 'Request aborted';
@@ -649,7 +653,7 @@ export function _actuallySend (
     } catch (err) {
       handleError(err);
     }
-  });
+  }).catch(() => {});
 }
 
 export async function sendWithSettings (
