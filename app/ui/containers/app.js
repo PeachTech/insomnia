@@ -333,16 +333,33 @@ class App extends PureComponent {
           const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment ? activeEnvironment._id : 'n/a', ancestors);
 
           let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
-          await network._actuallySend(renderedRequest, workspace, settings);
+          try {
+            await network._actuallySend(renderedRequest, workspace, settings);
+          } catch (err) {
+            console.warn('Error on sending request to proxy: ' + err.message);
+          }
           nextState = await api.Teardown();
         } while (nextState === 'Continue');
       } catch (ex) {
-        await showAlert({
-          title: 'Error',
-          message: 'An error occurred on the test run or the test run was cancelled.'
-        });
+        if (ex.name === 'PeachError') {
+          if (ex.message === 'Error: 404 Not Found') {
+            await showAlert({
+              title: 'Cancelled',
+              message: 'The test run was cancelled.'
+            });
+          } else {
+            await showAlert({
+              title: 'Peach Error',
+              message: 'The server reported an error.  If this problem persists, please send a support bundle to support@peach.tech.  (' + ex.message + ')'
+            });
+          }
+        } else {
+          await showAlert({
+            title: 'Error',
+            message: ex.message
+          });
+        }
         this.props.handleStopTesting();
-        await api.SuiteTeardown();
         await api.SessionTeardown();
         return;
       }
@@ -350,10 +367,17 @@ class App extends PureComponent {
     await api.SuiteTeardown();
     let result = await api.SessionTeardown();
     this.props.handleStopTesting();
-    await showAlert({
-      title: result.State,
-      message: result.Reason
-    });
+    if (result) {
+      await showAlert({
+        title: result.State,
+        message: result.Reason
+      });
+    } else {
+      await showAlert({
+        title: 'Error',
+        message: 'No result from Peach API Security.  If this persists, please send a support bundle to support@peach.tech'
+      });
+    }
   }
 
   async _handleRunTest (request) {
@@ -382,7 +406,6 @@ class App extends PureComponent {
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
     let nextState = 'Continue';
     let result;
-
     try {
       let session = await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
       this.props.handleTestInfo(rgName, request.name, session.Id);
@@ -390,7 +413,6 @@ class App extends PureComponent {
       settings.httpProxy = api.ProxyUrl();
       settings.httpsProxy = api.ProxyUrl();
       settings.validateSSL = false;
-
       do {
         await api.Setup();
         await api.TestCase(rgName + '_' + request.name);
@@ -398,24 +420,57 @@ class App extends PureComponent {
         const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment ? activeEnvironment._id : 'n/a', ancestors);
 
         let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
-        await network._actuallySend(renderedRequest, workspace, settings);
+        try {
+          await network._actuallySend(renderedRequest, workspace, settings);
+        } catch (err) {
+          console.warn('Error on sending request to proxy: ' + err.message);
+        }
         nextState = await api.Teardown();
       } while (nextState === 'Continue');
     } catch (ex) {
-      await showAlert({
-        title: 'Error',
-        message: 'An error occurred on the test run or the test run was cancelled.'
-      });
+      if (ex.name === 'PeachError') {
+        if (ex.message === 'Error: 404 Not Found') {
+          await showAlert({
+            title: 'Cancelled',
+            message: 'The test run was cancelled.'
+          });
+        } else {
+          await showAlert({
+            title: 'Peach Error',
+            message: 'The server reported an error.  If this problem persists, please send a support bundle to support@peach.tech.  (' + ex.message + ')'
+          });
+        }
+      } else {
+        await showAlert({
+          title: 'Error',
+          message: ex.message
+        });
+      }
       this.props.handleStopTesting();
       return;
     }
-    await api.SuiteTeardown();
-    result = await api.SessionTeardown();
+    try {
+      await api.SuiteTeardown();
+    } catch (err) {
+      console.warn('Error on SuiteTeardown: ' + err.message);
+    }
+    try {
+      result = await api.SessionTeardown();
+    } catch (err) {
+      console.warn('Error on SessionTeardown: ' + err.message);
+    }
     this.props.handleStopTesting();
-    await showAlert({
-      title: result.State,
-      message: result.Reason
-    });
+    if (result) {
+      await showAlert({
+        title: result.State,
+        message: result.Reason
+      });
+    } else {
+      await showAlert({
+        title: 'Error',
+        message: 'No result from Peach API Security.  If this persists, please send a support bundle to support@peach.tech'
+      });
+    }
   }
 
   async _updateRequestGroupMetaByParentId (requestGroupId, patch) {

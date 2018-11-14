@@ -163,7 +163,7 @@
     "nunjucks": "^3.0.0",
     "oauth-1.0a": "^2.2.2",
     "pdfjs-dist": "^1.9.640",
-    "peachapisec": "^1.5.17",
+    "peachapisec": "^1.5.20",
     "prop-types": "^15.5.10",
     "react": "^16.1.1",
     "react-dnd": "^2.4.0",
