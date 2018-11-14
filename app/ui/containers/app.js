@@ -438,7 +438,6 @@ class App extends PureComponent {
         message: 'No result from Peach API Security.  If this persists, please send a support bundle to support@peach.tech'
       });
     }
-
   }
 
   async _updateRequestGroupMetaByParentId (requestGroupId, patch) {

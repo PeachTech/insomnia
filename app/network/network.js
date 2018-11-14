@@ -653,7 +653,7 @@ export function _actuallySend (
     } catch (err) {
       handleError(err);
     }
-  }).catch(() => {});
+  });
 }
 
 export async function sendWithSettings (
