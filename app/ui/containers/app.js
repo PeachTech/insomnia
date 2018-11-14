@@ -411,18 +411,34 @@ class App extends PureComponent {
     } catch (ex) {
       await showAlert({
         title: 'Error',
-        message: 'An error occurred on the test run or the test run was cancelled.' + derp
+        message: 'An error occurred on the test run or the test run was cancelled.' + derp + ex.message
       });
       this.props.handleStopTesting();
       return;
     }
-    await api.SuiteTeardown();
-    result = await api.SessionTeardown();
+    try {
+      await api.SuiteTeardown();
+    } catch (err) {
+      console.warn('Error on SuiteTeardown: ' + err.message);
+    }
+    try {
+      result = await api.SessionTeardown();
+    } catch (err) {
+      console.warn('Error on SessionTeardown: ' + err.message);
+    }
     this.props.handleStopTesting();
-    await showAlert({
-      title: result.State,
-      message: result.Reason
-    });
+    if (result) {
+      await showAlert({
+        title: result.State,
+        message: result.Reason
+      });
+    } else {
+      await showAlert({
+        title: 'Error',
+        message: 'No result from Peach API Security.  If this persists, please send a support bundle to support@peach.tech'
+      });
+    }
+
   }
 
   async _updateRequestGroupMetaByParentId (requestGroupId, patch) {
