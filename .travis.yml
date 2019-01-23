@@ -1,70 +1,62 @@
 language: node_js
 matrix:
-  include:
-  - os: linux
-    install:
-    - npm install 7zip-bin-linux > /dev/null
-    - npm install app-builder-bin-linux > /dev/null
     sudo: required
     dist: trusty
     env:
-    - PLATFORM=linux
-    compiler: clang
-  - os: osx
-    install:
-    - npm install 7zip-bin-mac > /dev/null
-    - npm install app-builder-bin-mac > /dev/null
+    - COMPOSE_SCRIPT=package_linux
+    - DOCKER_COMPOSE_VERSION=1.20.1
+    before_install:
+    - sudo rm /usr/local/bin/docker-compose
+    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - chmod +x docker-compose
+    - sudo mv docker-compose /usr/local/bin
+    before_deploy:
+    - python -c 'import os,sys,fcntl; flags = fcntl.fcntl(sys.stdout, fcntl.F_GETFL); fcntl.fcntl(sys.stdout, fcntl.F_SETFL, flags&~os.O_NONBLOCK);'
+    - docker-compose build
+    - docker-compose build $COMPOSE_SCRIPT
+    - docker-compose run $COMPOSE_SCRIPT
+  - os: linux
+    sudo: required
+    dist: trusty
     env:
-    - PLATFORM=mac
+    - COMPOSE_SCRIPT=package_snap
+    - DOCKER_COMPOSE_VERSION=1.20.1
+    before_install:
+    - sudo rm /usr/local/bin/docker-compose
+    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - chmod +x docker-compose
+    - sudo mv docker-compose /usr/local/bin
+    before_deploy:
+    - python -c 'import os,sys,fcntl; flags = fcntl.fcntl(sys.stdout, fcntl.F_GETFL); fcntl.fcntl(sys.stdout, fcntl.F_SETFL, flags&~os.O_NONBLOCK);'
+    - docker-compose build $COMPOSE_SCRIPT
+    - docker-compose run $COMPOSE_SCRIPT
+  - os: osx
+    env:
     - CSC_IDENTITY_AUTO_DISCOVERY=false    
-before_install:
-- if [[ "$PLATFORM" == "win" ]]; then sudo dpkg --add-architecture i386; fi
-- if [[ "$PLATFORM" == "win" ]]; then wget https://dl.winehq.org/wine-builds/Release.key;
-  fi
-- if [[ "$PLATFORM" == "win" ]]; then sudo apt-key add Release.key; fi
-- if [[ "$PLATFORM" == "win" ]]; then sudo apt-add-repository "https://dl.winehq.org/wine-builds/ubuntu/"
-  -y; fi
-- if [[ "$PLATFORM" == "win" ]]; then sudo apt-get update -q; fi
-- if [[ "$PLATFORM" == "win" ]]; then sudo apt-get install --no-install-recommends
-  winehq-stable -y; fi
-- if [[ "$PLATFORM" == "win" ]]; then sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80
-  --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF; fi
-- if [[ "$PLATFORM" == "win" ]]; then echo "deb http://download.mono-project.com/repo/ubuntu
-  trusty main" | sudo tee /etc/apt/sources.list.d/mono-official.list; fi
-- if [[ "$PLATFORM" == "win" ]]; then sudo apt-get update -q; fi
-- if [[ "$PLATFORM" == "win" ]]; then sudo apt-get install --no-install-recommends
-  mono-devel ca-certificates-mono -y; fi
+    before_deploy:
+    - npm run app-package
 addons:
   artifacts:
     s3_region: us-west-1
     paths:
     - $(find dist -type f -name *.AppImage -o -name *.dmg | tr "\n" ":")
-  apt:
-    packages:
-    - libcurl4-openssl-dev
-    - git-all
-    - build-essential
-    - icnsutils
-    - graphicsmagick
-    - xz-utils
+
 cache:
   directories:
   - node_modules
   - build/node_modules
-  - "$HOME/.electron"
-  - "$HOME/.cache"
-install:
-- npm install > /dev/null
+  - $HOME/.electron
+  - $HOME/.cache
+
+script:
 - node --version
 - npm --version
-before_script:
-- "./version.sh"
-script:
+- npm run bootstrap
 - npm test
-- npm run build-n-package:$PLATFORM
 after_success:
 - "./travis_rename.sh"
 - export INSOMNIA_VERSION=$(node -e "console.log(require('./app/package.json').version);")
+
 deploy:
   provider: s3
   region: us-west-1
@@ -72,7 +64,7 @@ deploy:
   secret_access_key: "$ARTIFACTS_SECRET"
   bucket: "$ARTIFACTS_BUCKET"
   skip_cleanup: true
-  local_dir: ./dist/deploy
+  local_dir: packages/insomnia-app/dist/deploy
   upload-dir: release/1.4/$INSOMNIA_VERSION
   on:
     tags: true

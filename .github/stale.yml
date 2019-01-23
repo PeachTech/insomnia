@@ -2,9 +2,11 @@ daysUntilStale: 60
 daysUntilClose: 7
 exemptLabels:
   - High Priority
-  - Needs PR
+  - Accepted
   - Help Wanted
+  - Needs Discussion
   - Blocked
+  - Bug
 staleLabel: Stale
 markComment: >
   This issue has been automatically marked as stale because it has not had

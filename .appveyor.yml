@@ -1,5 +1,6 @@
 image: Visual Studio 2015
 build: off
+test: off
 
 #---------------------------------#
 #    environment configuration    #
@@ -7,15 +8,16 @@ build: off
 
 platform: x64
 environment:
-  NODEJS_VERSION: "8"
+  NODEJS_VERSION: "10"
 
 # Things to install after repo clone
 install:
+  - SET "PATH=%PATH%;C:\Program Files\Git\mingw64\libexec\git-core" # For weird git bug
   - ps: Install-Product node $env:NODEJS_VERSION $env:Platform
   - node --version
   - npm --version
   - npm config set msvs_version 2015
-  - npm install > NUL
+  - npm run bootstrap
   - npm test
   - ps: >-
           $ver = git describe --abbrev=0;
@@ -28,17 +30,17 @@ install:
 
 
 cache:
-  - '%APPDATA%\npm-cache -> package.json'
-  - '%USERPROFILE%\.electron -> package.json'
+  - '%USERPROFILE%\.electron -> packages/insomnia-app/package.json'
 
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
 
 build_script:
-  - npm run build-n-package:win
-  - ps: >-
-      $ver = node -e "console.log(require('./app/package.json').version);"; Get-ChildItem dist/squirrel-windows/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-x64-win.exe; }; Get-ChildItem dist/squirrel-windows-ia32/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-ia32-win.exe; }
+#  - npm run build-n-package:win
+#  - ps: >-
+#      $ver = node -e "console.log(require('./app/package.json').version);"; Get-ChildItem dist/squirrel-windows/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-x64-win.exe; }; Get-ChildItem dist/squirrel-windows-ia32/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-ia32-win.exe; }
+  - if %APPVEYOR_REPO_TAG%==true npm run app-package
 
 #---------------------------------#
 #      artifacts configuration    #
@@ -49,14 +51,16 @@ after_build:
   - ps: Get-ChildItem dist/squirrel-windows-ia32/*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name -DeploymentName dist_exe_ia32_file }
 
 artifacts:
-  - path: dist\squirrel-windows\*.exe
-    name: dist_exe_64
+#  - path: dist\squirrel-windows\*.exe
+#    name: dist_exe_64
 
-  - path: dist\squirrel-windows-ia32\*.exe
-    name: dist_exe_ia32
+#  - path: dist\squirrel-windows-ia32\*.exe
+#    name: dist_exe_ia32
 
-  - path: dist\squirrel-windows\*.nupkg
-    name: dist_nupkg
+#  - path: dist\squirrel-windows\*.nupkg
+#    name: dist_nupkg
+  - path: packages\insomnia-app\dist\squirrel-windows\*
+    name: dist
 
 #---------------------------------#
 #     deployment configuration    #
