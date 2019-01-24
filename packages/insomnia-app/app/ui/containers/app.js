@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Wrapper from '../components/wrapper';
 import WorkspaceEnvironmentsEditModal from '../components/modals/workspace-environments-edit-modal';
+import Toast from '../components/toast';
 import CookiesModal from '../components/modals/cookies-modal';
 import RequestSwitcherModal from '../components/modals/request-switcher-modal';
 import SettingsModal, { TAB_INDEX_SHORTCUTS } from '../components/modals/settings-modal';
@@ -64,7 +65,7 @@ import * as plugins from '../../plugins';
 import * as templating from '../../templating/index';
 import AskModal from '../components/modals/ask-modal';
 import PeachApiSec from 'peachapisec';
-import {getRenderContext, getRenderedRequest} from '../../common/render';
+// import {getRenderContext, getRenderedRequest} from '../../common/render';
 import { updateMimeType } from '../../models/request';
 import MoveRequestGroupModal from '../components/modals/move-request-group-modal';
 import * as themes from '../../plugins/misc';
@@ -161,25 +162,6 @@ class App extends PureComponent {
           if (!activeRequest) {
             return;
           }
-<<<<<<< HEAD:app/ui/containers/app.js
-        });
-      }],
-      [hotkeys.CREATE_FOLDER, () => {
-        const {activeRequest, activeWorkspace} = this.props;
-        const parentId = activeRequest ? activeRequest.parentId : activeWorkspace._id;
-        this._requestGroupCreate(parentId);
-      }],
-      [hotkeys.GENERATE_CODE, async () => {
-        showModal(GenerateCodeModal, this.props.activeRequest);
-      }],
-      [hotkeys.DUPLICATE_REQUEST, async () => {
-        await this._requestDuplicate(this.props.activeRequest);
-      }],
-      [hotkeys.RUN_TEST, async() => {
-        await this._handleRunTest(this.props.activeRequest);
-      }]
-=======
-
           showModal(AskModal, {
             title: 'Delete Request?',
             message: `Really delete ${activeRequest.name}?`,
@@ -218,7 +200,12 @@ class App extends PureComponent {
           await this._updateIsVariableUncovered();
         },
       ],
->>>>>>> insomnia/master:packages/insomnia-app/app/ui/containers/app.js
+      [
+        hotkeys.RUN_TEST,
+        async () => {
+          await this._handleRunTest(this.props.activeRequest);
+        },
+      ],
     ];
   }
 
@@ -362,8 +349,7 @@ class App extends PureComponent {
     clipboard.writeText(cmd);
   }
 
-<<<<<<< HEAD:app/ui/containers/app.js
-  async _handleCancelTests (sessionid) {
+  async _handleCancelTests(sessionid) {
     if (sessionid && sessionid !== '') {
       const settings = await models.settings.getOrCreate();
       try {
@@ -378,7 +364,7 @@ class App extends PureComponent {
     }
   }
 
-  async _handleRunTests (requestGroup) {
+  async _handleRunTests(requestGroup) {
     let requests;
     if (requestGroup && requestGroup.type === models.requestGroup.type) {
       let objs = await db.withDescendants(requestGroup, models.request.type);
@@ -389,25 +375,35 @@ class App extends PureComponent {
     }
 
     if (requests.length === 0) {
-      await showAlert({title: 'Error - no requests found',
-        message: 'Unable to find any requests in your workspace.  Ensure you have an active workspace and that it contains at least one request.'});
+      await showAlert({
+        title: 'Error - no requests found',
+        message:
+          'Unable to find any requests in your workspace.  Ensure you have an active workspace and that it contains at least one request.',
+      });
       return;
     }
 
-    if (this.props.settings.peachApiUrl === '' || this.props.settings.peachApiToken === '' ||
-        this.props.settings.peachProject === '') {
-      await showAlert({title: 'Error', message: 'Peach API Security has not been configured.'});
+    if (
+      this.props.settings.peachApiUrl === '' ||
+      this.props.settings.peachApiToken === '' ||
+      this.props.settings.peachProject === ''
+    ) {
+      await showAlert({ title: 'Error', message: 'Peach API Security has not been configured.' });
       showModal(SettingsModal, 1);
       return;
     }
 
     this.props.handleStartTesting();
 
-    const {activeEnvironment} = this.props;
-        // fix up request and stuff
+    const { activeEnvironment } = this.props;
+    // fix up request and stuff
     const settings = await models.settings.getOrCreate();
     let api = new PeachApiSec(this.props.settings.peachApiUrl, this.props.settings.peachApiToken);
-    let session = await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
+    let session = await api.SessionSetup(
+      this.props.settings.peachProject,
+      this.props.settings.peachProfile,
+      this.props.settings.peachApiUrl,
+    );
     settings.proxyEnabled = true;
     settings.httpProxy = api.ProxyUrl();
     settings.httpsProxy = api.ProxyUrl();
@@ -416,7 +412,7 @@ class App extends PureComponent {
     for (const request of requests) {
       const ancestors = await db.withAncestors(request, [
         models.requestGroup.type,
-        models.workspace.type
+        models.workspace.type,
       ]);
       const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
       const requestGroupDoc = ancestors.find(doc => doc.type === models.requestGroup.type);
@@ -429,10 +425,20 @@ class App extends PureComponent {
         do {
           await api.Setup();
           await api.TestCase(reqName + '_' + request.name);
-          const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment ? activeEnvironment._id : 'n/a');
-          const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment ? activeEnvironment._id : 'n/a', ancestors);
+          const renderedRequestBeforePlugins = await getRenderedRequest(
+            request,
+            activeEnvironment ? activeEnvironment._id : 'n/a',
+          );
+          const renderedContextBeforePlugins = await getRenderContext(
+            request,
+            activeEnvironment ? activeEnvironment._id : 'n/a',
+            ancestors,
+          );
 
-          let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
+          let renderedRequest = await network._applyRequestPluginHooks(
+            renderedRequestBeforePlugins,
+            renderedContextBeforePlugins,
+          );
           try {
             await network._actuallySend(renderedRequest, workspace, settings);
           } catch (err) {
@@ -445,18 +451,21 @@ class App extends PureComponent {
           if (ex.message === 'Error: 404 Not Found') {
             await showAlert({
               title: 'Cancelled',
-              message: 'The test run was cancelled.'
+              message: 'The test run was cancelled.',
             });
           } else {
             await showAlert({
               title: 'Peach Error',
-              message: 'The server reported an error.  If this problem persists, please send a support bundle to support@peach.tech.  (' + ex.message + ')'
+              message:
+                'The server reported an error.  If this problem persists, please send a support bundle to support@peach.tech.  (' +
+                ex.message +
+                ')',
             });
           }
         } else {
           await showAlert({
             title: 'Error',
-            message: ex.message
+            message: ex.message,
           });
         }
         this.props.handleStopTesting();
@@ -470,32 +479,36 @@ class App extends PureComponent {
     if (result) {
       await showAlert({
         title: result.State,
-        message: result.Reason
+        message: result.Reason,
       });
     } else {
       await showAlert({
         title: 'Error',
-        message: 'No result from Peach API Security.  If this persists, please send a support bundle to support@peach.tech'
+        message:
+          'No result from Peach API Security.  If this persists, please send a support bundle to support@peach.tech',
       });
     }
   }
 
-  async _handleRunTest (request) {
-    if (this.props.settings.peachApiUrl === '' || this.props.settings.peachApiToken === '' ||
-    this.props.settings.peachProject === '') {
-      await showAlert({title: 'Error', message: 'Peach API Security has not been configured.'});
+  async _handleRunTest(request) {
+    if (
+      this.props.settings.peachApiUrl === '' ||
+      this.props.settings.peachApiToken === '' ||
+      this.props.settings.peachProject === ''
+    ) {
+      await showAlert({ title: 'Error', message: 'Peach API Security has not been configured.' });
       showModal(SettingsModal, 1);
       return;
     }
 
     this.props.handleStartTesting();
-    const {activeEnvironment} = this.props;
+    const { activeEnvironment } = this.props;
 
     // fix up request and stuff
     const settings = await models.settings.getOrCreate();
     const ancestors = await db.withAncestors(request, [
       models.requestGroup.type,
-      models.workspace.type
+      models.workspace.type,
     ]);
 
     const workspaceDoc = ancestors.find(doc => doc.type === models.workspace.type);
@@ -507,7 +520,11 @@ class App extends PureComponent {
     let nextState = 'Continue';
     let result;
     try {
-      let session = await api.SessionSetup(this.props.settings.peachProject, this.props.settings.peachProfile, this.props.settings.peachApiUrl);
+      let session = await api.SessionSetup(
+        this.props.settings.peachProject,
+        this.props.settings.peachProfile,
+        this.props.settings.peachApiUrl,
+      );
       this.props.handleTestInfo(rgName, request.name, session.Id);
       settings.proxyEnabled = true;
       settings.httpProxy = api.ProxyUrl();
@@ -516,10 +533,20 @@ class App extends PureComponent {
       do {
         await api.Setup();
         await api.TestCase(rgName + '_' + request.name);
-        const renderedRequestBeforePlugins = await getRenderedRequest(request, activeEnvironment ? activeEnvironment._id : 'n/a');
-        const renderedContextBeforePlugins = await getRenderContext(request, activeEnvironment ? activeEnvironment._id : 'n/a', ancestors);
+        const renderedRequestBeforePlugins = await getRenderedRequest(
+          request,
+          activeEnvironment ? activeEnvironment._id : 'n/a',
+        );
+        const renderedContextBeforePlugins = await getRenderContext(
+          request,
+          activeEnvironment ? activeEnvironment._id : 'n/a',
+          ancestors,
+        );
 
-        let renderedRequest = await network._applyRequestPluginHooks(renderedRequestBeforePlugins, renderedContextBeforePlugins);
+        let renderedRequest = await network._applyRequestPluginHooks(
+          renderedRequestBeforePlugins,
+          renderedContextBeforePlugins,
+        );
         try {
           await network._actuallySend(renderedRequest, workspace, settings);
         } catch (err) {
@@ -532,18 +559,21 @@ class App extends PureComponent {
         if (ex.message === 'Error: 404 Not Found') {
           await showAlert({
             title: 'Cancelled',
-            message: 'The test run was cancelled.'
+            message: 'The test run was cancelled.',
           });
         } else {
           await showAlert({
             title: 'Peach Error',
-            message: 'The server reported an error.  If this problem persists, please send a support bundle to support@peach.tech.  (' + ex.message + ')'
+            message:
+              'The server reported an error.  If this problem persists, please send a support bundle to support@peach.tech.  (' +
+              ex.message +
+              ')',
           });
         }
       } else {
         await showAlert({
           title: 'Error',
-          message: ex.message
+          message: ex.message,
         });
       }
       this.props.handleStopTesting();
@@ -563,20 +593,18 @@ class App extends PureComponent {
     if (result) {
       await showAlert({
         title: result.State,
-        message: result.Reason
+        message: result.Reason,
       });
     } else {
       await showAlert({
         title: 'Error',
-        message: 'No result from Peach API Security.  If this persists, please send a support bundle to support@peach.tech'
+        message:
+          'No result from Peach API Security.  If this persists, please send a support bundle to support@peach.tech',
       });
     }
   }
 
-  async _updateRequestGroupMetaByParentId (requestGroupId, patch) {
-=======
   async _updateRequestGroupMetaByParentId(requestGroupId, patch) {
->>>>>>> insomnia/master:packages/insomnia-app/app/ui/containers/app.js
     const requestGroupMeta = await models.requestGroupMeta.getByParentId(requestGroupId);
     if (requestGroupMeta) {
       await models.requestGroupMeta.update(requestGroupMeta, patch);
@@ -1032,21 +1060,6 @@ class App extends PureComponent {
     // Update title
     this._updateDocumentTitle();
 
-<<<<<<< HEAD:app/ui/containers/app.js
-    // Update Stats Object
-    const {lastVersion, launches} = await models.stats.get();
-    const firstLaunch = !lastVersion;
-    if (firstLaunch) {
-      // TODO: Show a welcome message
-      trackEvent('General', 'First Launch', getAppVersion(), {nonInteraction: true});
-    } else if (lastVersion !== getAppVersion()) {
-      trackEvent('General', 'Updated', getAppVersion(), {nonInteraction: true});
-    } else {
-      trackEvent('General', 'Launched', getAppVersion(), {nonInteraction: true});
-    }
-
-=======
->>>>>>> insomnia/master:packages/insomnia-app/app/ui/containers/app.js
     db.onChange(async changes => {
       let needsRefresh = false;
 
@@ -1264,11 +1277,7 @@ class App extends PureComponent {
               handleSetActiveEnvironment={this._handleSetActiveEnvironment}
               handleSetSidebarFilter={this._handleSetSidebarFilter}
               handleToggleMenuBar={this._handleToggleMenuBar}
-<<<<<<< HEAD:app/ui/containers/app.js
               handleCancelTests={this._handleCancelTests}
-            />
-          </ErrorBoundary>
-=======
               handleUpdateRequestMimeType={this._handleUpdateRequestMimeType}
               isVariableUncovered={this.state.isVariableUncovered}
             />
@@ -1278,7 +1287,6 @@ class App extends PureComponent {
             <Toast />
           </ErrorBoundary>
 
->>>>>>> insomnia/master:packages/insomnia-app/app/ui/containers/app.js
           {/* Block all mouse activity by showing an overlay while dragging */}
           {this.state.showDragOverlay ? <div className="blocker-overlay" /> : null}
         </div>
@@ -1309,16 +1317,7 @@ App.propTypes = {
 function mapStateToProps(state, props) {
   const { entities, global } = state;
 
-<<<<<<< HEAD:app/ui/containers/app.js
-  const {
-    isLoading,
-    loadingRequestIds,
-    isTesting,
-    testInfo
-  } = global;
-=======
-  const { isLoading, loadingRequestIds } = global;
->>>>>>> insomnia/master:packages/insomnia-app/app/ui/containers/app.js
+  const { isLoading, loadingRequestIds, isTesting, testInfo } = global;
 
   // Entities
   const entitiesLists = selectEntitiesLists(state, props);
@@ -1390,11 +1389,8 @@ function mapStateToProps(state, props) {
     environments,
     activeEnvironment,
     workspaceChildren,
-<<<<<<< HEAD:app/ui/containers/app.js
     isTesting,
-    testInfo
-=======
->>>>>>> insomnia/master:packages/insomnia-app/app/ui/containers/app.js
+    testInfo,
   });
 }
 

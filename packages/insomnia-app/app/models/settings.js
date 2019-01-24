@@ -27,7 +27,7 @@ type BaseSettings = {
   peachApiUrl: string,
   peachApiToken: string,
   peachProject: string,
-  peachProfile: string
+  peachProfile: string,
   deviceId: string | null,
   updateChannel: string,
   updateAutomatically: boolean,
@@ -46,7 +46,7 @@ export const type = 'Settings';
 export const prefix = 'set';
 export const canDuplicate = false;
 
-export function init (): BaseSettings {
+export function init(): BaseSettings {
   let pUrl = '';
   if (process.env.PEACH_API) {
     pUrl = process.env.PEACH_API;
@@ -80,7 +80,7 @@ export function init (): BaseSettings {
     peachApiUrl: pUrl,
     peachApiToken: pApiToken,
     peachProject: 'Default',
-    peachProfile: 'Quick'
+    peachProfile: 'Quick',
     deviceId: null,
     updateChannel: UPDATE_CHANNEL_STABLE,
     updateAutomatically: true,

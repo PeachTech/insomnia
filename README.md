@@ -6,7 +6,7 @@
 [![Twitter Follow](https://img.shields.io/twitter/follow/getinsomnia.svg?style=social&label=%40GetInsomnia%20on%20Twitter&style=plastic)](https://twitter.com/getinsomnia)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/getinsomnia/insomnia/master/LICENSE)
 
-This is a fork of the Insomnia REST Client.  The tool has been lightly extended to allow use with Peach API Security during trials.  We don't recommend this for daily use as it will lag behind the official Insomnia development.
+This is a fork of the Insomnia REST Client. The tool has been lightly extended to allow use with Peach API Security during trials. We don't recommend this for daily use as it will lag behind the official Insomnia development.
 
 Peach Sidecar is a cross-platform _REST client_, built on top of [Electron](http://electron.atom.io/).
 
@@ -16,7 +16,7 @@ Peach Sidecar is a cross-platform _REST client_, built on top of [Electron](http
 
 ## Download
 
-Peach Sidecar is available for Mac, Windows, and Linux and can be downloaded 
+Peach Sidecar is available for Mac, Windows, and Linux and can be downloaded
 from the website.
 
 **[https://portal.peachfuzzer.com](https://portal.peachfuzzer.com)**
@@ -28,7 +28,7 @@ Please contact support at support@peach.tech to report any issues.
 ## Developing
 
 Development on Insomnia can be done on Mac, Windows, or Linux as long as you have
-[NodeJS 8](https://nodejs.org) and [Git](https://git-scm.com/).
+[NodeJS 10](https://nodejs.org) and [Git](https://git-scm.com/).
 
 <details>
 <summary>Initial Dev Setup</summary>

@@ -48,7 +48,7 @@ async function getUpdateUrl(force: boolean): Promise<string | null> {
     return null;
   }
 
-  return fullUrl;
+  return null;
 }
 
 function _sendUpdateStatus(status) {
