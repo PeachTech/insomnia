@@ -56,11 +56,11 @@ class RequestGroupActionsDropdown extends PureComponent {
     showModal(EnvironmentEditModal, this.props.requestGroup);
   }
 
-  _handleRunTests () {
+  _handleRunTests() {
     this.props.handleRunTests(this.props.requestGroup);
   }
 
-  show () {
+  show() {
     this._dropdown.show();
   }
 
@@ -85,10 +85,10 @@ class RequestGroupActionsDropdown extends PureComponent {
         </DropdownItem>
         <DropdownDivider>Peach API Security</DropdownDivider>
         <DropdownItem onClick={this._handleRunTests}>
-          <i className="fa fa-bomb"/> Test All Requests
-          <DropdownHint hotkey={hotkeys.RUN_ALL_TESTS}/>
+          <i className="fa fa-bomb" /> Test All Requests
+          <DropdownHint hotkey={hotkeys.RUN_ALL_TESTS} />
         </DropdownItem>
-        <DropdownDivider/>
+        <DropdownDivider />
         <DropdownItem onClick={this._handleRequestGroupDuplicate}>
           <i className="fa fa-copy" /> Duplicate
         </DropdownItem>

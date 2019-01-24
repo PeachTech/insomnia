@@ -11,7 +11,6 @@ import SettingsModal, { TAB_INDEX_EXPORT } from '../modals/settings-modal';
 import * as models from '../../../models';
 import { getAppVersion } from '../../../common/constants';
 import { showModal, showPrompt } from '../modals/index';
-import Link from '../base/link';
 import WorkspaceSettingsModal from '../modals/workspace-settings-modal';
 import WorkspaceShareSettingsModal from '../modals/workspace-share-settings-modal';
 import * as session from '../../../sync/session';
@@ -61,11 +60,11 @@ class WorkspaceDropdown extends PureComponent {
     showModal(SettingsModal);
   }
 
-  _handleShowPeachSettings () {
+  _handleShowPeachSettings() {
     showModal(SettingsModal, 1);
   }
 
-  _handleShowWorkspaceSettings () {
+  _handleShowWorkspaceSettings() {
     showModal(WorkspaceSettingsModal, {
       workspace: this.props.activeWorkspace,
     });
@@ -100,11 +99,11 @@ class WorkspaceDropdown extends PureComponent {
     });
   }
 
-  _handleRunTests () {
+  _handleRunTests() {
     this.props.handleRunTests();
   }
 
-  render () {
+  render() {
     const {
       className,
       workspaces,
@@ -162,11 +161,11 @@ class WorkspaceDropdown extends PureComponent {
 
           <DropdownDivider>Peach API Security</DropdownDivider>
           <DropdownItem onClick={this._handleShowPeachSettings}>
-            <i className="fa fa-cog"/> Peach Preferences
+            <i className="fa fa-cog" /> Peach Preferences
           </DropdownItem>
           <DropdownItem onClick={this._handleRunTests}>
-            <i className="fa fa-bomb"/> Test All Requests
-            <DropdownHint hotkey={hotkeys.RUN_ALL_TESTS}/>
+            <i className="fa fa-bomb" /> Test All Requests
+            <DropdownHint hotkey={hotkeys.RUN_ALL_TESTS} />
           </DropdownItem>
           <DropdownDivider>Switch Workspace</DropdownDivider>
 

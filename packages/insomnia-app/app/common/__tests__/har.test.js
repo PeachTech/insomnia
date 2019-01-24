@@ -48,7 +48,7 @@ describe('exportHar()', () => {
       log: {
         version: '1.2',
         creator: {
-          name: 'Peach Sidecar REST Client'
+          name: 'Peach Sidecar REST Client',
         },
         entries: [
           {
@@ -192,7 +192,7 @@ describe('exportHar()', () => {
       log: {
         version: '1.2',
         creator: {
-          name: 'Peach Sidecar REST Client'
+          name: 'Peach Sidecar REST Client',
         },
         entries: [
           {

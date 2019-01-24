@@ -1,5 +1,5 @@
 // @flow
-import React, { PureComponent } from 'react';
+import * as React from 'react';
 import autobind from 'autobind-decorator';
 import HelpTooltip from '../help-tooltip';
 import PeachApiSec from 'peachapisec';
@@ -19,7 +19,7 @@ type Props = {
 };
 
 @autobind
-class PeachSettings extends React.PureComponent<void, State> {
+class PeachSettings extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -37,9 +37,10 @@ class PeachSettings extends React.PureComponent<void, State> {
     this.setState({ hasChanged: true });
   }
   _handleUpdateSetting(e: Event) {
-    let value = e.target.type === 'checkbox' ? (e.target: any).checked : (e.target: any).value;
+    let value =
+      (e.target: any).type === 'checkbox' ? (e.target: any).checked : (e.target: any).value;
 
-    if (e.target.type === 'number') {
+    if ((e.target: any).type === 'number') {
       value = parseInt(value, 10);
     }
 

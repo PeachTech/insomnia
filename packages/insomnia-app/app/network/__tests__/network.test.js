@@ -401,6 +401,9 @@ describe('actuallySend()', () => {
         ].join('\r\n'),
         PROXY: '',
         TIMEOUT_MS: 0,
+        // hack: make test pass by adding ssl settings
+        SSL_VERIFYHOST: 0,
+        SSL_VERIFYPEER: 0,
         URL: 'http://localhost/',
         UPLOAD: 1,
         USERAGENT: `insomnia/${getAppVersion()}`,

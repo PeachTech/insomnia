@@ -223,7 +223,7 @@ export async function exportHar(exportRequests: Array<ExportRequest>): Promise<H
       version: '1.2',
       creator: {
         name: 'Peach Sidecar REST Client',
-        version: `peach.sidecar.desktop.app:v${getAppVersion()}`
+        version: `peach.sidecar.desktop.app:v${getAppVersion()}`,
       },
       entries: entries,
     },

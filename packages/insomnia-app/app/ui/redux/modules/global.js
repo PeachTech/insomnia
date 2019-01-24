@@ -65,7 +65,7 @@ function loadingRequestsReducer(state = {}, action) {
   }
 }
 
-function testingReducer (state = false, action) {
+function testingReducer(state = false, action) {
   switch (action.type) {
     case START_TEST:
       return true;
@@ -76,10 +76,14 @@ function testingReducer (state = false, action) {
   }
 }
 
-function testInfoReducer (state = {}, action) {
+function testInfoReducer(state = {}, action) {
   switch (action.type) {
     case TEST_INFO:
-      return Object.assign({}, state, {workspace: action.workspace, test: action.test, session: action.session});
+      return Object.assign({}, state, {
+        workspace: action.workspace,
+        test: action.test,
+        session: action.session,
+      });
     default:
       return state;
   }
@@ -90,7 +94,7 @@ export const reducer = combineReducers({
   loadingRequestIds: loadingRequestsReducer,
   activeWorkspaceId: activeWorkspaceReducer,
   isTesting: testingReducer,
-  testInfo: testInfoReducer
+  testInfo: testInfoReducer,
 });
 
 // ~~~~~~~ //
@@ -141,23 +145,24 @@ export function loadRequestStop(requestId) {
   return { type: LOAD_REQUEST_STOP, requestId };
 }
 
-export function testStart () {
-  return {type: START_TEST, time: Date.now()};
+export function testStart() {
+  return { type: START_TEST, time: Date.now() };
 }
 
-export function testStop () {
-  return {type: STOP_TEST, time: Date.now()};
+export function testStop() {
+  return { type: STOP_TEST, time: Date.now() };
 }
 
-export function testSetInfo (workspaceName, testName, sessionId) {
-  return {type: TEST_INFO, workspace: workspaceName, test: testName, session: sessionId};
+export function testSetInfo(workspaceName, testName, sessionId) {
+  return { type: TEST_INFO, workspace: workspaceName, test: testName, session: sessionId };
 }
 
-export function setActiveWorkspace (workspaceId) {
+export function setActiveWorkspace(workspaceId) {
   window.localStorage.setItem(
-    `${LOCALSTORAGE_PREFIX}::activeWorkspaceId`, 
-    JSON.stringify(workspaceId));
-  return {type: SET_ACTIVE_WORKSPACE, workspaceId};
+    `${LOCALSTORAGE_PREFIX}::activeWorkspaceId`,
+    JSON.stringify(workspaceId),
+  );
+  return { type: SET_ACTIVE_WORKSPACE, workspaceId };
 }
 
 export function toggleRequestGroup(requestGroup) {

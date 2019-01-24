@@ -241,7 +241,7 @@ export const RUN_TEST: Hotkey = {
   meta: true,
   alt: false,
   shift: false,
-  keycode: keycodes.t
+  keycode: keycodes.t,
 };
 
 export const RUN_ALL_TESTS: Hotkey = {
@@ -249,7 +249,7 @@ export const RUN_ALL_TESTS: Hotkey = {
   meta: true,
   alt: false,
   shift: true,
-  keycode: keycodes.t
+  keycode: keycodes.t,
 };
 
 export function pressedHotKey(e: KeyboardEvent, definition: Hotkey): boolean {

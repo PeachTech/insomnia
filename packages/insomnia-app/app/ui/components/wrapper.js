@@ -120,6 +120,8 @@ type Props = {
   // Peach API Properties
   testRunning: boolean, // is a test or group of tests running?
   handleCancelTests: Function,
+  isTesting: boolean,
+  testInfo: Object,
 
   // Optional
   oAuth2Token: ?OAuth2Token,
@@ -326,7 +328,11 @@ class Wrapper extends React.PureComponent<Props, State> {
 
     const activeRequestId = activeRequest ? activeRequest._id : 'n/a';
     const activeEnvironmentId = activeEnvironment ? activeEnvironment._id : 'n/a';
-    await handleSendAndDownloadRequestWithEnvironment(activeRequestId, activeEnvironmentId, filename);
+    await handleSendAndDownloadRequestWithEnvironment(
+      activeRequestId,
+      activeEnvironmentId,
+      filename,
+    );
   }
 
   _handleSetPreviewMode(previewMode: string): void {
@@ -411,24 +417,24 @@ class Wrapper extends React.PureComponent<Props, State> {
     const realSidebarWidth = sidebarHidden ? 0 : sidebarWidth;
 
     const columns = `${realSidebarWidth}rem 0 minmax(0, ${paneWidth}fr) 0 minmax(0, ${1 -
-    paneWidth}fr)`;
+      paneWidth}fr)`;
     const rows = `minmax(0, ${paneHeight}fr) 0 minmax(0, ${1 - paneHeight}fr)`;
 
     return [
       <div key="modals" className="modals">
         <ErrorBoundary showAlert>
-          <AlertModal ref={registerModal}/>
-          <ErrorModal ref={registerModal}/>
-          <PromptModal ref={registerModal}/>
+          <AlertModal ref={registerModal} />
+          <ErrorModal ref={registerModal} />
+          <PromptModal ref={registerModal} />
 
-          <WrapperModal ref={registerModal}/>
-          <LoginModal ref={registerModal}/>
-          <AskModal ref={registerModal}/>
-          <SelectModal ref={registerModal}/>
-          <RequestCreateModal ref={registerModal}/>
-          <PaymentNotificationModal ref={registerModal}/>
-          <FilterHelpModal ref={registerModal}/>
-          <RequestRenderErrorModal ref={registerModal}/>
+          <WrapperModal ref={registerModal} />
+          <LoginModal ref={registerModal} />
+          <AskModal ref={registerModal} />
+          <SelectModal ref={registerModal} />
+          <RequestCreateModal ref={registerModal} />
+          <PaymentNotificationModal ref={registerModal} />
+          <FilterHelpModal ref={registerModal} />
+          <RequestRenderErrorModal ref={registerModal} />
 
           <CodePromptModal
             ref={registerModal}
@@ -483,7 +489,7 @@ class Wrapper extends React.PureComponent<Props, State> {
             workspace={activeWorkspace}
           />
 
-          <MoveRequestGroupModal ref={registerModal} workspaces={workspaces}/>
+          <MoveRequestGroupModal ref={registerModal} workspaces={workspaces} />
 
           <WorkspaceSettingsModal
             ref={registerModal}
@@ -501,7 +507,7 @@ class Wrapper extends React.PureComponent<Props, State> {
             isVariableUncovered={isVariableUncovered}
           />
 
-          <WorkspaceShareSettingsModal ref={registerModal} workspace={activeWorkspace}/>
+          <WorkspaceShareSettingsModal ref={registerModal} workspace={activeWorkspace} />
 
           <GenerateCodeModal
             ref={registerModal}
@@ -521,7 +527,7 @@ class Wrapper extends React.PureComponent<Props, State> {
             settings={settings}
           />
 
-          <ResponseDebugModal ref={registerModal} settings={settings}/>
+          <ResponseDebugModal ref={registerModal} settings={settings} />
 
           <RequestSwitcherModal
             ref={registerModal}
@@ -546,7 +552,7 @@ class Wrapper extends React.PureComponent<Props, State> {
             isVariableUncovered={isVariableUncovered}
           />
 
-          <SetupSyncModal ref={registerModal} workspace={activeWorkspace}/>
+          <SetupSyncModal ref={registerModal} workspace={activeWorkspace} />
 
           <WorkspaceEnvironmentsEditModal
             ref={registerModal}
@@ -636,7 +642,7 @@ class Wrapper extends React.PureComponent<Props, State> {
         </ErrorBoundary>
 
         <div className="drag drag--sidebar">
-          <div onDoubleClick={handleResetDragSidebar} onMouseDown={this._handleStartDragSidebar}/>
+          <div onDoubleClick={handleResetDragSidebar} onMouseDown={this._handleStartDragSidebar} />
         </div>
 
         <ErrorBoundary showAlert>

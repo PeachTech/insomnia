@@ -54,7 +54,7 @@ type Props = {
   request: ?Request,
   response: ?Response,
   isTesting: boolean,
-  testInfo: ?Object
+  testInfo: ?Object,
 };
 
 @autobind
@@ -176,7 +176,7 @@ class ResponsePane extends React.PureComponent<Props> {
       filterHistory,
       showCookiesModal,
       testInfo,
-      handleCancelTests
+      handleCancelTests,
     } = this.props;
 
     const paneClasses = 'response-pane theme--pane pane';
@@ -195,35 +195,43 @@ class ResponsePane extends React.PureComponent<Props> {
     if (isTesting) {
       return (
         <section className="response-pane pane">
-          <header className="pane__header"></header>
+          <header className="pane__header" />
           <div className="pane__body pane__body--placeholder">
             <div>
               <table className="table--fancy">
                 <tbody>
-                <tr>
-                  <td>Send Request</td>
-                  <td className="text-right">
-                    <code><Hotkey hotkey={hotkeys.SEND_REQUEST}/></code>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Focus Url Bar</td>
-                  <td className="text-right">
-                    <code><Hotkey hotkey={hotkeys.FOCUS_URL}/></code>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Manage Cookies</td>
-                  <td className="text-right">
-                    <code><Hotkey hotkey={hotkeys.SHOW_COOKIES}/></code>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Edit Environments</td>
-                  <td className="text-right">
-                    <code><Hotkey hotkey={hotkeys.SHOW_ENVIRONMENTS}/></code>
-                  </td>
-                </tr>
+                  <tr>
+                    <td>Send Request</td>
+                    <td className="text-right">
+                      <code>
+                        <Hotkey hotkey={hotkeys.SEND_REQUEST} />
+                      </code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Focus Url Bar</td>
+                    <td className="text-right">
+                      <code>
+                        <Hotkey hotkey={hotkeys.FOCUS_URL} />
+                      </code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Manage Cookies</td>
+                    <td className="text-right">
+                      <code>
+                        <Hotkey hotkey={hotkeys.SHOW_COOKIES} />
+                      </code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Edit Environments</td>
+                    <td className="text-right">
+                      <code>
+                        <Hotkey hotkey={hotkeys.SHOW_ENVIRONMENTS} />
+                      </code>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
             </div>

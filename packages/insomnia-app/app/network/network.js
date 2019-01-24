@@ -867,7 +867,7 @@ export async function send(requestId: string, environmentId: string): Promise<Re
   return _actuallySend(renderedRequest, renderedContextBeforePlugins, workspace, settings);
 }
 
-export async function _applyRequestPluginHooks (
+export async function _applyRequestPluginHooks(
   renderedRequest: RenderedRequest,
   renderedContext: Object,
 ): Promise<RenderedRequest> {

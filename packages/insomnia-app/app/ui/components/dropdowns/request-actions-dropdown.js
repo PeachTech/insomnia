@@ -36,7 +36,7 @@ class RequestActionsDropdown extends PureComponent {
     models.request.remove(request);
   }
 
-  _handleRunTest () {
+  _handleRunTest() {
     this.props.handleRunTest(this.props.request);
   }
 
@@ -72,8 +72,8 @@ class RequestActionsDropdown extends PureComponent {
         </DropdownItem>
         <DropdownDivider>Peach API Security</DropdownDivider>
         <DropdownItem onClick={this._handleRunTest}>
-          <i className="fa fa-bomb"/> Run Test
-          <DropdownHint hotkey={hotkeys.RUN_TEST}/>
+          <i className="fa fa-bomb" /> Run Test
+          <DropdownHint hotkey={hotkeys.RUN_TEST} />
         </DropdownItem>
 
         <DropdownDivider />
@@ -93,7 +93,7 @@ RequestActionsDropdown.propTypes = {
   handleCopyAsCurl: PropTypes.func.isRequired,
   handleShowSettings: PropTypes.func.isRequired,
   handleRunTest: PropTypes.func.isRequired,
-  request: PropTypes.object.isRequired
+  request: PropTypes.object.isRequired,
 };
 
 export default RequestActionsDropdown;

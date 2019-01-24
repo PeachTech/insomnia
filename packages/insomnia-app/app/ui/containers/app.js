@@ -425,11 +425,11 @@ class App extends PureComponent {
         do {
           await api.Setup();
           await api.TestCase(reqName + '_' + request.name);
-          const renderedRequestBeforePlugins = await getRenderedRequest(
+          const renderedRequestBeforePlugins = await render.getRenderedRequest(
             request,
             activeEnvironment ? activeEnvironment._id : 'n/a',
           );
-          const renderedContextBeforePlugins = await getRenderContext(
+          const renderedContextBeforePlugins = await render.getRenderContext(
             request,
             activeEnvironment ? activeEnvironment._id : 'n/a',
             ancestors,
@@ -533,11 +533,11 @@ class App extends PureComponent {
       do {
         await api.Setup();
         await api.TestCase(rgName + '_' + request.name);
-        const renderedRequestBeforePlugins = await getRenderedRequest(
+        const renderedRequestBeforePlugins = await render.getRenderedRequest(
           request,
           activeEnvironment ? activeEnvironment._id : 'n/a',
         );
-        const renderedContextBeforePlugins = await getRenderContext(
+        const renderedContextBeforePlugins = await render.getRenderContext(
           request,
           activeEnvironment ? activeEnvironment._id : 'n/a',
           ancestors,
