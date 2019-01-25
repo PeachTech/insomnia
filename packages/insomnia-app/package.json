@@ -1,23 +1,23 @@
 {
   "private": true,
   "version": "1.0.48",
-  "name": "insomnia-app",
+  "name": "sidecar-app",
   "app": {
-    "name": "insomnia",
-    "productName": "Insomnia",
-    "longName": "Insomnia REST Client",
+    "name": "sidecar",
+    "productName": "Peach Sidecar",
+    "longName": "Peach Sidecar REST Client",
     "version": "6.2.3",
     "main": "main.min.js"
   },
   "licence": "MIT",
   "homepage": "https://insomnia.rest/",
   "description": "Debug APIs like a human, not a robot",
-  "author": "Insomnia <support@insomnia.rest>",
+  "author": "Peach <support@peach.tech>",
   "main": "app/main.min.js",
   "appveyorCacheBreaker": 1,
   "repository": {
     "type": "git",
-    "url": "https://github.com/getinsomnia/insomnia"
+    "url": "https://github.com/PeachTech/sidecar"
   },
   "scripts": {
     "lint": "eslint \"**/*.js\" \"**/*.html\" \"**/*.json\"",

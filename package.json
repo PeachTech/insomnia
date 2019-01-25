@@ -6,16 +6,16 @@
   "homepage": "https://peach.tech",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PeachTech/insomnia"
+    "url": "https://github.com/PeachTech/sidecar"
   },
   "scripts": {
     "bootstrap": "npm install && lerna bootstrap && lerna run bootstrap",
     "publish": "lerna publish",
     "clean": "lerna clean --yes && rimraf node_modules",
     "test": "lerna run test --stream",
-    "app-start": "lerna run start --stream --scope=insomnia-app",
-    "app-build": "lerna run build --stream --scope=insomnia-app",
-    "app-package": "lerna run package --stream --scope=insomnia-app",
+    "app-start": "lerna run start --stream --scope=sidecar-app",
+    "app-build": "lerna run build --stream --scope=sidecar-app",
+    "app-package": "lerna run package --stream --scope=sidecar-app",
     "format-code": "prettier --write \"**/*.js\""
   },
   "husky": {

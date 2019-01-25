@@ -32,8 +32,7 @@
   "win": {
     "icon": "./build/icon.ico",
     "target": [
-      "squirrel",
-      "zip"
+      "squirrel"
     ]
   },
   "linux": {
@@ -42,8 +41,6 @@
     "category": "Development",
     "target": [
       "AppImage",
-      "deb",
-      "tar.gz",
       "snap"
     ]
   }
