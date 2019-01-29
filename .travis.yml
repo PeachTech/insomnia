@@ -41,7 +41,7 @@ addons:
   artifacts:
     s3_region: us-west-1
     paths:
-    - $(find dist -type f -name *.AppImage -o -name *.dmg | tr "\n" ":")
+    - $(find dist -type f -name *.AppImage -o -name *.dmg -o -name *.snap | tr "\n" ":")
 
 cache:
   directories:
