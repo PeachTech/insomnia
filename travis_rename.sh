@@ -1,5 +1,5 @@
 #! /bin/bash
-ver=$(node -e "console.log(require('./app/package.json').version);")
+ver=$(node -e "console.log(require('./packages/insomnia-app/package.json').version);")
 PATH=`echo $PATH | sed -e 's/:\.\/node_modules\/\.bin//'`;
 echo "making ./dist/deploy"
 mkdir -p ./dist/deploy

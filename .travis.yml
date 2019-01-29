@@ -17,6 +17,7 @@ matrix:
     - docker-compose build
     - docker-compose build $COMPOSE_SCRIPT
     - docker-compose run $COMPOSE_SCRIPT
+    - "./travis_rename.sh"
   - os: linux
     sudo: required
     dist: trusty
@@ -32,11 +33,13 @@ matrix:
     - python -c 'import os,sys,fcntl; flags = fcntl.fcntl(sys.stdout, fcntl.F_GETFL); fcntl.fcntl(sys.stdout, fcntl.F_SETFL, flags&~os.O_NONBLOCK);'
     - docker-compose build $COMPOSE_SCRIPT
     - docker-compose run $COMPOSE_SCRIPT
+    - "./travis_rename.sh"
   - os: osx
     env:
     - CSC_IDENTITY_AUTO_DISCOVERY=false    
     before_deploy:
     - npm run app-package
+    - "./travis_rename.sh"
 addons:
   artifacts:
     s3_region: us-west-1
@@ -56,7 +59,6 @@ script:
 - npm run bootstrap
 - npm test
 after_success:
-- "./travis_rename.sh"
 - export INSOMNIA_VERSION=$(node -e "console.log(require('./package.json').version);")
 
 deploy:
