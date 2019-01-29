@@ -25,7 +25,7 @@ install:
           cd app;
           npm version $ver --no-git-tag-version --allow-same;
           cd ..;
-          $version = node -e "console.log(require('./app/package.json').version);";
+          $version = node -e "console.log(require('./package.json').version);";
           Set-AppveyorBuildVariable -Name sidecarversion -Value $version;
 
 
@@ -38,17 +38,17 @@ cache:
 
 build_script:
 #  - npm run build-n-package:win
-#  - ps: >-
-#      $ver = node -e "console.log(require('./app/package.json').version);"; Get-ChildItem dist/squirrel-windows/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-x64-win.exe; }; Get-ChildItem dist/squirrel-windows-ia32/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-ia32-win.exe; }
   - if %APPVEYOR_REPO_TAG%==true npm run app-package
+  - ps: >-
+    $ver = node -e "console.log(require('./package.json').version);"; Get-ChildItem dist/squirrel-windows/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-x64-win.exe; }; Get-ChildItem dist/squirrel-windows-ia32/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-ia32-win.exe; }
 
 #---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
 
 after_build:
-  - ps: Get-ChildItem dist/squirrel-windows/*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name -DeploymentName dist_exe_64_file }
-  - ps: Get-ChildItem dist/squirrel-windows-ia32/*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name -DeploymentName dist_exe_ia32_file }
+  - ps: Get-ChildItem packages/insomnia-app/dist/squirrel-windows/*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name -DeploymentName dist_exe_64_file }
+#  - ps: Get-ChildItem packages/insomnia-app/dist/squirrel-windows-ia32/*.exe | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name -DeploymentName dist_exe_ia32_file }
 
 artifacts:
 #  - path: dist\squirrel-windows\*.exe
