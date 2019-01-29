@@ -22,9 +22,9 @@ install:
   - ps: >-
           $ver = git describe --abbrev=0;
           npm version $ver --no-git-tag-version --allow-same;
-          cd app;
+          cd packages/insomnia-app;
           npm version $ver --no-git-tag-version --allow-same;
-          cd ..;
+          cd ../..;
           $version = node -e "console.log(require('./package.json').version);";
           Set-AppveyorBuildVariable -Name sidecarversion -Value $version;
 
