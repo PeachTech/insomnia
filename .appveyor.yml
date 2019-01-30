@@ -37,7 +37,7 @@ cache:
 #---------------------------------#
 
 build_script:
-  - if %APPVEYOR_REPO_TAG%==true npm run app-package
+  - npm run app-package
   - ps: >-
       $ver = node -e "console.log(require('./package.json').version);"; Get-ChildItem dist/squirrel-windows/*.exe | Foreach-object { Rename-Item -Path $_.fullname -Newname Peach-Sidecar-Setup-$ver-x64-win.exe; };
 
