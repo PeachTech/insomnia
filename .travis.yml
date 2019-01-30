@@ -12,7 +12,7 @@ matrix:
     - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
     - chmod +x docker-compose
     - sudo mv docker-compose /usr/local/bin
-    before_deploy:
+    after_success:
     - python -c 'import os,sys,fcntl; flags = fcntl.fcntl(sys.stdout, fcntl.F_GETFL); fcntl.fcntl(sys.stdout, fcntl.F_SETFL, flags&~os.O_NONBLOCK);'
     - docker-compose build
     - docker-compose build $COMPOSE_SCRIPT
@@ -29,7 +29,7 @@ matrix:
     - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
     - chmod +x docker-compose
     - sudo mv docker-compose /usr/local/bin
-    before_deploy:
+    after_success:
     - python -c 'import os,sys,fcntl; flags = fcntl.fcntl(sys.stdout, fcntl.F_GETFL); fcntl.fcntl(sys.stdout, fcntl.F_SETFL, flags&~os.O_NONBLOCK);'
     - docker-compose build $COMPOSE_SCRIPT
     - docker-compose run $COMPOSE_SCRIPT
@@ -37,7 +37,7 @@ matrix:
   - os: osx
     env:
     - CSC_IDENTITY_AUTO_DISCOVERY=false    
-    before_deploy:
+    after_success:
     - npm run app-package
     - "./travis_rename.sh"
 addons:
@@ -52,6 +52,9 @@ cache:
   - build/node_modules
   - $HOME/.electron
   - $HOME/.cache
+
+before_script:
+  - "./version.sh"
 
 script:
 - node --version
