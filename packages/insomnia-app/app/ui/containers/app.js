@@ -440,7 +440,12 @@ class App extends PureComponent {
             renderedContextBeforePlugins,
           );
           try {
-            await network._actuallySend(renderedRequest, workspace, settings);
+            await network._actuallySend(
+              renderedRequest,
+              renderedContextBeforePlugins,
+              workspace,
+              settings,
+            );
           } catch (err) {
             console.warn('Error on sending request to proxy: ' + err.message);
           }
@@ -548,7 +553,12 @@ class App extends PureComponent {
           renderedContextBeforePlugins,
         );
         try {
-          await network._actuallySend(renderedRequest, workspace, settings);
+          await network._actuallySend(
+            renderedRequest,
+            renderedContextBeforePlugins,
+            workspace,
+            settings,
+          );
         } catch (err) {
           console.warn('Error on sending request to proxy: ' + err.message);
         }
