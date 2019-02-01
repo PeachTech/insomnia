@@ -1,5 +1,5 @@
 {
-  "appId": "com.insomnia.app",
+  "appId": "com.sidecar.app",
   "publish": false,
   "extraResources": [
     {
@@ -10,10 +10,10 @@
   ],
   "protocols": [
     {
-      "name": "Insomnia",
+      "name": "Sidecar",
       "role": "Viewer",
       "schemes": [
-        "insomnia"
+        "sidecar"
       ]
     }
   ],
@@ -36,7 +36,7 @@
     ]
   },
   "linux": {
-    "executableName": "insomnia",
+    "executableName": "Sidecar",
     "synopsis": "A simple, beautiful, and free REST API client",
     "category": "Development",
     "target": [

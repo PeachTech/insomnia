@@ -3,15 +3,8 @@ import * as React from 'react';
 import * as fontManager from 'font-manager';
 import autobind from 'autobind-decorator';
 import HelpTooltip from '../help-tooltip';
-import {
-  isLinux,
-  isMac,
-  isWindows,
-  UPDATE_CHANNEL_BETA,
-  UPDATE_CHANNEL_STABLE,
-} from '../../../common/constants';
+import { isMac } from '../../../common/constants';
 import type { Settings } from '../../../models/settings';
-import CheckForUpdatesButton from '../check-for-updates-button';
 import { setFont } from '../../../plugins/misc';
 
 type Props = {
@@ -432,65 +425,6 @@ class General extends React.PureComponent<Props, State> {
             </label>
           </div>
         </div>
-
-        {(isWindows() || isMac()) && (
-          <React.Fragment>
-            <hr className="pad-top" />
-            <div>
-              <div className="pull-right">
-                <CheckForUpdatesButton className="btn btn--outlined btn--super-duper-compact">
-                  Check Now
-                </CheckForUpdatesButton>
-              </div>
-              <h2>Software Updates</h2>
-            </div>
-            <div className="form-control form-control--thin">
-              <label className="inline-block">
-                Automatically download and install updates
-                <HelpTooltip className="space-left">
-                  If disabled, you will receive a notification when a new update is available
-                </HelpTooltip>
-                <input
-                  type="checkbox"
-                  name="updateAutomatically"
-                  checked={settings.updateAutomatically}
-                  onChange={this._handleUpdateSetting}
-                />
-              </label>
-            </div>
-            <div className="form-control form-control--outlined pad-top-sm">
-              <label>
-                Update Channel
-                <select
-                  value={settings.updateChannel}
-                  name="updateChannel"
-                  onChange={this._handleUpdateSetting}>
-                  <option value={UPDATE_CHANNEL_STABLE}>Release (Recommended)</option>
-                  <option value={UPDATE_CHANNEL_BETA}>Early Access (Beta)</option>
-                </select>
-              </label>
-            </div>
-          </React.Fragment>
-        )}
-
-        {isLinux() && (
-          <React.Fragment>
-            <hr className="pad-top" />
-            <h2>Software Updates</h2>
-            <div className="form-control form-control--thin">
-              <label className="inline-block">
-                Do not notify of new releases
-                <input
-                  type="checkbox"
-                  name="disableUpdateNotification"
-                  checked={settings.disableUpdateNotification}
-                  onChange={this._handleUpdateSetting}
-                />
-              </label>
-            </div>
-          </React.Fragment>
-        )}
-
         <hr className="pad-top" />
         <h2>Plugins</h2>
 

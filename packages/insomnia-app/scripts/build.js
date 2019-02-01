@@ -118,7 +118,7 @@ function generatePackageJson(relBasePkg, relOutPkg) {
   const basePkg = JSON.parse(fs.readFileSync(basePath));
 
   const appPkg = {
-    name: 'insomnia',
+    name: 'sidecar',
     version: basePkg.app.version,
     productName: basePkg.app.productName,
     longName: basePkg.app.longName,
