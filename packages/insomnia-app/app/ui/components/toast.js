@@ -148,8 +148,8 @@ class Toast extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    setTimeout(this._checkForNotifications, 1000 * 10);
-    this._interval = setInterval(this._checkForNotifications, 1000 * 60 * 30);
+    // setTimeout(this._checkForNotifications, 1000 * 10);
+    // this._interval = setInterval(this._checkForNotifications, 1000 * 60 * 30);
     electron.ipcRenderer.on('show-notification', this._listenerShowNotification);
   }
 
