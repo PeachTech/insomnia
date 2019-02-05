@@ -31,10 +31,7 @@
   },
   "win": {
     "icon": "./build/icon.ico",
-    "iconUrl": "https://peach-insomnia.s3.amazonaws.com/images/icon.png",
-    "target": [
-      "squirrel"
-    ]
+    "target": [ "squirrel" ]
   },
   "linux": {
     "executableName": "Sidecar",
