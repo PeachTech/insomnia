@@ -29,7 +29,7 @@ export function getAppEnvironment() {
 export function getTempDir() {
   // NOTE: Using a fairly unique name here because "insomnia" is a common word
   const { app } = electron.remote || electron;
-  const dir = path.join(app.getPath('temp'), `insomnia_${getAppVersion()}`);
+  const dir = path.join(app.getPath('temp'), `sidecar_${getAppVersion()}`);
   mkdirp.sync(dir);
   return dir;
 }
@@ -219,7 +219,8 @@ export function getContentTypeFromHeaders(headers, defaultValue = null) {
 // Sourced from https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 export const RESPONSE_CODE_DESCRIPTIONS = {
   // Special
-  [STATUS_CODE_PLUGIN_ERROR]: 'A Peach Sidecar plugin threw an error which prevented the request from sending',
+  [STATUS_CODE_PLUGIN_ERROR]:
+    'A Peach Sidecar plugin threw an error which prevented the request from sending',
 
   // 100s
 
