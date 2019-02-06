@@ -1,0 +1,45 @@
+{
+  "appId": "com.sidecar.app",
+  "publish": false,
+  "extraResources": [
+    {
+      "from": "./bin",
+      "to": "./bin",
+      "filter": "yarn-standalone.js"
+    }
+  ],
+  "protocols": [
+    {
+      "name": "Sidecar",
+      "role": "Viewer",
+      "schemes": [
+        "sidecar"
+      ]
+    }
+  ],
+  "fileAssociations": [],
+  "directories": {
+    "app": "build",
+    "output": "dist"
+  },
+  "mac": {
+    "category": "public.app-category.developer-tools",
+    "target": [
+      "dmg",
+      "zip"
+    ]
+  },
+  "win": {
+    "icon": "./build/icon.ico",
+    "target": [ "squirrel" ]
+  },
+  "linux": {
+    "executableName": "Sidecar",
+    "synopsis": "A simple, beautiful, and free REST API client",
+    "category": "Development",
+    "target": [
+      "AppImage",
+      "snap"
+    ]
+  }
+}
