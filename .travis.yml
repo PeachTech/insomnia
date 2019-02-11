@@ -64,6 +64,10 @@ script:
 after_success:
 - export INSOMNIA_VERSION=$(node -e "console.log(require('./package.json').version);")
 
+after_deploy:
+- echo "artifacts paths are:"
+- echo $ARTIFACTS_PATHS
+
 deploy:
   provider: s3
   region: us-west-1
