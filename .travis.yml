@@ -46,7 +46,7 @@ addons:
     debug: true
     working_dir: ./dist/deploy
     paths:
-    - $(find dist/deploy -type f -name *.AppImage -o -name *.dmg -o -name *.snap | tr "\n" ":")
+    - $(find ./dist/deploy -type f -name *.AppImage -o -name *.dmg -o -name *.snap | tr "\n" ":")
 
 cache:
   directories:
