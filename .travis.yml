@@ -71,7 +71,7 @@ deploy:
   secret_access_key: "$ARTIFACTS_SECRET"
   bucket: "$ARTIFACTS_BUCKET"
   skip_cleanup: true
-  local_dir: packages/insomnia-app/dist/deploy
+  local_dir: dist/deploy
   upload-dir: release/1.4/$INSOMNIA_VERSION
   on:
     tags: true
