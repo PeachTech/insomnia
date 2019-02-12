@@ -45,7 +45,7 @@ addons:
     s3_region: us-west-1
     debug: true
     paths:
-    - $(ls dist/deploy | tr "\n" ":")
+    - $(find dist/deploy -name *.AppImage -o -name *.dmg -o -name *.snap | tr "\n" ":")
 
 cache:
   directories:
@@ -76,10 +76,9 @@ deploy:
   secret_access_key: "$ARTIFACTS_SECRET"
   bucket: "$ARTIFACTS_BUCKET"
   skip_cleanup: true
-  local_dir: dist/deploy
+  local_dir: ./dist/deploy
   upload-dir: release/1.5/$INSOMNIA_VERSION
-  on:
-    tags: true
+  
 notifications:
   slack:
     secure: njKl/e4gbf1ikkNrOaLrlm3QqMAKNGlwCn+W6NMIp+E1ij6wiMqsNXFeHXhnxbV0t3zsO04ljPoqnqSKn0MVsarAA5hyfJttyCCmeUe2Voj0GUb67x3Gh65R7ridKftbkG/2GcEhYXxA0PgDqWB2llbgulFhEhqz7fxv1/TAAS3zvoLQ8OTEQpC/78xTmKn5BrQ5U1Sm5t3Zuwl4tiHFoHsOIEsV0bYrADFvrdL3DyxJrwyaM/YNvsQdIz/sERjRkPs3pAXstT3grRrPEGIRCE6/AMOSUM8rHSYOYz45cq/0k4CuLBwlMuY0Z5IkHR7GNOfMxmIlp7n0Nke2Ws2MCVxWnwO/1b9NahK7eujFlQoPZRWUkjv1EMzcBvE6CzKgUt5QvDgzqmvMsn+X9pcn3UYPUWg3/P1O+bYUZ7zFoaxScZMhudOD3miA5Z6HxQGGBnd5nuWAfH0TW+Kn/Xam4PsBvtUJmmIoUamNnXWIBwsA7h8V7XJKbee15PGejK2RQLHzBHM64gN+wQZutjWgOrO6dj1QLSapoRKnTPomFT3LfmdBAXkyB44ZyPewIB7txpYtzaTDuZ+nk9D4PQesR2EmDUkJvxXifR6tQL+o9O0hxAv4vC/mzDPZCEURB6cfkFnwqS9rWZRyPuGen2r/6zBbe3H8fqcOjoBdUcpVhlM=
