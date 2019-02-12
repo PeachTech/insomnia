@@ -77,7 +77,7 @@ deploy:
   bucket: "$ARTIFACTS_BUCKET"
   skip_cleanup: true
   local_dir: dist/deploy
-  upload-dir: release/1.4/$INSOMNIA_VERSION
+  upload-dir: release/1.5/$INSOMNIA_VERSION
   on:
     tags: true
 notifications:
