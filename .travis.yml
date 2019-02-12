@@ -44,9 +44,8 @@ addons:
   artifacts:
     s3_region: us-west-1
     debug: true
-    working_dir: ./dist/deploy
     paths:
-    - $(find ./dist/deploy -type f -name *.AppImage -o -name *.dmg -o -name *.snap | tr "\n" ":")
+    - $(ls dist/deploy | tr "\n" ":")
 
 cache:
   directories:
