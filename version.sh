@@ -11,3 +11,4 @@ npm version $ver --no-git-tag-version --allow-same-version --force
 # that we need, so just read the file we just changed
 cd packages/insomnia-app
 npm version $ver --no-git-tag-version --allow-same-version --force
+export INSOMNIA_VERSION=$ver
