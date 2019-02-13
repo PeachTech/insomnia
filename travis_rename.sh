@@ -2,13 +2,14 @@
 set -x
 ver=$(node -e "console.log(require('./packages/insomnia-app/package.json').version);")
 PATH=`echo $PATH | sed -e 's/:\.\/node_modules\/\.bin//'`;
-echo "making ./dist/deploy"
-mkdir -p ./dist/deploy
+BUILDDIR=./$ver
+echo "making $BUILDDIR"
+mkdir -p $BUILDDIR
 result=$?
-echo "result of mkdir -p ./dist/deploy was $result"
+echo "result of mkdir -p $BUILDDIR was $result"
 echo "working directory is currently $(pwd)"
-deploydir=$(pwd)/dist/deploy
-ls ./dist/deploy
+deploydir=$(pwd)/$ver
+ls $deploydir
 echo "deploydir will be $deploydir"
 # must use execdir in order to actually rename the file or it will want the full path
 # in the command
@@ -29,6 +30,6 @@ echo "installer renamed"
 # echo "copying snap to ./dist/deploy"
 # find ./packages/insomnia-app/dist -type f -name Peach*.snap -exec mv -f {} ./dist/deploy/ \;
 # echo "dmg copied"
-echo "Contents of dist/deploy folder are:"
-ls -al ./dist/deploy
+echo "Contents of $deploydir folder are:"
+ls -al $deploydir
 echo "done"
