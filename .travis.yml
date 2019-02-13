@@ -78,9 +78,9 @@ deploy:
   secret_access_key: "$ARTIFACTS_SECRET"
   bucket: "$ARTIFACTS_BUCKET"
   skip_cleanup: true
-  local_dir: ./dist/deploy
+  local_dir: ./$INSOMNIA_VERSION
   # upload-dir: release/1.5/$INSOMNIA_VERSION
-  script: ./upload_artifacts.sh
+  # script: ./upload_artifacts.sh
   on:
     branch: peach/develop
   
