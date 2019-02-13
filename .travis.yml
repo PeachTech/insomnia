@@ -57,7 +57,7 @@ cache:
   - $HOME/.cache
 
 before_script:
-  - "source ./version.sh"
+  - "./version.sh"
 
 script:
 - node --version
