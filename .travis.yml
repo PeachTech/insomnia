@@ -46,8 +46,8 @@ addons:
     debug: true
     paths:
     - $(find dist -type f -name *.AppImage -o -name *.dmg -o -name *.snap | tr "\n" ":")
-    #target_paths:
-    #- /release/1.5/$INSOMNIA_VERSION
+    target_paths:
+    - /release/1.5/$(node -e "console.log(require('./package.json').version);")
 
 cache:
   directories:
