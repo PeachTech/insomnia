@@ -58,6 +58,7 @@ cache:
 
 before_script:
   - "./version.sh"
+  - travis version
 
 script:
 - node --version
