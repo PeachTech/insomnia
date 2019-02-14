@@ -2,13 +2,13 @@
 set -x
 ver=$(node -e "console.log(require('./packages/insomnia-app/package.json').version);")
 PATH=`echo $PATH | sed -e 's/:\.\/node_modules\/\.bin//'`;
-BUILDDIR=./$ver
+BUILDDIR=./dist/deploy
 echo "making $BUILDDIR"
 mkdir -p $BUILDDIR
 result=$?
 echo "result of mkdir -p $BUILDDIR was $result"
 echo "working directory is currently $(pwd)"
-deploydir=$(pwd)/$ver
+deploydir=$(pwd)/dist/deploy
 ls $deploydir
 echo "deploydir will be $deploydir"
 # must use execdir in order to actually rename the file or it will want the full path
