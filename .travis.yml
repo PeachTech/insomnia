@@ -46,8 +46,9 @@ addons:
     debug: true
     paths:
     - $(find dist -type f -name *.AppImage -o -name *.dmg -o -name *.snap | tr "\n" ":")
-    target_paths:
-    - /release/1.5/staging
+    working_dir: ./dist/deploy
+    # target_paths:
+    # - /release/1.5/staging
 
 cache:
   directories:
@@ -79,6 +80,7 @@ deploy:
   bucket: "$ARTIFACTS_BUCKET"
   skip_cleanup: true
   local_dir: ./dist/deploy
+  upload-dir: release/1.5/$INSOMNIA_VERSION
   on:
     tags: true
   
