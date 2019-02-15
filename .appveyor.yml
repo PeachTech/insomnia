@@ -105,7 +105,7 @@ deploy:
       secure: xlRU6LcoTAIRAy113AGY5rzR4l+zX1X+O/kgiIrsnJ8FSigUQQxJ34lUWRREtKUc
     bucket: peach-insomnia
     region: us-west-1
-    folder: release/1.5/$(sidecarversion)
+    folder: release/1.5/staging/dist/deploy
     artifact: dist_file
     on:
       appveyor_repo_tag: true
