@@ -85,6 +85,7 @@ deploy:
       tags: true
   - provider: script
     script: bash ./upload_artifacts.sh
+    skip_cleanup: true
     on:
       branch: peach/develop
   
