@@ -47,8 +47,6 @@ addons:
     paths:
     - $(find dist -type f -name *.AppImage -o -name *.dmg -o -name *.snap | tr "\n" ":")
     working_dir: ./dist/deploy
-    # target_paths:
-    # - /release/1.5/staging
 
 cache:
   directories:
@@ -67,10 +65,6 @@ script:
 - npm test
 after_success:
 - export INSOMNIA_VERSION=$(node -e "console.log(require('./package.json').version);")
-
-after_deploy:
-- echo "artifacts paths are:"
-- echo $ARTIFACTS_PATHS
 
 deploy:
   - provider: s3
