@@ -73,7 +73,7 @@ after_deploy:
 - echo $ARTIFACTS_PATHS
 
 deploy:
-  provider: s3
+  - provider: s3
   region: us-west-1
   access_key_id: "$ARTIFACTS_KEY"
   secret_access_key: "$ARTIFACTS_SECRET"
@@ -83,6 +83,10 @@ deploy:
   upload-dir: release/1.5/$INSOMNIA_VERSION
   on:
     tags: true
+  - provider: script
+  script: bash ./upload_artifacts.sh
+  on:
+    branch: peach/develop
   
 notifications:
   slack:
