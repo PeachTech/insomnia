@@ -22,7 +22,10 @@ echo "if the above is blank, something is wrong"
 pushd ./dist/deploy
 UPLOADFILES=$(find . -type f -name *.AppImage -o -name *.dmg -o -name *.snap | tr "\n" ":")
 echo "files to upload are $UPLOADFILES"
+echo "region defaulted somehow to $ARTIFACTS_REGION or $ARTIFACTS_S3_REGION"
 ARTIFACTS_REGION=us-west-1
+ARTIFACTS_S3_REGION=us-west-1
+echo "region defaulted somehow to $ARTIFACTS_REGION or $ARTIFACTS_S3_REGION"
 artifacts -D upload --target-paths "release/1.5/$INSOMNIA_VERSION" $UPLOADFILES
 popd
 echo "Upload should be complete."
