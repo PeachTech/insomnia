@@ -74,14 +74,13 @@ deploy:
     bucket: "$ARTIFACTS_BUCKET"
     skip_cleanup: true
     local_dir: ./dist/deploy
-    upload-dir: release/1.5/$INSOMNIA_VERSION
     on:
-      tags: true
+      branch: peach/develop
   - provider: script
     script: bash ./upload_artifacts.sh
     skip_cleanup: true
     on:
-      branch: peach/develop
+      tags: true
   
 notifications:
   slack:
