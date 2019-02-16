@@ -26,6 +26,6 @@ echo "region defaulted somehow to $ARTIFACTS_REGION or $ARTIFACTS_S3_REGION"
 ARTIFACTS_REGION=us-west-1
 ARTIFACTS_S3_REGION=us-west-1
 echo "region defaulted somehow to $ARTIFACTS_REGION or $ARTIFACTS_S3_REGION"
-artifacts -D upload --target-paths "release/1.5/$INSOMNIA_VERSION" $UPLOADFILES
+artifacts -D upload --s3-region us-west-1 --target-paths "release/1.5/$INSOMNIA_VERSION" $UPLOADFILES
 popd
 echo "Upload should be complete."
